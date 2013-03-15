@@ -1,0 +1,47 @@
+alignment bottom_left
+background yes
+border_width 1
+double_buffer yes
+cpu_avg_samples 4
+default_color 222222
+default_outline_color 222222
+draw_borders no
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+use_xft yes
+xftfont Sans Mono:size=7
+gap_x 0
+gap_y 0
+minimum_size 1024 2
+maximum_width 1024
+net_avg_samples 2
+no_buffers no
+out_to_console no
+out_to_stderr no
+extra_newline no
+own_window no
+own_window_class Conky
+own_window_type panel
+stippled_borders 0
+update_interval 1.0
+uppercase no
+use_spacer left
+show_graph_scale no
+show_graph_range no
+format_human_readable yes
+
+color1 00acff
+color2 00ac77
+color3 00ac00
+
+TEXT
+${color1}[${color3}${fs_free /}${color1} | ${color3}${fs_free /home/}${color1}]${color3} | \
+${if_up wlan0}${color1}wlan0:[${color3}${addr wlan0}${color1}]:${color2}${wireless_link_qual_perc wlan0}% ${wireless_bitrate wlan0}${endif}\
+${if_up pan0}${color1}pan0:[${color3}${addr pan0}${color1}]${endif}\
+${if_up usb0}${color1}usb0:[${color3}${addr usb0}${color1}]${endif} ${color3} | \
+${color1}BAT: [${color3}${acpiacadapter}${color1}] ${color2}${battery_percent BAT1}% ${battery_bar 5,20 BAT1} ${color3} | \
+${color1}CPU1: ${color2}${freq}MHz ${cpu cpu1}% ${cpugraph cpu1 5,20 00ac00 ff0000-t} ${color3} | \
+${color1}CPU2: ${color2}${freq}MHz ${cpu cpu2}% ${cpugraph cpu2 5,20 00ac00 ff0000-t} ${color3} | \
+${color1}RAM:${color2} ${memperc}% ${memgraph 5,20 00ac00 ff0000-t} ${color3} \
+${alignr}[${color3}${Time %a %h %d}${color1}] ${Time %l:%M %p}
