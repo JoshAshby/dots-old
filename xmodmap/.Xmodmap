@@ -1,0 +1,11 @@
+keycode 66 = Control_L
+clear lock
+add Control = Control_L
+
+keycode 49 = asciitilde grave
+
+
+keycode 135 = asciitilde
+
+pointer = 1 2 3 5 4 7 6 9 8 10 11 12
+

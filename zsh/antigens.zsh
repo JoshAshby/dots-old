@@ -12,6 +12,8 @@ antigen-bundle pip
 antigen-bundle lein
 antigen-bundle command-not-found
 antigen-bundle zsh-users/zsh-history-substring-search
+antigen-bundle virtualenvwrapper
+antigen-bundle battery
 
 # Tell antigen that you're done.
 antigen-apply
