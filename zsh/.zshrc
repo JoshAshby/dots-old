@@ -18,7 +18,7 @@ COMPLETION_WAITING_DOTS="true"
 
 source $ZSH/oh-my-zsh.sh
 
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/usr/share//arduino-1.0:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:/home/josh/scripts
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/usr/share//arduino-1.0:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:/home/josh/scripts:$DOTS/now
 
 export EDITOR="vim"
 export BROWSER="firefox"

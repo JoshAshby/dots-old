@@ -5,12 +5,13 @@ alias www="cd /srv/http/"
 alias nano="vim"
 alias vi="vim"
 alias vim="vim"
-alias v="vim"
+alias -g v="vim"
 alias vg="gvim"
 alias awvim='vim ~/.config/awesome/rc.lua'
 alias la='ls -la'
 alias pacman='sudo pacman'
 alias backlight="sudo backlight"
+alias now="now.sh"
 alias sl='ls -la --color'
 
 alias dcache="sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches >> /dev/null"
