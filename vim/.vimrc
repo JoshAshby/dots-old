@@ -5,7 +5,7 @@ filetype off                   " required!
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-set grepprg=grep\ -nH\ $*
+set grepprg=egrep\ -nH\ $*
 let g:tex_flavor = "latex"
 
 Bundle 'gmarik/vundle'
@@ -186,7 +186,8 @@ nmap <leader>f :FufFile<CR>
 
 " display tabs - ,s will toggle (redraws just in case)
 nmap <silent> <leader>s :set nolist!<CR>:redr<CR>
-set listchars=tab:⇾\ ,trail:·
+" This line blew up at me when I symlinked this file. no clue why
+set listchars=tab:⇥\ ,trail:·
 set list
 
 " remad ;to : since I tend to use : more often

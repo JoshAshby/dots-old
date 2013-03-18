@@ -1,6 +1,6 @@
 loki() {
-    xscreensaver -nosplash
-    xmodmap ~/.Xmodmap
+    xscreensaver -nosplash&
+    xmodmap ~/.Xmodmap&
 }
 
 tmux() {

@@ -1,7 +1,7 @@
-source $DOTS/antigen/antigen.zsh
+source $DOTS/zsh/antigen/antigen.zsh
 
 # Load the oh-my-zsh's library.
-# antigen-lib
+antigen-lib
 
 # Syntax highlighting bundle.
 antigen-bundle zsh-users/zsh-syntax-highlighting
@@ -14,6 +14,9 @@ antigen-bundle command-not-found
 antigen-bundle zsh-users/zsh-history-substring-search
 antigen-bundle virtualenvwrapper
 antigen-bundle battery
+antigen-bundle archlinux
+
+antigen-theme philips
 
 # Tell antigen that you're done.
 antigen-apply
