@@ -1,52 +1,70 @@
-syntax on
-set number
+"This all needs cleaned up...
 set nocompatible               " be iMproved
 filetype off                   " required!
+
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
-set grepprg=egrep\ -nH\ $*
-let g:tex_flavor = "latex"
-
 Bundle 'gmarik/vundle'
-Bundle 'FuzzyFinder'
 Bundle 'L9'
-Bundle 'TeX-9'
+" File related bundles
+Bundle 'FuzzyFinder'
+Bundle 'scrooloose/nerdtree'
+Bundle 'mileszs/ack.vim'
+" Git related bundles
 Bundle 'fugitive.vim'
+Bundle 'airblade/vim-gitgutter'
+" Utils
 Bundle 'Auto-Pairs'
 Bundle 'TabBar'
-Bundle 'scrooloose/nerdtree'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'desert-warm-256'
+Bundle 'majutsushi/tagbar'
+Bundle 'vim-scripts/UltiSnips'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'vim-scripts/TaskList.vim'
 Bundle 'ervandew/supertab'
-Bundle 'tpope/vim-surround'
+" Bundle 'tpope/vim-surround'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
+Bundle 'docunext/closetag.vim.git'
+
 Bundle 'AndrewRadev/linediff.vim'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'plasticboy/vim-markdown'
+
+Bundle 'godlygeek/csapprox'
 Bundle 'chriskempson/base16-vim'
+Bundle 'flazz/vim-colorschemes'
+Bundle 'altercation/vim-colors-solarized'
+
 Bundle 'groenewege/vim-less'
 Bundle 'skammer/vim-css-color'
-" Bundle 'vim-scripts/Pydiction'
-" Bundle 'mileszs/ack.vim'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'plasticboy/vim-markdown'
 
+set exrc "enable cwd .vimrc files
+syntax on
+set grepprg=egrep\ -nH\ $*
+filetype plugin indent on
+
+" set t_Co=256
+set background=dark
+" colorscheme symfony
+color molokai
+" color solarized
+" let g:solarized_termcolors=256
+set guifont=profont
+set guioptions=e
+set number
 set title
-" set showtabline=0
+set showtabline=0
 
-filetype plugin on
-filetype indent on
+set ofu=syntaxcomplete#Complete
+autocmd FileType python set omnifunc=pythoncomplete#Complete
 
-" set ofu=syntaxcomplete#Complete
-" autocmd FileType python set omnifunc=pythoncomplete#Complete
 let g:SuperTabDefaultCompletionType = "context"
-"
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery =
     \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
-"
+
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menu,preview,longest
 
@@ -60,13 +78,15 @@ augroup vimrc_autocmds
         autocmd BufEnter * match OverLength /\%79v.*/
 augroup END
 
-autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
+autocmd FileType !markdown,BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
+
+autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
+" autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
 
 " set up window positions
 " let g:NERDTreeWinPos = "right"
-let Tlist_Use_Right_Window   = 1
+" let Tlist_Use_Right_Window   = 1
 
-" fuzzyfinder
 set wildmenu
 set wildmode=list:longest,full
 set nohidden
@@ -75,7 +95,7 @@ set nohidden
 hi CursorLine term=none cterm=none ctermbg=1
 
 " fast terminal
-set ttyfast
+" set ttyfast
 
 " nerdtree stuff
 let NERDTreeShowBookmarks=1
@@ -133,8 +153,6 @@ set autoindent
 set smarttab
 set smartindent
 
-set background=dark
-
 " Use + register (X Window clipboard) as unnamed register
 set clipboard=unnamedplus,autoselect
 
@@ -164,7 +182,8 @@ noremap <leader><f4> :tabclose<CR>
 
 " toggle nerdtree and tlist
 noremap <F7> :NERDTreeToggle<CR>
-nnoremap <leader><F7> :TlistToggle<CR>
+" nnoremap <leader><F7> :TlistToggle<CR>
+nnoremap <leader><F7> :TagbarToggle<CR>
 
 "toggle paragraph formating
 map <F8> :set fo+=t<CR>
@@ -177,9 +196,11 @@ map <silent><F9> :set invhlsearch<CR>
 noremap <leader>d :Linediff<CR>
 
 nmap s :set spell<CR>
+nnoremap <leader>s :set nospell<CR>
 
 " new tab:
-nmap <leader>t :tabnew<CR>
+" nmap <leader>t :tabnew<CR>
+nmap <leader>y :tabnew<CR>
 
 " fuzzyfinder
 nmap <leader>f :FufFile<CR>
@@ -202,4 +223,52 @@ map n nzz
 
 " </keybindings>
 
-colorscheme symfony
+
+" TagBar stuff...
+let g:tagbar_type_coffee = {
+    \ 'ctagstype' : 'coffee',
+    \ 'kinds'     : [
+        \ 'c:classes',
+        \ 'm:methods',
+        \ 'f:functions',
+        \ 'v:variables',
+        \ 'f:fields',
+    \ ]
+\ }
+
+" Posix regular expressions for matching interesting items. Since this will
+" be passed as an environment variable, no whitespace can exist in the options
+" so [:space:] is used instead of normal whitespaces.
+" Adapted from: https://gist.github.com/2901844
+let s:ctags_opts = '
+  \ --langdef=coffee
+  \ --langmap=coffee:.coffee
+  \ --regex-coffee=/(^|=[[:space:]])*class[[:space:]]([A-Za-z]+\.)*([A-Za-z]+)([[:space:]]extends[[:space:]][A-Za-z.]+)?$/\3/c,class/
+  \ --regex-coffee=/^[[:space:]]*(module\.)?(exports\.)?@?([A-Za-z.]+):.*[-=]>.*$/\3/m,method/
+  \ --regex-coffee=/^[[:space:]]*(module\.)?(exports\.)?([A-Za-z.]+)[[:space:]]+=.*[-=]>.*$/\3/f,function/
+  \ --regex-coffee=/^[[:space:]]*([A-Za-z.]+)[[:space:]]+=[^->\n]*$/\1/v,variable/
+  \ --regex-coffee=/^[[:space:]]*@([A-Za-z.]+)[[:space:]]+=[^->\n]*$/\1/f,field/
+  \ --regex-coffee=/^[[:space:]]*@([A-Za-z.]+):[^->\n]*$/\1/f,staticField/
+  \ --regex-coffee=/^[[:space:]]*([A-Za-z.]+):[^->\n]*$/\1/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@([A-Za-z.]+)/\2/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){0}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){1}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){2}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){3}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){4}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){5}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){6}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){7}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){8}/\3/f,field/
+  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){9}/\3/f,field/'
+
+let $CTAGS = substitute(s:ctags_opts, '\v\([nst]\)', '\\', 'g')
+
+let g:tagbar_type_markdown = {
+    \ 'ctagstype' : 'markdown',
+    \ 'kinds' : [
+        \ 'h:Heading_L1',
+        \ 'i:Heading_L2',
+        \ 'k:Heading_L3'
+    \ ]
+\ }

@@ -5,7 +5,7 @@ alias www="cd /srv/http/"
 alias nano="vim"
 alias vi="vim"
 alias vim="vim"
-alias -g v="vim"
+alias -g v="gvim"
 alias vg="gvim"
 alias awvim='vim ~/.config/awesome/rc.lua'
 alias la='ls -la'
@@ -13,6 +13,9 @@ alias pacman='sudo pacman'
 alias backlight="sudo backlight"
 alias now="now.sh"
 alias sl='ls -la --color'
+
+alias -s py=python
+alias -s html=firefox
 
 alias dcache="sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches >> /dev/null"
 alias drivetune="sudo hdparm -B 254 /dev/sda; sudo hdparm -M 254 /dev/sda; sudo hdparm -S 12 /dev/sda"
