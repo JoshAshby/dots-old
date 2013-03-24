@@ -26,6 +26,7 @@ Bundle 'ervandew/supertab'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
 Bundle 'docunext/closetag.vim.git'
+Bundle 'vim-scripts/ExplainPattern'
 
 Bundle 'AndrewRadev/linediff.vim'
 
@@ -33,6 +34,7 @@ Bundle 'godlygeek/csapprox'
 Bundle 'chriskempson/base16-vim'
 Bundle 'flazz/vim-colorschemes'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'vim-scripts/dubs-scheme'
 
 Bundle 'groenewege/vim-less'
 Bundle 'skammer/vim-css-color'
