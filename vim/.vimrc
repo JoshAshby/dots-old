@@ -18,26 +18,26 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'Auto-Pairs'
 Bundle 'TabBar'
 Bundle 'majutsushi/tagbar'
-Bundle 'vim-scripts/UltiSnips'
+"Bundle 'vim-scripts/UltiSnips'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'vim-scripts/TaskList.vim'
 Bundle 'ervandew/supertab'
 " Bundle 'tpope/vim-surround'
 Bundle 'Raimondi/delimitMate'
-Bundle 'scrooloose/syntastic'
+"Bundle 'scrooloose/syntastic'
 Bundle 'docunext/closetag.vim.git'
 
-Bundle 'AndrewRadev/linediff.vim'
+"Bundle 'AndrewRadev/linediff.vim'
 
 Bundle 'godlygeek/csapprox'
 Bundle 'chriskempson/base16-vim'
 Bundle 'flazz/vim-colorschemes'
 Bundle 'altercation/vim-colors-solarized'
 
-Bundle 'groenewege/vim-less'
+"Bundle 'groenewege/vim-less'
 Bundle 'skammer/vim-css-color'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'plasticboy/vim-markdown'
+"Bundle 'kchmck/vim-coffee-script'
+"Bundle 'plasticboy/vim-markdown'
 
 set exrc "enable cwd .vimrc files
 syntax on
@@ -46,8 +46,8 @@ filetype plugin indent on
 
 " set t_Co=256
 set background=dark
-" colorscheme symfony
-color molokai
+ colorscheme symfony
+"color molokai
 " color solarized
 " let g:solarized_termcolors=256
 set guifont=profont
@@ -154,7 +154,7 @@ set smarttab
 set smartindent
 
 " Use + register (X Window clipboard) as unnamed register
-set clipboard=unnamedplus,autoselect
+"set clipboard=unnamedplus,autoselect
 
 " turn off tab expansion for Makefiles
 au FileType make setlocal noexpandtab
@@ -272,3 +272,26 @@ let g:tagbar_type_markdown = {
         \ 'k:Heading_L3'
     \ ]
 \ }
+
+" Switch window mappings /*{{{*/
+ nnoremap <A-Up> :normal <c-r>=SwitchWindow('+')<CR><CR>
+ nnoremap <A-Down> :normal <c-r>=SwitchWindow('-')<CR><CR>
+ nnoremap <A-Left> :normal <c-r>=SwitchWindow('<')<CR><CR>
+ nnoremap <A-Right> :normal <c-r>=SwitchWindow('>')<CR><CR>
+
+ function! SwitchWindow(dir)
+   let this = winnr()
+     if '+' == a:dir
+         execute "normal \<c-w>k"
+             elseif '-' == a:dir
+                 execute "normal \<c-w>j"
+                     elseif '>' == a:dir
+                         execute "normal \<c-w>l"
+                             elseif '<' == a:dir
+                                 execute "normal \<c-w>h"
+                                   else
+                                       echo "oops. check your ~/.vimrc"
+                                           return ""
+  endif
+  endfunction
+  " /*}}}*/

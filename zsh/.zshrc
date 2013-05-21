@@ -17,9 +17,7 @@ COMPLETION_WAITING_DOTS="true"
 export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/usr/share//arduino-1.0:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/qt/bin:/home/josh/scripts:$DOTS/zsh/now
 
 export EDITOR="vim"
-export BROWSER="firefox"
-
-[ -s "/home/josh/.scm_breeze/scm_breeze.sh" ] && source "/home/josh/.scm_breeze/scm_breeze.sh"
+#export BROWSER="firefox"
 
 export J2REDIR=/opt/java/jre
 export PATH=$PATH:/opt/java/jre/bin
@@ -29,4 +27,4 @@ source $DOTS/zsh/alias.zsh
 source $DOTS/zsh/functions.zsh
 . $DOTS/zsh/z/z.sh
 
-
+[ -s "/home/josh/.scm_breeze/scm_breeze.sh" ] && source "/home/josh/.scm_breeze/scm_breeze.sh"
