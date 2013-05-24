@@ -27,4 +27,4 @@ source $DOTS/zsh/alias.zsh
 source $DOTS/zsh/functions.zsh
 . $DOTS/zsh/z/z.sh
 
-[ -s "/home/josh/.scm_breeze/scm_breeze.sh" ] && source "/home/josh/.scm_breeze/scm_breeze.sh"
+#[ -s "/home/josh/.scm_breeze/scm_breeze.sh" ] && source "/home/josh/.scm_breeze/scm_breeze.sh"

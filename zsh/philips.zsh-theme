@@ -50,7 +50,7 @@ function virtualenv_info {
 }
 
 function rhand_info {
-        echo "$(virtualenv_info)"
+        echo "%{$fg[blue]SSH DEV%}"
 }
 
 function ssh_connection {
@@ -58,7 +58,7 @@ function ssh_connection {
 }
 
 PROMPT='$(ssh_connection)%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%c/%b%{$reset_color%} $(my_git_prompt) %(!.#.$) '
-RPROMPT='$(rhand_info) [%*] ⚡$(battery_pct_prompt)'
+RPROMPT='$(rhand_info)'
 
 # git theming
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}(%{$fg_no_bold[red]%}"

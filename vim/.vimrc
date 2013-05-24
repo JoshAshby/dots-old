@@ -145,9 +145,9 @@ set smartcase
 
 " display tab characters as 4 spaces, indent 4 spaces,
 " always use spaces instead of tabs
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 set autoindent
 set smarttab

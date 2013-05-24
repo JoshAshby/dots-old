@@ -1,21 +1,29 @@
-alias dhcp="sudo dhcpcd"
-alias sigyn="ssh -XA -L 9050:localhost:9050 -D 3500 -L 8118:localhost:8118 sigyn"
 alias repos="cd ~/repos/"
-alias www="cd /srv/http/"
+alias www="cd /var/www/"
 alias nano="vim"
 alias vi="vim"
 alias vim="vim"
-alias -g v="gvim"
-alias vg="gvim"
-alias awvim='vim ~/.config/awesome/rc.lua'
+alias v="vim"
 alias la='ls -la'
-alias pacman='sudo pacman'
-alias backlight="sudo backlight"
 alias now="now.sh"
 alias sl='ls -la --color'
 
-alias -s py=python
-alias -s html=firefox
+alias dev='ssh -XA josh-dav'
+alias beta='ssh beta'
+alias sigyn='ssh -X joshashby.com'
 
-alias dcache="sudo sync; echo 3 | sudo tee /proc/sys/vm/drop_caches >> /dev/null"
-alias drivetune="sudo hdparm -B 254 /dev/sda; sudo hdparm -M 254 /dev/sda; sudo hdparm -S 12 /dev/sda"
+#Git stuff
+alias gs="git status"
+alias gdiff="git diff"
+alias gl="git pull"
+alias gf="git fetch"
+alias gm="git merge"
+alias gps="git push"
+alias glog="git log -10"
+alias gchp="git cherry-pick"
+alias gcm='git commit -m'
+alias gcma='git comment -m --amend'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias ga='git add'
+alias gaa='git add .'
