@@ -50,7 +50,7 @@ function virtualenv_info {
 }
 
 function rhand_info {
-        echo "%{$fg[blue]SSH DEV%}"
+        echo '%{$fg[blue]%}(SSH DEV)'
 }
 
 function ssh_connection {

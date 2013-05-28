@@ -8,7 +8,7 @@ alias la='ls -la'
 alias now="now.sh"
 alias sl='ls -la --color'
 
-alias dev='ssh -XA josh-dav'
+alias dev='ssh -XA josh-dev'
 alias beta='ssh beta'
 alias sigyn='ssh -X joshashby.com'
 
@@ -27,3 +27,4 @@ alias gc='git commit'
 alias gca='git commit --amend'
 alias ga='git add'
 alias gaa='git add .'
+alias ack="ack-grep"
