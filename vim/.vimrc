@@ -10,13 +10,14 @@ Bundle 'L9'
 " File related bundles
 Bundle 'FuzzyFinder'
 Bundle 'scrooloose/nerdtree'
+Bundle 'jeetsukumaran/vim-buffergator'
 Bundle 'mileszs/ack.vim'
 " Git related bundles
 Bundle 'fugitive.vim'
 Bundle 'airblade/vim-gitgutter'
 " Utils
 Bundle 'Auto-Pairs'
-Bundle 'TabBar'
+" Bundle 'TabBar'
 Bundle 'majutsushi/tagbar'
 "Bundle 'vim-scripts/UltiSnips'
 Bundle 'scrooloose/nerdcommenter'
@@ -44,17 +45,19 @@ syntax on
 set grepprg=egrep\ -nH\ $*
 filetype plugin indent on
 
-" set t_Co=256
+set t_Co=256
 set background=dark
- colorscheme symfony
-"color molokai
+colorscheme symfony
+" color molokai
 " color solarized
 " let g:solarized_termcolors=256
-set guifont=profont
+" color base16-default
+set guifont=Monospace\ Regular\ 8
 set guioptions=e
 set number
 set title
 set showtabline=0
+set nofoldenable
 
 set ofu=syntaxcomplete#Complete
 autocmd FileType python set omnifunc=pythoncomplete#Complete
@@ -81,11 +84,6 @@ augroup END
 autocmd FileType !markdown,BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
-" autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
-
-" set up window positions
-" let g:NERDTreeWinPos = "right"
-" let Tlist_Use_Right_Window   = 1
 
 set wildmenu
 set wildmode=list:longest,full
@@ -95,7 +93,7 @@ set nohidden
 hi CursorLine term=none cterm=none ctermbg=1
 
 " fast terminal
-" set ttyfast
+set ttyfast
 
 " nerdtree stuff
 let NERDTreeShowBookmarks=1
@@ -106,6 +104,9 @@ let NERDTreeMouseMode=2
 let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 let g:nerdtree_tabs_open_on_gui_startup=0
+
+" buffergator stuff
+let g:buffergator_suppress_keymaps=1
 
 " do not beep or flash at me
 " vb is needed to stop beep
@@ -175,14 +176,18 @@ noremap <leader><F2> :tabprev<CR>
 noremap <f3> :bnext<CR>
 noremap <leader><F3> :tabnext<CR>
 
-imap <F5>:set invnumber<CR>
-nmap <F6>:set nu!<CR>
-noremap <f4> :bd<CR>
+nmap <F4> :bprevious<CR>bdelete \#<CR>
 noremap <leader><f4> :tabclose<CR>
 
-" toggle nerdtree and tlist
+imap <F5>:set invnumber<CR>
+nmap <leader><F5>:set nu!<CR>
+
+" Buffergator stuff
+noremap <F6> :BuffergatorToggle<CR>
+noremap <leader><F6> :BuffergatorTabsToggle<CR>
+
+" toggle nerdtree and Tagbar
 noremap <F7> :NERDTreeToggle<CR>
-" nnoremap <leader><F7> :TlistToggle<CR>
 nnoremap <leader><F7> :TagbarToggle<CR>
 
 "toggle paragraph formating
@@ -199,7 +204,6 @@ nmap s :set spell<CR>
 nnoremap <leader>s :set nospell<CR>
 
 " new tab:
-" nmap <leader>t :tabnew<CR>
 nmap <leader>y :tabnew<CR>
 
 " fuzzyfinder
@@ -274,24 +278,24 @@ let g:tagbar_type_markdown = {
 \ }
 
 " Switch window mappings /*{{{*/
- nnoremap <A-Up> :normal <c-r>=SwitchWindow('+')<CR><CR>
- nnoremap <A-Down> :normal <c-r>=SwitchWindow('-')<CR><CR>
- nnoremap <A-Left> :normal <c-r>=SwitchWindow('<')<CR><CR>
- nnoremap <A-Right> :normal <c-r>=SwitchWindow('>')<CR><CR>
+nnoremap <A-Up> :normal <c-r>=SwitchWindow('+')<CR><CR>
+nnoremap <A-Down> :normal <c-r>=SwitchWindow('-')<CR><CR>
+nnoremap <A-Left> :normal <c-r>=SwitchWindow('<')<CR><CR>
+nnoremap <A-Right> :normal <c-r>=SwitchWindow('>')<CR><CR>
 
- function! SwitchWindow(dir)
-   let this = winnr()
-     if '+' == a:dir
-         execute "normal \<c-w>k"
-             elseif '-' == a:dir
-                 execute "normal \<c-w>j"
-                     elseif '>' == a:dir
-                         execute "normal \<c-w>l"
-                             elseif '<' == a:dir
-                                 execute "normal \<c-w>h"
-                                   else
-                                       echo "oops. check your ~/.vimrc"
-                                           return ""
+function! SwitchWindow(dir)
+  let this = winnr()
+  if '+' == a:dir
+    execute "normal \<c-w>k"
+  elseif '-' == a:dir
+    execute "normal \<c-w>j"
+  elseif '>' == a:dir
+    execute "normal \<c-w>l"
+  elseif '<' == a:dir
+    execute "normal \<c-w>h"
+  else
+    echo "oops. check your ~/.vimrc"
+    return ""
   endif
-  endfunction
-  " /*}}}*/
+endfunction
+" /*}}}*/
