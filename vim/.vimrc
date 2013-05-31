@@ -19,6 +19,8 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'Auto-Pairs'
 " Bundle 'TabBar'
 Bundle 'majutsushi/tagbar'
+Bundle 'techlivezheng/vim-plugin-tagbar-phpctags'
+
 "Bundle 'vim-scripts/UltiSnips'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'vim-scripts/TaskList.vim'
@@ -113,6 +115,8 @@ let g:buffergator_suppress_keymaps=1
 " t_vb sets visual bell action, we're nulling it out here)
 set visualbell
 set t_vb=
+set noeb vb t_vb=
+set vb t_vb=
 
 " enable mouse for (a)ll, (n)ormal, (v)isual, (i)nsert, or (c)ommand line
 " mode -- seems to work in most terminals
@@ -155,7 +159,7 @@ set smarttab
 set smartindent
 
 " Use + register (X Window clipboard) as unnamed register
-"set clipboard=unnamedplus,autoselect
+set clipboard=unnamedplus,autoselect
 
 " turn off tab expansion for Makefiles
 au FileType make setlocal noexpandtab

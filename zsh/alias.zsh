@@ -3,7 +3,7 @@ alias www="cd /var/www/"
 alias nano="vim"
 alias vi="vim"
 alias vim="vim"
-alias v="vim"
+alias v="gvim"
 alias la='ls -la'
 alias now="now.sh"
 alias sl='ls -la --color'
@@ -27,4 +27,7 @@ alias gc='git commit'
 alias gca='git commit --amend'
 alias ga='git add'
 alias gaa='git add .'
+alias gco="git checkout"
+alias gcob="git checkout -b"
+
 alias ack="ack-grep"
