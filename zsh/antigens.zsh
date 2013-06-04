@@ -11,7 +11,7 @@ antigen-bundle git
 antigen-bundle command-not-found
 antigen-bundle zsh-users/zsh-history-substring-search
 
-antigen-theme philips
+antigen-theme joshashby
 
 # Tell antigen that you're done.
 antigen-apply
