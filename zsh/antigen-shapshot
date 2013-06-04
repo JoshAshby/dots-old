@@ -1,4 +1,0 @@
-version='1'; created_on='Thu Mar 14 22:13:26 MDT 2013'; checksum='cd3d518dc44ef624ed99b4884a0e7f07';
-0ab0e67ecfc52b4779b700149a9c51feeb05318e https://github.com/robbyrussell/oh-my-zsh.git
-3bd84be43e74710c60febfd46ced793e19fbf657 https://github.com/zsh-users/zsh-history-substring-search.git
-e5d8a50d362a153a28506be6fae9cf179dbb5fd4 https://github.com/zsh-users/zsh-syntax-highlighting.git

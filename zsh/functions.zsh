@@ -6,4 +6,3 @@ tmux() {
     $MUX $@
   fi
 }
-alias mux="tmux"
