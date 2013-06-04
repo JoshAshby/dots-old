@@ -50,11 +50,11 @@ function virtualenv_info {
 }
 
 function rhand_info {
-        echo '%{$fg[blue]%}(SSH DEV)'
+        echo "$(virtualenv_info)"
 }
 
 function ssh_connection {
-        [[ -n $SSH_CONNECTION ]] && echo "%{$fg_bold[red]%}(ssh) %b"
+        [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%}(ssh) %b"
 }
 
 PROMPT='$(ssh_connection)%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%c/%b%{$reset_color%} $(my_git_prompt) %(!.#.$) '
