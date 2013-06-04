@@ -54,11 +54,15 @@ function rhand_info {
 }
 
 function ssh_connection {
-        [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%}(ssh) %b"
+        [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%}(ssh) %{$fg[blue]%}%M%b"
 }
 
-PROMPT='$(ssh_connection)%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%c/%b%{$reset_color%} $(my_git_prompt) %(!.#.$) '
-RPROMPT='$(rhand_info)'
+function short_ssh {
+         [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%} ಠ_ಠ "
+}
+
+PROMPT='$(short_ssh)%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%c/%b%{$reset_color%} $(my_git_prompt) %(!.#.$) '
+RPROMPT='$(rhand_info)$(ssh_connection)'
 
 # git theming
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}(%{$fg_no_bold[red]%}"
