@@ -1,30 +1,29 @@
 DOTS=$HOME/repos/dotfiles
-
-#Path to your oh-my-zsh configuration.
-#ZSH=$HOME/.oh-my-zsh
-
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme
-#ZSH_THEME="philips"
 COMPLETION_WAITING_DOTS="true"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# plugins=(git archlinux pip python vim)
-
-#source $ZSH/oh-my-zsh.sh
+# antigen takes care of setting up oh-my-zsh and themes and that
+# see zsh/antigens.zsh for more info
 . $DOTS/zsh/antigens.zsh
 
-export PATH=$PATH:/home/josh/bin:$DOTS/zsh/now
+# If I cd in a dir stored in a var, place the dir name in the prompt
+# and not the var name
+setopt promptsubst
+
+# If now is around then add it to the path...
+if [ -f "$DOTS/zsh/now/now.sh" ]; then
+  export PATH=$PATH:/home/josh/bin:$DOTS/zsh/now
+fi
 
 export EDITOR="vim"
-#export BROWSER="firefox"
-
-export J2REDIR=/opt/java/jre
-export PATH=$PATH:/opt/java/jre/bin
-export JAVA_HOME=${JAVA_HOME:-/opt/java/jre}
 
 source $DOTS/zsh/alias.zsh
 source $DOTS/zsh/functions.zsh
-. $DOTS/zsh/z/z.sh
 
-#[ -s "/home/josh/.scm_breeze/scm_breeze.sh" ] && source "/home/josh/.scm_breeze/scm_breeze.sh"
+# If we have z then use it
+# z is a nice predictive dir jumper
+if [ -f "$DOTS/zsh/z/z.sh" ]; then
+  . $DOTS/zsh/z/z.sh
+fi
+
+# SCM_Breeze stuff, not used because of zsh/git.zsh now
+#[ -s "$HOME/.scm_breeze/scm_breeze.sh" ] && source "$HOME/.scm_breeze/scm_breeze.sh"

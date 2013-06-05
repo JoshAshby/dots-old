@@ -46,11 +46,11 @@ function my_current_branch() {
 if [ $UID -eq 0 ]; then NCOLOR="red"; else NCOLOR="green"; fi
 
 function virtualenv_info {
-        [ $VIRTUAL_ENV  ] && echo "%{$fg_bold[blue]%}(%{$fg_no_bold[green]%}$(echo `basename $VIRTUAL_ENV`)%{$fg_bold[blue]%})%{$reset_color%}"
+        [ $VIRTUAL_ENV ] && echo "%{$fg_bold[blue]%}(%{$fg_no_bold[green]%}$(echo `basename $VIRTUAL_ENV`)%{$fg_bold[blue]%})%{$reset_color%}"
 }
 
 function rhand_info {
-        echo "$(virtualenv_info) $(ssh_connection) [%*]"
+        echo "$(virtualenv_info) $(ssh_connection) [%@]"
 }
 
 function ssh_connection {
@@ -61,7 +61,7 @@ function short_ssh {
          [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%} ಠ_ಠ "
 }
 
-PROMPT='$(short_ssh)%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%c/%b%{$reset_color%} $(my_git_prompt) %(!.#.$) '
+PROMPT='$(short_ssh)%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%d/%b%{$reset_color%} $(my_git_prompt) %(!.#.$) '
 RPROMPT='$(rhand_info)'
 
 # git theming
