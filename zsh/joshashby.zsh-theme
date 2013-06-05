@@ -1,64 +1,63 @@
 #really dirty thing borrowed from mortalscumbag theme...
 function my_git_prompt() {
-        tester=$(git rev-parse --git-dir 2> /dev/null) || return
+  tester=$(git rev-parse --git-dir 2> /dev/null) || return
 
-        INDEX=$(git status --porcelain 2> /dev/null)
-        STATUS=""
+  INDEX=$(git status --porcelain 2> /dev/null)
+  STATUS=""
 
-        # is branch ahead?
-        if $(echo "$(git log origin/$(current_branch)..HEAD 2> /dev/null)" | grep '^commit' &> /dev/null); then
-                STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_AHEAD"
-        fi
+  # is branch ahead?
+  if $(echo "$(git log origin/$(current_branch)..HEAD 2> /dev/null)" | grep '^commit' &> /dev/null); then
+          STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_AHEAD"
+  fi
 
-        # is anything staged?
-        if $(echo "$INDEX" | grep -E -e '^(D[ M]|[MARC][ MD]) ' &> /dev/null); then
-                STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_STAGED"
-        fi
+  # is anything staged?
+  if $(echo "$INDEX" | grep -E -e '^(D[ M]|[MARC][ MD]) ' &> /dev/null); then
+          STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_STAGED"
+  fi
 
-        # is anything unstaged?
-        if $(echo "$INDEX" | grep -E -e '^[ MARC][MD] ' &> /dev/null); then
-                STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_UNSTAGED"
-        fi
+  # is anything unstaged?
+  if $(echo "$INDEX" | grep -E -e '^[ MARC][MD] ' &> /dev/null); then
+          STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_UNSTAGED"
+  fi
 
-        # is anything untracked?
-        if $(echo "$INDEX" | grep '^?? ' &> /dev/null); then
-                STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_UNTRACKED"
-        fi
+  # is anything untracked?
+  if $(echo "$INDEX" | grep '^?? ' &> /dev/null); then
+          STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_UNTRACKED"
+  fi
 
-        # is anything unmerged?
-        if $(echo "$INDEX" | grep -E -e '^(A[AU]|D[DU]|U[ADU]) ' &> /dev/null); then
-                STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_UNMERGED"
-        fi
+  # is anything unmerged?
+  if $(echo "$INDEX" | grep -E -e '^(A[AU]|D[DU]|U[ADU]) ' &> /dev/null); then
+          STATUS="$STATUS$ZSH_THEME_GIT_PROMPT_UNMERGED"
+  fi
 
-        if [[ -n $STATUS ]]; then
-                STATUS=" $STATUS"
-        fi
+  if [[ -n $STATUS ]]; then
+          STATUS=" $STATUS"
+  fi
 
-        echo "$ZSH_THEME_GIT_PROMPT_PREFIX$(my_current_branch)$STATUS$ZSH_THEME_GIT_PROMPT_SUFFIX"
+  echo "$ZSH_THEME_GIT_PROMPT_PREFIX$(my_current_branch)$STATUS$ZSH_THEME_GIT_PROMPT_SUFFIX"
 }
 
 function my_current_branch() {
   echo $(current_branch || echo "(⚠)")
 }
 
-
 #now on to normal stuff and stuff from josh
 if [ $UID -eq 0 ]; then NCOLOR="red"; else NCOLOR="green"; fi
 
 function virtualenv_info {
-        [ $VIRTUAL_ENV ] && echo "%{$fg_bold[blue]%}(%{$fg_no_bold[green]%}$(echo `basename $VIRTUAL_ENV`)%{$fg_bold[blue]%})%{$reset_color%}"
+  [ $VIRTUAL_ENV ] && echo "%{$fg_bold[blue]%}(%{$fg_no_bold[green]%}$(echo `basename $VIRTUAL_ENV`)%{$fg_bold[blue]%})%{$reset_color%}"
 }
 
 function rhand_info {
-        echo "$(virtualenv_info) $(ssh_connection) [%@]"
+  echo "$(virtualenv_info) $(ssh_connection) [%@]"
 }
 
 function ssh_connection {
-        [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%}(ssh %{$fg[blue]%}%M)%b"
+  [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%}(ssh %{$fg[blue]%}%M)%b"
 }
 
 function short_ssh {
-         [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%} ಠ_ಠ "
+  [[ -n "$SSH_CONNECTION" ]] && echo "%{$fg_bold[red]%} ಠ_ಠ "
 }
 
 PROMPT='$(short_ssh)%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%d/%b%{$reset_color%} $(my_git_prompt) %(!.#.$) '
