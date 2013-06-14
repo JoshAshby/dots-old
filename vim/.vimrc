@@ -1,4 +1,4 @@
-source /home/josh/repos/dotfiles/vim/.vimcommonrc
+source /home/josh/repos/dotfiles/vim/common.vimrc
 
 set t_Co=256
 set background=dark
