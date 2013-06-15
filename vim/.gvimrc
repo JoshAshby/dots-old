@@ -49,12 +49,8 @@ filetype plugin indent on
 
 set t_Co=256
 set background=dark
-" colorscheme symfony
-" color molokai
-" color solarized
-" let g:solarized_termcolors=256
 color base16-default
-set guifont=Monospace\ Regular\ 8
+set guifont=ProFont\ Regular\ 8
 set guioptions=e
 set number
 set title
@@ -148,9 +144,9 @@ set smartcase
 
 " display tab characters as 4 spaces, indent 4 spaces,
 " always use spaces instead of tabs
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 set autoindent
 set smarttab
