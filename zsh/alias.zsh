@@ -9,6 +9,14 @@ alias sl='ls -la --color'
 
 alias mux="tmux"
 
-source $DOTS/zsh/git.zsh
-source $DOTS/zsh/ssh.zsh
-source $DOTS/zsh/custom.zsh
+if [[ -r $DOTS/zsh/custom.zsh ]]; then
+  source $DOTS/zsh/custom.zsh
+fi
+
+if [[ -r $DOTS/zsh/git.zsh ]]; then
+  source $DOTS/zsh/git.zsh
+fi
+
+if [[ -r $DOTS/zsh/ssh.zsh ]]; then
+  source $DOTS/zsh/ssh.zsh
+fi
