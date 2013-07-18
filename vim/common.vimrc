@@ -17,17 +17,23 @@ Bundle 'fugitive.vim'
 Bundle 'airblade/vim-gitgutter'
 " Utils
 Bundle 'Auto-Pairs'
-" Bundle 'TabBar'
 Bundle 'majutsushi/tagbar'
 Bundle 'techlivezheng/vim-plugin-tagbar-phpctags'
+"Bundle 'bling/vim-airline'
 
 "Bundle 'vim-scripts/UltiSnips'
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "garbas/vim-snipmate"
+Bundle 'honza/vim-snippets'
+
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'vim-scripts/TaskList.vim'
-Bundle 'ervandew/supertab'
+"Bundle 'ervandew/supertab'
+Bundle 'Valloric/YouCompleteMe'
 " Bundle 'tpope/vim-surround'
 Bundle 'Raimondi/delimitMate'
-"Bundle 'scrooloose/syntastic'
+Bundle 'scrooloose/syntastic'
 Bundle 'docunext/closetag.vim.git'
 
 "Bundle 'AndrewRadev/linediff.vim'
@@ -60,7 +66,7 @@ let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextTextOmniPrecedence = ['&normalfunc', '&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery =
     \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>", "&normalfunc:<c-x><c-n>"]
-let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:SuperTabDefaultCompletionType = "<c-x><c-n>"
 
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menu,preview,longest
@@ -156,10 +162,12 @@ set clipboard=unnamedplus,autoselect
 " turn off tab expansion for Makefiles
 au FileType make setlocal noexpandtab
 
+
+" ====================== Keybindings...
+" =====================================
 " use comma for the leader key
 let mapleader = ","
 
-" <keybindings>
 " reformat a paragraph
 nmap <leader>q gqip
 
@@ -224,9 +232,29 @@ map n nzz
 inoremap <C-BS> <C-O>b<C-O>dw
 noremap <C-BS> bdw
 
-" </keybindings>
+" Search for selected text, forwards or backwards.
+vnoremap <silent> * :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy/<C-R><C-R>=substitute(
+  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+vnoremap <silent> # :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy?<C-R><C-R>=substitute(
+  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
 
-" TagBar stuff...
+" set wmh=0
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+map <c-h> <c-w>h<c-w><Bar>
+map <c-l> <c-w>l<c-w><Bar>
+" set winminheight=0
+" set winheight=999
+
+
+" ===================== TagBar stuff...
+" =====================================
 let g:tagbar_type_coffee = {
     \ 'ctagstype' : 'coffee',
     \ 'kinds'     : [
@@ -274,11 +302,3 @@ let g:tagbar_type_markdown = {
         \ 'k:Heading_L3'
     \ ]
 \ }
-
-" set wmh=0
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
-map <c-h> <c-w>h<c-w><Bar>
-map <c-l> <c-w>l<c-w><Bar>
-" set winminheight=0
-" set winheight=999
