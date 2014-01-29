@@ -10,11 +10,11 @@ SSH_ICON='ಠ_ಠ'
 
 # git theming
 GIT_BRANCH_ICON=''
-ZSH_THEME_GIT_PROMPT_AHEAD="%{%F{magenta}%}%B↑%b%{%f%}"
-ZSH_THEME_GIT_PROMPT_STAGED="%{%Fgreen}%}%B●%b%{%f%}"
-ZSH_THEME_GIT_PROMPT_UNSTAGED="%{%F{white}%}%B○%b%{%f%}"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%{%F{red}%}%B⬡%b%{%f%}"
-ZSH_THEME_GIT_PROMPT_UNMERGED="%{%F{red}%}%B✕%b%{%f%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="↑ "
+ZSH_THEME_GIT_PROMPT_STAGED="● "
+ZSH_THEME_GIT_PROMPT_UNSTAGED="○ "
+ZSH_THEME_GIT_PROMPT_UNTRACKED="ᚐ "
+ZSH_THEME_GIT_PROMPT_UNMERGED="✕ "
 
 # Begin a segment
 # Takes two arguments, background and foreground. Both can be omitted,
@@ -121,7 +121,7 @@ virtualenv_prompt() {
 # - am I root
 # - are there background jobs?
 status_prompt() {
-  left_prompt_segment black default "%n:%~ "
+  left_prompt_segment black default "%n:%d "
 
   local symbols
   symbols=()

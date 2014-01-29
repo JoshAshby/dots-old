@@ -13,3 +13,6 @@
 [submodule "powerline"]
 	path = powerline
 	url = git@github.com:Lokaltog/powerline.git
+[submodule "zsh/base16-shell"]
+	path = zsh/base16-shell
+	url = git@github.com:chriskempson/base16-shell.git
