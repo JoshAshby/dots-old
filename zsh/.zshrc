@@ -1,29 +1,28 @@
+ZSH=$HOME/.oh-my-zsh
 DOTS=$HOME/repos/dotfiles
+
 COMPLETION_WAITING_DOTS="true"
-
-# antigen takes care of setting up oh-my-zsh and themes and that
-# see zsh/antigens.zsh for more info
-. $DOTS/zsh/antigens.zsh
-
-# If I cd in a dir stored in a var, place the dir name in the prompt
-# and not the var name
+ZSH_THEME="joshashby"
+plugins=(git)
 setopt promptsubst
 
-# If now is around then add it to the path...
+source $ZSH/oh-my-zsh.sh
+
 if [ -f "$DOTS/zsh/now/now.sh" ]; then
   export PATH=$PATH:/home/josh/bin:$DOTS/zsh/now
 fi
 
-export EDITOR="vim"
+if [ -f $DOTS/zsh/syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+  source $DOTS/zsh/syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
-source $DOTS/zsh/alias.zsh
-source $DOTS/zsh/functions.zsh
-
-# If we have z then use it
 # z is a nice predictive dir jumper
 if [ -f "$DOTS/zsh/z/z.sh" ]; then
   . $DOTS/zsh/z/z.sh
 fi
 
-# SCM_Breeze stuff, not used because of zsh/git.zsh now
-#[ -s "$HOME/.scm_breeze/scm_breeze.sh" ] && source "$HOME/.scm_breeze/scm_breeze.sh"
+export GIT_EDITOR="vim"
+export EDITOR="gvim"
+
+source $DOTS/zsh/alias.zsh
+source $DOTS/zsh/functions.zsh

@@ -2,6 +2,8 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
+set rtp+=$DOTS/powerline/powerline/bindings/vim
+
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
@@ -19,9 +21,8 @@ Bundle 'airblade/vim-gitgutter'
 Bundle 'Auto-Pairs'
 Bundle 'majutsushi/tagbar'
 Bundle 'techlivezheng/vim-plugin-tagbar-phpctags'
-"Bundle 'bling/vim-airline'
 
-"Bundle 'vim-scripts/UltiSnips'
+Bundle 'vim-scripts/UltiSnips'
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
 Bundle "garbas/vim-snipmate"
@@ -29,24 +30,22 @@ Bundle 'honza/vim-snippets'
 
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'vim-scripts/TaskList.vim'
-"Bundle 'ervandew/supertab'
-Bundle 'Valloric/YouCompleteMe'
-" Bundle 'tpope/vim-surround'
+Bundle 'ervandew/supertab'
+Bundle 'davidhalter/jedi-vim'
+Bundle 'tpope/vim-surround'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
 Bundle 'docunext/closetag.vim.git'
 
-"Bundle 'AndrewRadev/linediff.vim'
+Bundle 'AndrewRadev/linediff.vim'
 
-Bundle 'godlygeek/csapprox'
 Bundle 'chriskempson/base16-vim'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'altercation/vim-colors-solarized'
 
-"Bundle 'groenewege/vim-less'
+Bundle 'groenewege/vim-less'
 Bundle 'skammer/vim-css-color'
-"Bundle 'kchmck/vim-coffee-script'
-"Bundle 'plasticboy/vim-markdown'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'plasticboy/vim-markdown'
+Bundle 'Glench/Vim-Jinja2-Syntax'
 
 set exrc "enable cwd .vimrc files
 syntax on
@@ -56,24 +55,34 @@ filetype plugin indent on
 set number
 set title
 set showtabline=0
-set nofoldenable
+"set nofoldenable
+"
+au BufReadPre * setlocal foldmethod=indent
+au BufWinEnter * normal zR
 
-set ofu=syntaxcomplete#Complete
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType python setlocal completeopt-=preview
+
+" Setup supertab to use omni complete and such
+set omnifunc=syntaxcomplete#Complete
+au FileType python set omnifunc=pythoncomplete#Complete
 
 let g:SuperTabDefaultCompletionType = "context"
+set completeopt=menuone,longest,preview
+
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextTextOmniPrecedence = ['&normalfunc', '&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery =
     \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>", "&normalfunc:<c-x><c-n>"]
-let g:SuperTabDefaultCompletionType = "<c-x><c-n>"
+"let g:SuperTabDefaultCompletionType = "<c-x><c-n>"
 
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menu,preview,longest
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+
+"au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+"set completeopt=menu,preview,longest
 
 " set a line width and reformat text to fit
 set textwidth=79
-set fo-=t
+set fo+=t
 
 " highlight if we go over 79 chars wide
 augroup vimrc_autocmds
@@ -81,9 +90,11 @@ augroup vimrc_autocmds
         autocmd BufEnter * match OverLength /\%79v.*/
 augroup END
 
-autocmd FileType !markdown,BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
+" Strip whitespace when working in these filetypes
+autocmd FileType c,cpp,java,php,python,coffee,js,css,less autocmd BufWritePre <buffer> :%s/\s\+$//e
 
-autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
+" Enable html tag closing on typical html style file types
+autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
 
 set wildmenu
 set wildmode=list:longest,full
@@ -128,7 +139,8 @@ set showcmd
 set ruler
 
 " add git status to statusline; otherwise emulate standard line with ruler
-set statusline=[%{&fo}]%<%{fugitive#statusline()}\ %f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+"set statusline=[%{&fo}]%<%{fugitive#statusline()}\ %f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+set laststatus=2
 
 " keep lots of command-line history
 set history=3500
@@ -223,12 +235,17 @@ set list
 nnoremap ; :
 " nnoremap : ;
 
+" Better space unfolding
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
 nnoremap <silent> zj o<Esc>
 nnoremap <silent> zk O<Esc>
-nnoremap <space> za
+"nnoremap <space> za
+"
 map N Nzz
 map n nzz
 
+" Ctrl+backspace will delete the current work
 inoremap <C-BS> <C-O>b<C-O>dw
 noremap <C-BS> bdw
 
