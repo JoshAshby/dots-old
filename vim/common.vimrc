@@ -2,8 +2,6 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=$DOTS/powerline/powerline/bindings/vim
-
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
@@ -23,23 +21,26 @@ Bundle 'majutsushi/tagbar'
 Bundle 'techlivezheng/vim-plugin-tagbar-phpctags'
 
 Bundle 'vim-scripts/UltiSnips'
-Bundle "MarcWeber/vim-addon-mw-utils"
-Bundle "tomtom/tlib_vim"
-Bundle "garbas/vim-snipmate"
+"Bundle "tomtom/tlib_vim"
+"Bundle "garbas/vim-snipmate"
 Bundle 'honza/vim-snippets'
 
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'vim-scripts/TaskList.vim'
+"Bundle 'Shougo/neocomplete.vim'
 Bundle 'ervandew/supertab'
 Bundle 'davidhalter/jedi-vim'
-Bundle 'tpope/vim-surround'
+"Bundle 'tpope/vim-surround'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
 Bundle 'docunext/closetag.vim.git'
 
-Bundle 'AndrewRadev/linediff.vim'
+"Bundle 'AndrewRadev/linediff.vim'
 
+Bundle 'godlygeek/csapprox'
 Bundle 'chriskempson/base16-vim'
+Bundle 'flazz/vim-colorschemes'
+Bundle 'altercation/vim-colors-solarized'
 
 Bundle 'groenewege/vim-less'
 Bundle 'skammer/vim-css-color'
