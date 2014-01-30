@@ -98,7 +98,7 @@ time_prompt() {
 
 ssh_connection_prompt() {
   if [[ -n "$SSH_CONNECTION" ]]; then
-    left_prompt_segment red black "%M"
+    right_prompt_segment red black "%M"
 
   fi
 }
