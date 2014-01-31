@@ -70,3 +70,9 @@ function chpwd; {
   done
   cd -q "$DIRECTORY"
 }
+
+repos() {
+  cd ~/repos/$@
+}
+
+compctl -/ -W ~/repos repos

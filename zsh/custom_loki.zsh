@@ -10,5 +10,5 @@ alias scrn="scrot ~/screenshots/%Y-%m-%d-%T-screenshot.png -s -e 'scp $f sigyn:.
 #export J2REDIR=/opt/java/jre
 #export JAVA_HOME=${JAVA_HOME:-/opt/java/jre}
 export PATH=$PATH:~/bin
-alias siber="sudo pm-suspend"
+alias siber="systemctl suspend"
 alias www="cd /srv/http"

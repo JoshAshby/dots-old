@@ -1,4 +1,4 @@
-alias repos="cd ~/repos/"
+#alias repos="cd ~/repos/"
 alias www="cd /srv/http/"
 alias nano="vim"
 alias vi="vim"
