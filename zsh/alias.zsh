@@ -29,3 +29,4 @@ fi
 if [[ -r $DOTS/zsh/ssh.zsh ]]; then
   source $DOTS/zsh/ssh.zsh
 fi
+alias gloo="cd ~/src/gloo"
