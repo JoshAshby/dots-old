@@ -4,24 +4,26 @@ alias nano="vim"
 alias vi="vim"
 alias vim="vim"
 alias v="gvim"
-alias la='ls -la --color'
+alias la='ls -la'
 alias now="now.sh"
-alias sl='ls -la --color'
+alias sl='ls -la'
 alias mk='mkdir'
 
+source $DOTS/zsh/git.zsh
 
+# If I have tmuxinator, then source it
+# otherwise alias mux to tmux
 if [ -f "~/bin/tmuxinator.zsh" ]; then
   source ~/bin/tmuxinator.zsh
 else
   alias mux="tmux"
 fi
 
+# If I've linked to a custom and or ssh stuff, then source it.
+# This shouldn't probably be in the alias file but thats okay,
+# fuckc it, its a shell script anyways.
 if [[ -r $DOTS/zsh/custom.zsh ]]; then
   source $DOTS/zsh/custom.zsh
-fi
-
-if [[ -r $DOTS/zsh/git.zsh ]]; then
-  source $DOTS/zsh/git.zsh
 fi
 
 if [[ -r $DOTS/zsh/ssh.zsh ]]; then

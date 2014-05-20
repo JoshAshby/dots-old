@@ -2,56 +2,59 @@
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Bundle 'gmarik/vundle'
-Bundle 'L9'
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'L9'
 " File related bundles
-Bundle 'FuzzyFinder'
-Bundle 'scrooloose/nerdtree'
-Bundle 'jeetsukumaran/vim-buffergator'
-Bundle 'mileszs/ack.vim'
+Plugin 'FuzzyFinder'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jeetsukumaran/vim-buffergator'
+"Plugin 'mileszs/ack.vim'
 " Git related bundles
-Bundle 'fugitive.vim'
-Bundle 'airblade/vim-gitgutter'
+Plugin 'fugitive.vim'
+Plugin 'airblade/vim-gitgutter'
 " Utils
-Bundle 'Auto-Pairs'
-Bundle 'majutsushi/tagbar'
-Bundle 'techlivezheng/vim-plugin-tagbar-phpctags'
+Plugin 'Auto-Pairs'
+Plugin 'majutsushi/tagbar'
+"Plugin 'techlivezheng/vim-plugin-tagbar-phpctags'
 
-Bundle 'vim-scripts/UltiSnips'
-"Bundle "tomtom/tlib_vim"
-"Bundle "garbas/vim-snipmate"
-Bundle 'honza/vim-snippets'
+"Plugin 'vim-scripts/UltiSnips'
+"Plugin "tomtom/tlib_vim"
+"Plugin "garbas/vim-snipmate"
+"Plugin 'honza/vim-snippets'
 
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'vim-scripts/TaskList.vim'
-"Bundle 'Shougo/neocomplete.vim'
-Bundle 'ervandew/supertab'
-Bundle 'davidhalter/jedi-vim'
-"Bundle 'tpope/vim-surround'
-Bundle 'Raimondi/delimitMate'
-Bundle 'scrooloose/syntastic'
-Bundle 'docunext/closetag.vim.git'
+Plugin 'scrooloose/nerdcommenter'
+"Plugin 'vim-scripts/TaskList.vim'
+"Plugin 'Shougo/neocomplete.vim'
+Plugin 'ervandew/supertab'
+"Plugin 'davidhalter/jedi-vim'
+"Plugin 'tpope/vim-surround'
+Plugin 'Raimondi/delimitMate'
+Plugin 'scrooloose/syntastic'
+Plugin 'docunext/closetag.vim.git'
 
-"Bundle 'AndrewRadev/linediff.vim'
+"Plugin 'AndrewRadev/linediff.vim'
 
-Bundle 'godlygeek/csapprox'
-Bundle 'chriskempson/base16-vim'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'altercation/vim-colors-solarized'
+Plugin 'godlygeek/csapprox'
+Plugin 'chriskempson/base16-vim'
+"Plugin 'flazz/vim-colorschemes'
+"Plugin 'altercation/vim-colors-solarized'
 
-Bundle 'groenewege/vim-less'
-Bundle 'skammer/vim-css-color'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'plasticboy/vim-markdown'
-Bundle 'Glench/Vim-Jinja2-Syntax'
+"Plugin 'groenewege/vim-less'
+Plugin 'skammer/vim-css-color'
+"Plugin 'kchmck/vim-coffee-script'
+"Plugin 'plasticboy/vim-markdown'
+"Plugin 'Glench/Vim-Jinja2-Syntax'
+
+call vundle#end()
+filetype plugin indent on
 
 set exrc "enable cwd .vimrc files
 syntax on
 set grepprg=egrep\ -nH\ $*
-filetype plugin indent on
 
 set number
 set title
@@ -270,53 +273,53 @@ map <c-l> <c-w>l<c-w><Bar>
 " set winminheight=0
 " set winheight=999
 
-
-" ===================== TagBar stuff...
-" =====================================
-let g:tagbar_type_coffee = {
-    \ 'ctagstype' : 'coffee',
-    \ 'kinds'     : [
-        \ 'c:classes',
-        \ 'm:methods',
-        \ 'f:functions',
-        \ 'v:variables',
-        \ 'f:fields',
-    \ ]
-\ }
-
-" Posix regular expressions for matching interesting items. Since this will
-" be passed as an environment variable, no whitespace can exist in the options
-" so [:space:] is used instead of normal whitespaces.
-" Adapted from: https://gist.github.com/2901844
-let s:ctags_opts = '
-  \ --langdef=coffee
-  \ --langmap=coffee:.coffee
-  \ --regex-coffee=/(^|=[[:space:]])*class[[:space:]]([A-Za-z]+\.)*([A-Za-z]+)([[:space:]]extends[[:space:]][A-Za-z.]+)?$/\3/c,class/
-  \ --regex-coffee=/^[[:space:]]*(module\.)?(exports\.)?@?([A-Za-z.]+):.*[-=]>.*$/\3/m,method/
-  \ --regex-coffee=/^[[:space:]]*(module\.)?(exports\.)?([A-Za-z.]+)[[:space:]]+=.*[-=]>.*$/\3/f,function/
-  \ --regex-coffee=/^[[:space:]]*([A-Za-z.]+)[[:space:]]+=[^->\n]*$/\1/v,variable/
-  \ --regex-coffee=/^[[:space:]]*@([A-Za-z.]+)[[:space:]]+=[^->\n]*$/\1/f,field/
-  \ --regex-coffee=/^[[:space:]]*@([A-Za-z.]+):[^->\n]*$/\1/f,staticField/
-  \ --regex-coffee=/^[[:space:]]*([A-Za-z.]+):[^->\n]*$/\1/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@([A-Za-z.]+)/\2/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){0}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){1}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){2}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){3}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){4}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){5}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){6}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){7}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){8}/\3/f,field/
-  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){9}/\3/f,field/'
-
-let $CTAGS = substitute(s:ctags_opts, '\v\([nst]\)', '\\', 'g')
-
-let g:tagbar_type_markdown = {
-    \ 'ctagstype' : 'markdown',
-    \ 'kinds' : [
-        \ 'h:Heading_L1',
-        \ 'i:Heading_L2',
-        \ 'k:Heading_L3'
-    \ ]
-\ }
+" Don't really need this it seems
+"" ===================== TagBar stuff...
+"" =====================================
+"let g:tagbar_type_coffee = {
+"    \ 'ctagstype' : 'coffee',
+"    \ 'kinds'     : [
+"        \ 'c:classes',
+"        \ 'm:methods',
+"        \ 'f:functions',
+"        \ 'v:variables',
+"        \ 'f:fields',
+"    \ ]
+"\ }
+"
+"" Posix regular expressions for matching interesting items. Since this will
+"" be passed as an environment variable, no whitespace can exist in the options
+"" so [:space:] is used instead of normal whitespaces.
+"" Adapted from: https://gist.github.com/2901844
+"let s:ctags_opts = '
+"  \ --langdef=coffee
+"  \ --langmap=coffee:.coffee
+"  \ --regex-coffee=/(^|=[[:space:]])*class[[:space:]]([A-Za-z]+\.)*([A-Za-z]+)([[:space:]]extends[[:space:]][A-Za-z.]+)?$/\3/c,class/
+"  \ --regex-coffee=/^[[:space:]]*(module\.)?(exports\.)?@?([A-Za-z.]+):.*[-=]>.*$/\3/m,method/
+"  \ --regex-coffee=/^[[:space:]]*(module\.)?(exports\.)?([A-Za-z.]+)[[:space:]]+=.*[-=]>.*$/\3/f,function/
+"  \ --regex-coffee=/^[[:space:]]*([A-Za-z.]+)[[:space:]]+=[^->\n]*$/\1/v,variable/
+"  \ --regex-coffee=/^[[:space:]]*@([A-Za-z.]+)[[:space:]]+=[^->\n]*$/\1/f,field/
+"  \ --regex-coffee=/^[[:space:]]*@([A-Za-z.]+):[^->\n]*$/\1/f,staticField/
+"  \ --regex-coffee=/^[[:space:]]*([A-Za-z.]+):[^->\n]*$/\1/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@([A-Za-z.]+)/\2/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){0}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){1}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){2}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){3}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){4}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){5}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){6}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){7}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){8}/\3/f,field/
+"  \ --regex-coffee=/(constructor:[[:space:]]\()@[A-Za-z.]+(,[[:space:]]@([A-Za-z.]+)){9}/\3/f,field/'
+"
+"let $CTAGS = substitute(s:ctags_opts, '\v\([nst]\)', '\\', 'g')
+"
+"let g:tagbar_type_markdown = {
+"    \ 'ctagstype' : 'markdown',
+"    \ 'kinds' : [
+"        \ 'h:Heading_L1',
+"        \ 'i:Heading_L2',
+"        \ 'k:Heading_L3'
+"    \ ]
+"\ }

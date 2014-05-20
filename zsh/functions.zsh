@@ -39,40 +39,44 @@ isFunc() {
   return $?
 }
 
+# Just kiind of comment this out, since I don't need
+# it at work
+#
 # runs with every cd to check for a .envrc which
 # I store project specific stuff in
-function chpwd; {
-  DIRECTORY=$PWD
-  count=0
-  while true; do
-    let count=$count+1
-    if [ -f './.envrc' ]; then
-        source './.envrc'
-        testFunc=hasActivateRc
-        if isFunc activateRc; then
-          activateRc
-        fi
-        break
-    fi
-    if [ $PWD = '/' ]; then
-      if isFunc deactivateRc; then
-        deactivateRc
-      fi
-      break
-    fi
-    if [ $count -eq 5 ]; then
-      if isFunc deactivateRc; then
-        deactivateRc
-      fi
-      break
-    fi
-    cd -q ..
-  done
-  cd -q "$DIRECTORY"
-}
+# function chpwd; {
+#   DIRECTORY=$PWD
+#   count=0
+#   while true; do
+#     let count=$count+1
+#     if [ -f './.envrc' ]; then
+#         source './.envrc'
+#         testFunc=hasActivateRc
+#         if isFunc activateRc; then
+#           activateRc
+#         fi
+#         break
+#     fi
+#     if [ $PWD = '/' ]; then
+#       if isFunc deactivateRc; then
+#         deactivateRc
+#       fi
+#       break
+#     fi
+#     if [ $count -eq 5 ]; then
+#       if isFunc deactivateRc; then
+#         deactivateRc
+#       fi
+#       break
+#     fi
+#     cd -q ..
+#   done
+#   cd -q "$DIRECTORY"
+# }
 
+# allows repos to act like cd and auto complete to stuff in
+# ~/repos
 repos() {
   cd ~/repos/$@
 }
-
 compctl -/ -W ~/repos repos
