@@ -1,92 +1,98 @@
 "This all needs cleaned up...
 set nocompatible               " be iMproved
 filetype off                   " required!
+set encoding=utf-8
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+" Manage itself
 Plugin 'gmarik/Vundle.vim'
-
 Plugin 'L9'
+
 " File related bundles
 Plugin 'FuzzyFinder'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jeetsukumaran/vim-buffergator'
 "Plugin 'mileszs/ack.vim'
+"
 " Git related bundles
 Plugin 'fugitive.vim'
 Plugin 'airblade/vim-gitgutter'
-" Utils
-Plugin 'Auto-Pairs'
-Plugin 'majutsushi/tagbar'
-"Plugin 'techlivezheng/vim-plugin-tagbar-phpctags'
 
-"Plugin 'vim-scripts/UltiSnips'
-"Plugin "tomtom/tlib_vim"
-"Plugin "garbas/vim-snipmate"
-"Plugin 'honza/vim-snippets'
+" Utils
+Plugin 'scrooloose/nerdtree'
+Plugin 'jeetsukumaran/vim-buffergator'
+
+Plugin 'bling/vim-airline'
+Plugin 'majutsushi/tagbar'
+Plugin 'mkitt/tabline.vim'
+
+Plugin 'Shougo/neocomplete.vim'
 
 Plugin 'scrooloose/nerdcommenter'
-"Plugin 'vim-scripts/TaskList.vim'
-"Plugin 'Shougo/neocomplete.vim'
-Plugin 'ervandew/supertab'
-"Plugin 'davidhalter/jedi-vim'
-"Plugin 'tpope/vim-surround'
-Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/syntastic'
+
+Plugin 'zirrostig/vim-schlepp'
+Plugin 'terryma/vim-multiple-cursors'
+
+Plugin 'Raimondi/delimitMate'
 Plugin 'docunext/closetag.vim.git'
 
-"Plugin 'AndrewRadev/linediff.vim'
+" Plugin 'techlivezheng/vim-plugin-tagbar-phpctags'
+" Plugin 'Auto-Pairs'
+" Plugin 'vim-scripts/UltiSnips'
+" Plugin 'tomtom/tlib_vim'
+" Plugin 'garbas/vim-snipmate'
+" Plugin 'honza/vim-snippets'
+" Plugin 'vim-scripts/TaskList.vim'
+" Plugin 'ervandew/supertab'
+" Plugin 'davidhalter/jedi-vim'
+" Plugin 'tpope/vim-surround'
+" Plugin 'AndrewRadev/linediff.vim'
 
+" Colors!
 Plugin 'godlygeek/csapprox'
 Plugin 'chriskempson/base16-vim'
-"Plugin 'flazz/vim-colorschemes'
-"Plugin 'altercation/vim-colors-solarized'
+" Plugin 'flazz/vim-colorschemes'
+" Plugin 'altercation/vim-colors-solarized'
 
-"Plugin 'groenewege/vim-less'
-Plugin 'skammer/vim-css-color'
-"Plugin 'kchmck/vim-coffee-script'
-"Plugin 'plasticboy/vim-markdown'
-"Plugin 'Glench/Vim-Jinja2-Syntax'
+" Language additions
+" Plugin 'groenewege/vim-less'
+" Plugin 'skammer/vim-css-color'
+" Plugin 'kchmck/vim-coffee-script'
+" Plugin 'plasticboy/vim-markdown'
+" Plugin 'Glench/Vim-Jinja2-Syntax'
 
 call vundle#end()
 filetype plugin indent on
 
-set exrc "enable cwd .vimrc files
+" enable cwd .vimrc files
+set exrc
+
+" Make sure things look pretty and use a nice colorscheme for the gui
+set t_Co=256
+set background=dark
+set guifont=Liberation\ Mono\ for\ Powerline "make sure to escape the spaces in the name properly
+let g:airline_powerline_fonts=1
+
 syntax on
-set grepprg=egrep\ -nH\ $*
+
+if has('gui_running')
+  color base16-default
+  set guioptions=e
+endif
 
 set number
 set title
 set showtabline=0
-"set nofoldenable
-"
-au BufReadPre * setlocal foldmethod=indent
-au BufWinEnter * normal zR
+set nofoldenable
 
-autocmd FileType python setlocal completeopt-=preview
+set laststatus=2
 
-" Setup supertab to use omni complete and such
-set omnifunc=syntaxcomplete#Complete
-au FileType python set omnifunc=pythoncomplete#Complete
-
-let g:SuperTabDefaultCompletionType = "context"
-set completeopt=menuone,longest,preview
-
-let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
-let g:SuperTabContextTextOmniPrecedence = ['&normalfunc', '&omnifunc', '&completefunc']
-let g:SuperTabContextDiscoverDiscovery =
-    \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>", "&normalfunc:<c-x><c-n>"]
-"let g:SuperTabDefaultCompletionType = "<c-x><c-n>"
-
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-
-"au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-"set completeopt=menu,preview,longest
-
-" set a line width and reformat text to fit
+" set a line width and don't automatically reformat text to fit (toggle with ,<F8>
 set textwidth=79
-set fo+=t
+set fo-=t
+
+set grepprg=egrep\ -nH\ $*
 
 " highlight if we go over 79 chars wide
 augroup vimrc_autocmds
@@ -110,19 +116,6 @@ hi CursorLine term=none cterm=none ctermbg=1
 " fast terminal
 set ttyfast
 
-" nerdtree stuff
-let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-" let NERDTreeChDirMode=0
-" let NERDTreeShowHidden=1
-let NERDTreeMouseMode=2
-let NERDTreeShowHidden=1
-let NERDTreeKeepTreeInNewTab=1
-let g:nerdtree_tabs_open_on_gui_startup=0
-
-" buffergator stuff
-let g:buffergator_suppress_keymaps=1
-
 " do not beep or flash at me
 " vb is needed to stop beep
 " t_vb sets visual bell action, we're nulling it out here)
@@ -143,8 +136,8 @@ set showcmd
 set ruler
 
 " add git status to statusline; otherwise emulate standard line with ruler
-"set statusline=[%{&fo}]%<%{fugitive#statusline()}\ %f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-set laststatus=2
+" set statusline=[%{&fo}]%<%{fugitive#statusline()}\ %f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+" set laststatus=2
 
 " keep lots of command-line history
 set history=3500
@@ -173,11 +166,94 @@ set smarttab
 set smartindent
 
 " Use + register (X Window clipboard) as unnamed register
-set clipboard=unnamedplus,autoselect
+"set clipboard=unnamed,autoselect
 
 " turn off tab expansion for Makefiles
 au FileType make setlocal noexpandtab
 
+" Setup supertab to use omni complete and such
+"set omnifunc=syntaxcomplete#Complete
+"au FileType python set omnifunc=pythoncomplete#Complete
+
+"let g:SuperTabDefaultCompletionType = "context"
+"set completeopt=menuone,longest,preview
+
+"let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+"let g:SuperTabContextTextOmniPrecedence = ['&normalfunc', '&omnifunc', '&completefunc']
+"let g:SuperTabContextDiscoverDiscovery =
+    "\ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>", "&normalfunc:<c-x><c-n>"]
+""let g:SuperTabDefaultCompletionType = "<c-x><c-n>"
+
+"let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+
+"au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+"set completeopt=menu,preview,longest
+
+" nerdtree stuff
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+" let NERDTreeChDirMode=0
+" let NERDTreeShowHidden=1
+let NERDTreeMouseMode=2
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
+let g:nerdtree_tabs_open_on_gui_startup=0
+
+" buffergator stuff
+let g:buffergator_suppress_keymaps=1
+
+" NEOCOMPLETE STUFF
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
+" Disable automatic completion and only complete by manual
+let g:neocomplete#disable_auto_complete = 1
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+" airline stuff
+let g:airline#extensions#hunks#enabled=0
+
+let g:airline#extensions#tagbar#enabled=1
+let g:airline#extensions#tagbar#flags='s'
+
+let g:airline#extensions#tabline#enabled=0
+let g:airline#extensions#tabline#show_buffers=1
+
+let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#branch#empty_message=''
+
+let g:airline#extensions#syntastic#enabled=1
 
 " ====================== Keybindings...
 " =====================================
@@ -188,56 +264,49 @@ let mapleader = ","
 nmap <leader>q gqip
 
 " write all changed buffers
-nmap <leader>w :wa<CR>
+nmap <silent> <leader>w :wa<CR>
 
 " forward and backward in tabs and buffers
-noremap <f2> :bprev<CR>
-noremap <leader><F2> :tabprev<CR>
-noremap <f3> :bnext<CR>
-noremap <leader><F3> :tabnext<CR>
+noremap <silent> <f2> :bprev<CR>
+noremap <silent> <leader><F2> :tabprev<CR>
+noremap <silent> <f3> :bnext<CR>
+noremap <silent> <leader><F3> :tabnext<CR>
 
-nmap <F4> :bprevious<CR>bdelete \#<CR>
-noremap <leader><f4> :tabclose<CR>
-
-imap <F5>:set invnumber<CR>
-nmap <leader><F5>:set nu!<CR>
+nmap <silent> <F4> :bprevious<CR>bdelete \#<CR>
+noremap <silent> <leader><f4> :tabclose<CR>
 
 " Buffergator stuff
-noremap <F6> :BuffergatorToggle<CR>
-noremap <leader><F6> :BuffergatorTabsToggle<CR>
+noremap <silent> <F10> :BuffergatorToggle<CR>
+noremap <silent> <leader><F10> :BuffergatorTabsToggle<CR>
 
 " toggle nerdtree and Tagbar
-noremap <F7> :NERDTreeToggle<CR>
-nnoremap <leader><F7> :TagbarToggle<CR>
+noremap <silent> <F7> :NERDTreeToggle<CR>
+nnoremap <silent> <leader><F7> :TagbarToggle<CR>
 
 "toggle paragraph formating
-map <F8> :set fo+=t<CR>
-map <leader><F8> :set fo-=t<CR>
+map <silent> <F8> :set fo+=t<CR>
+map <silent> <leader><F8> :set fo-=t<CR>
 
 " remove/hide highlighting from searches
-map <silent><F9> :set invhlsearch<CR>
+map <silent> <F9> :set invhlsearch<CR>
 
-" linediff activation
-noremap <leader>d :Linediff<CR>
-
-nmap s :set spell<CR>
-nnoremap <leader>s :set nospell<CR>
+nmap <silent> s :set spell<CR>
+nnoremap <silent> <leader>s :set nospell<CR>
 
 " new tab:
-nmap <leader>y :tabnew<CR>
+nmap <silent> <leader>y :tabnew<CR>
 
 " fuzzyfinder
 nmap <leader>f :FufFile<CR>
 
 " display tabs - ,s will toggle (redraws just in case)
-nmap <silent> <leader>s :set nolist!<CR>:redr<CR>
+nmap <silent> <leader>t :set nolist!<CR>:redr<CR>
 " This line blew up at me when I symlinked this file. no clue why
 set listchars=tab:¿\ ,trail:·
 set list
 
-" remad ;to : since I tend to use : more often
+" remap ;to : since I tend to use : more often
 nnoremap ; :
-" nnoremap : ;
 
 " Better space unfolding
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
@@ -265,14 +334,39 @@ vnoremap <silent> # :<C-U>
   \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
 
-" set wmh=0
+" Allow us to just use the normal movement keys with ctrl to move about the
+" window panes
 map <C-J> <C-W>j
 map <C-K> <C-W>k
 map <c-h> <c-w>h
 map <c-l> <c-w>l
 
-set t_Co=256
-set background=dark
-color base16-default
-"set guifont=ProFont\ Regular\ 8
-set guioptions=e
+" Neocomplete keybindings...
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  "return neocomplete#close_popup() . "\<CR>"
+  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+
+" <TAB>: completion.
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><C-h>  neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS>   neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ neocomplete#start_manual_complete()
+function! s:check_back_space() "{{{
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+
+" Enable and disable autocomplete
+nmap <silent> a :let g:neocomplete#disable_auto_complete=1<CR>
+nnoremap <silent> <leader>a :let g:neocomplete#disable_auto_complete=0<CR>

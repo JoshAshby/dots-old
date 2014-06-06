@@ -6,8 +6,11 @@ alias vim="vim"
 alias v="gvim"
 alias la='ls -la'
 alias now="now.sh"
-alias sl='ls -la'
+alias sl='ls -CS1hl'
 alias mk='mkdir'
+alias nope="echo 'Oh, okay... :('"
+alias c=/bin/cat
+alias cat=lolcat
 
 source $DOTS/zsh/git.zsh
 
@@ -29,4 +32,3 @@ fi
 if [[ -r $DOTS/zsh/ssh.zsh ]]; then
   source $DOTS/zsh/ssh.zsh
 fi
-alias gloo="cd ~/src/gloo"

@@ -80,3 +80,8 @@ repos() {
   cd ~/repos/$@
 }
 compctl -/ -W ~/repos repos
+
+gloo() {
+  cd ~/src/gloo/$@
+}
+compctl -/ -W ~/src/gloo gloo
