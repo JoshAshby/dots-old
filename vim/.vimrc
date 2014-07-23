@@ -37,6 +37,8 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'Raimondi/delimitMate'
 Plugin 'docunext/closetag.vim.git'
 
+Plugin 'vim-scripts/Align'
+
 " Plugin 'techlivezheng/vim-plugin-tagbar-phpctags'
 " Plugin 'Auto-Pairs'
 " Plugin 'vim-scripts/UltiSnips'
@@ -52,7 +54,7 @@ Plugin 'docunext/closetag.vim.git'
 " Colors!
 Plugin 'godlygeek/csapprox'
 Plugin 'chriskempson/base16-vim'
-" Plugin 'flazz/vim-colorschemes'
+Plugin 'flazz/vim-colorschemes'
 " Plugin 'altercation/vim-colors-solarized'
 
 " Language additions
@@ -71,12 +73,13 @@ set exrc
 " Make sure things look pretty and use a nice colorscheme for the gui
 set t_Co=256
 set background=dark
-set guifont=Liberation\ Mono\ for\ Powerline "make sure to escape the spaces in the name properly
 let g:airline_powerline_fonts=1
+color base16-tomorrow
 
 syntax on
 
 if has('gui_running')
+  set guifont=Liberation\ Mono\ for\ Powerline "make sure to escape the spaces in the name properly
   color base16-default
   set guioptions=e
 endif
@@ -101,7 +104,7 @@ augroup vimrc_autocmds
 augroup END
 
 " Strip whitespace when working in these filetypes
-autocmd FileType c,cpp,java,php,python,coffee,js,css,less autocmd BufWritePre <buffer> :%s/\s\+$//e
+autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 " Enable html tag closing on typical html style file types
 autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1

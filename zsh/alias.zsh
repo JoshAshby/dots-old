@@ -10,7 +10,7 @@ alias sl='ls -CS1hl'
 alias mk='mkdir'
 alias nope="echo 'Oh, okay... :('"
 alias c=/bin/cat
-alias cat=lolcat
+#alias cat=lolcat # trolololol
 
 source $DOTS/zsh/git.zsh
 

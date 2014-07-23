@@ -4,7 +4,6 @@ DOTS=$HOME/repos/dots
 ZSH=$HOME/.oh-my-zsh
 COMPLETION_WAITING_DOTS="true"
 ZSH_THEME="joshashby"
-plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 setopt promptsubst
@@ -29,3 +28,5 @@ export EDITOR="gvim"
 
 source $DOTS/zsh/alias.zsh
 source $DOTS/zsh/functions.zsh
+
+export PATH=$PATH:/usr/local/sbin:/Applications/Postgres.app/Contents/Versions/9.3/bin
