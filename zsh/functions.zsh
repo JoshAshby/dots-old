@@ -111,3 +111,16 @@ function current_repository() {
   ref=$(git rev-parse --short HEAD 2> /dev/null) || return
   echo $(git remote -v | cut -d':' -f 2)
 }
+
+function tab() {
+  osascript 2>/dev/null <<EOF
+    tell application "System Events"
+      tell process "iTerm" to keystroke "t" using command down
+    end
+
+    tell application "iTerm"
+      activate
+      do script with command "cd $PWD; $*" in window 1
+    end tell
+EOF
+}
