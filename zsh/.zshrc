@@ -1,4 +1,4 @@
-DOTS=$HOME/repos/dotfiles
+DOTS=$HOME/repos/dots
 COMPLETION_WAITING_DOTS="true"
 
 # antigen takes care of setting up oh-my-zsh and themes and that
@@ -11,7 +11,7 @@ setopt promptsubst
 
 # If now is around then add it to the path...
 if [ -f "$DOTS/zsh/now/now.sh" ]; then
-  export PATH=$PATH:/home/josh/bin:$DOTS/zsh/now
+  export PATH=$PATH:$DOTS/zsh/now
 fi
 
 export EDITOR="vim"
@@ -25,5 +25,6 @@ if [ -f "$DOTS/zsh/z/z.sh" ]; then
   . $DOTS/zsh/z/z.sh
 fi
 
-# SCM_Breeze stuff, not used because of zsh/git.zsh now
-#[ -s "$HOME/.scm_breeze/scm_breeze.sh" ] && source "$HOME/.scm_breeze/scm_breeze.sh"
+export PGDATA="/usr/local/var/postgres"
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting

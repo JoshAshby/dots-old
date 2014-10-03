@@ -70,3 +70,11 @@ function chpwd; {
   done
   cd -q "$DIRECTORY"
 }
+
+function repos {
+  cd ~/repos/$1
+}
+function _repo_cmds {
+  reply=(`cd ~/repos/$1; ls | tr "\\n" " " | sed 's/ $//'`)
+}
+compctl -K _repo_cmds repos
