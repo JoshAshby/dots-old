@@ -29,4 +29,6 @@ export EDITOR="gvim"
 source $DOTS/zsh/alias.zsh
 source $DOTS/zsh/functions.zsh
 
-export PATH=$PATH:/usr/local/sbin:/Applications/Postgres.app/Contents/Versions/9.3/bin
+export PGDATA="/usr/local/var/postgres"
+
+export PATH=$PATH:/usr/local/sbin

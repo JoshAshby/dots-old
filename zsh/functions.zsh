@@ -82,9 +82,9 @@ repos() {
 compctl -/ -W ~/repos repos
 
 gloo() {
-  cd ~/src/gloo/$@
+  cd ~/gloo/$@
 }
-compctl -/ -W ~/src/gloo gloo
+compctl -/ -W ~/gloo gloo
 
 
 # taken from https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh

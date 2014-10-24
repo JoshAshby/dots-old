@@ -1,0 +1,4 @@
+Host sigyn
+  HostName transientbug.com
+  Port 22
+  User josh
