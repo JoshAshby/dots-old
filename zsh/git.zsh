@@ -25,6 +25,7 @@ alias gcma='git commit -m --amend'
 
 alias ga='git add'
 alias gaa='git add . --all'
+alias grm='git rm'
 
 alias gco='git checkout'
 alias gcob='git checkout -b'

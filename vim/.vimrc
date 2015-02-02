@@ -24,7 +24,7 @@ Plugin 'jeetsukumaran/vim-buffergator'
 
 Plugin 'bling/vim-airline'
 Plugin 'majutsushi/tagbar'
-Plugin 'mkitt/tabline.vim'
+"Plugin 'mkitt/tabline.vim'
 
 Plugin 'Shougo/neocomplete.vim'
 

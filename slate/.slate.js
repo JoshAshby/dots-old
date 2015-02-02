@@ -57,25 +57,48 @@ function face() {
 }
 
 // Workstation specific extensions for me
-face.prototype.top_major    = function () { return this.h('screenSizeY-150') }
-face.prototype.top_half     = function () { return this.h('screenSizeY/2').y('screenOriginY') }
-face.prototype.bottom_minor = function () { return this.h(150) }
-face.prototype.left_major   = function () { return this.w('screenSizeX-150') }
-face.prototype.right_half   = function () { return this.w('screenSizeX/2').x('screenSizeX/2+screenOriginX')  }
-face.prototype.left_half    = function () { return this.w('screenSizeX/2').x('screenOriginX')  }
-face.prototype.middle_half  = function () { return this.w('screenSizeX/2').x('screenSizeX/4+screenOriginX') }
-face.prototype.bottom_half  = function () { return this.h('screenSizeY/2').y('screenOriginY+screenSizeY/2') }
+face.prototype.top_major     = function () { return this.h('screenSizeY-150').y('screenOriginY') }
+face.prototype.bottom_major  = function () { return this.h('screenSizeY-150').y('screenOriginY+150') }
+face.prototype.left_major    = function () { return this.w('screenSizeX-150').x('screenOriginX') }
+face.prototype.right_major   = function () { return this.w('screenSizeX-150').x('screenOriginX+150') }
+face.prototype.middle_major  = function () { return this.w('screenSizeX-300').x('screenOriginX+150') }
 
-// Mostly near full width and screen? Think...
+face.prototype.top_minor     = function () { return this.h(150).y('screenOriginY') }
+face.prototype.bottom_minor  = function () { return this.h(150).y('screenSizeY-150') }
+face.prototype.left_minor    = function () { return this.w(150).x('screenOriginX') }
+face.prototype.right_minor   = function () { return this.w(150).x('screenSizeX-150') }
+
+face.prototype.top_half     = function () { return this.h('screenSizeY/2').y('screenOriginY') }
+face.prototype.bottom_half  = function () { return this.h('screenSizeY/2').y('screenOriginY+screenSizeY/2') }
+face.prototype.left_half    = function () { return this.w('screenSizeX/2').x('screenOriginX')  }
+face.prototype.right_half   = function () { return this.w('screenSizeX/2').x('screenSizeX/2+screenOriginX')  }
+face.prototype.middle_half  = function () { return this.w('screenSizeX/2').x('screenSizeX/4+screenOriginX') }
+
+// Full and Center
 S.bind('f:f6', O_().mv() );
-S.bind('f:f5', O_().top_major().mv() );
+S.bind('f:f5', O_().middle_major().h('screenSizeY-300').y('screenOriginY+150').mv() );
+
+// Middles
+S.bind('m:f6', O_().middle_half().mv() );
+S.bind('m:f5', O_().middle_major().mv() );
+
+// Majors
+S.bind('y:f5', O_().top_major().mv() );
+S.bind('b:f5', O_().bottom_major().mv() );
+S.bind('g:f5', O_().left_major().mv() );
+S.bind('h:f5', O_().right_major().mv() );
+
+// Minors
+S.bind('e:f5', O_().top_minor().mv() );
+S.bind('x:f5', O_().bottom_minor().mv() );
+S.bind('s:f5', O_().left_minor().mv() );
+S.bind('d:f5', O_().right_minor().mv() );
 
 // Halfs
 S.bind('y:f6', O_().top_half().mv() );
 S.bind('b:f6', O_().bottom_half().mv() );
 S.bind('g:f6', O_().left_half().mv() );
 S.bind('h:f6', O_().right_half().mv() );
-S.bind('m:f6', O_().middle_half().mv() );
 
 //Corners
 S.bind('t:f6', O_().top_half().left_half().mv() );

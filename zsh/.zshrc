@@ -32,3 +32,10 @@ source $DOTS/zsh/functions.zsh
 export PGDATA="/usr/local/var/postgres"
 
 export PATH=$PATH:/usr/local/sbin
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+eval "$(rbenv init -)"
+
+[[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"
