@@ -44,6 +44,7 @@ to_link.flatten!
 unless Dir.exist? "#{home}/.oh-my-zsh"
   puts "Installing oh-my-zsh..."
   `curl -L http://install.ohmyz.sh | sh`
+  puts "\[0;32mInstalled oh-my-zsh"
 end
 
 
@@ -55,12 +56,15 @@ to_link.each do |file|
   begin
     puts "\t\e[0;32mTrying to link #{repo_file} --> #{home_file}"
     FileUtils.symlink repo_file, home_file
+    puts "\t\t\e[0;32mLinked #{repo_file} --> #{home_file}"
   rescue Errno::EEXIST => e
     if options[:force]
-      puts "\t\e[0;33mFile #{home_file} exists, linking anyways #{repo_file} --> #{home_file}"
+      puts "\t\t\e[0;33mFile #{home_file} exists, linking anyways #{repo_file} --> #{home_file}"
       FileUtils.symlink repo_file, home_file, force: options[:force]
     else
-      puts "\t\e[0;31mFile #{home_file} exists already, remove and rerun to link it"
+      puts "\t\t\e[0;31mFile #{home_file} exists already, remove and rerun to link it"
     end
   end
+
+  puts
 end
