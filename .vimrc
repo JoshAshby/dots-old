@@ -26,7 +26,7 @@ Plugin 'bling/vim-airline'
 Plugin 'majutsushi/tagbar'
 "Plugin 'mkitt/tabline.vim'
 
-Plugin 'Shougo/neocomplete.vim'
+"Plugin 'Shougo/neocomplete.vim'
 
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
@@ -46,7 +46,7 @@ Plugin 'vim-scripts/Align'
 " Plugin 'garbas/vim-snipmate'
 " Plugin 'honza/vim-snippets'
 " Plugin 'vim-scripts/TaskList.vim'
-" Plugin 'ervandew/supertab'
+Plugin 'ervandew/supertab'
 " Plugin 'davidhalter/jedi-vim'
 " Plugin 'tpope/vim-surround'
 " Plugin 'AndrewRadev/linediff.vim'
@@ -64,7 +64,8 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'Glench/Vim-Jinja2-Syntax'
 
-Plugin 'FredKSchott/CoVim'
+"Plugin 'FredKSchott/CoVim'
+Plugin 'kien/ctrlp.vim'
 
 call vundle#end()
 filetype plugin indent on
@@ -106,7 +107,7 @@ augroup vimrc_autocmds
 augroup END
 
 " Strip whitespace when working in these filetypes
-autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less autocmd BufWritePre <buffer> :%s/\s\+$//e
+autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 " Enable html tag closing on typical html style file types
 autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
@@ -178,22 +179,21 @@ set smartindent
 au FileType make setlocal noexpandtab
 
 " Setup supertab to use omni complete and such
-"set omnifunc=syntaxcomplete#Complete
-"au FileType python set omnifunc=pythoncomplete#Complete
+set omnifunc=syntaxcomplete#Complete
 
-"let g:SuperTabDefaultCompletionType = "context"
-"set completeopt=menuone,longest,preview
+let g:SuperTabDefaultCompletionType = "context"
+set completeopt=menuone,longest,preview
 
-"let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
-"let g:SuperTabContextTextOmniPrecedence = ['&normalfunc', '&omnifunc', '&completefunc']
-"let g:SuperTabContextDiscoverDiscovery =
-    "\ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>", "&normalfunc:<c-x><c-n>"]
-""let g:SuperTabDefaultCompletionType = "<c-x><c-n>"
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextTextOmniPrecedence = ['&normalfunc', '&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery =
+    \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>", "&normalfunc:<c-x><c-n>"]
+"let g:SuperTabDefaultCompletionType = "<c-x><c-n>"
 
-"let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 
-"au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-"set completeopt=menu,preview,longest
+au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+set completeopt=menu,preview,longest
 
 " nerdtree stuff
 let NERDTreeShowBookmarks=1
@@ -214,40 +214,6 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-if has('gui_running')
-  " NEOCOMPLETE STUFF
-  " Disable AutoComplPop.
-  let g:acp_enableAtStartup = 0
-  " Use neocomplete.
-  let g:neocomplete#enable_at_startup = 1
-  " Use smartcase.
-  let g:neocomplete#enable_smart_case = 1
-  " Set minimum syntax keyword length.
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-  " AutoComplPop like behavior.
-  let g:neocomplete#enable_auto_select = 1
-  " Disable automatic completion and only complete by manual
-  let g:neocomplete#disable_auto_complete = 1
-
-  " Define dictionary.
-  let g:neocomplete#sources#dictionary#dictionaries = {
-      \ 'default' : '',
-      \ 'vimshell' : $HOME.'/.vimshell_hist',
-      \ 'scheme' : $HOME.'/.gosh_completions'
-          \ }
-
-  " Define keyword.
-  if !exists('g:neocomplete#keyword_patterns')
-      let g:neocomplete#keyword_patterns = {}
-  endif
-  let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-  " Enable heavy omni completion.
-  if !exists('g:neocomplete#sources#omni#input_patterns')
-    let g:neocomplete#sources#omni#input_patterns = {}
-  endif
-endif
 
 python import sys; sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
 
@@ -350,33 +316,3 @@ map <C-J> <C-W>j
 map <C-K> <C-W>k
 map <c-h> <c-w>h
 map <c-l> <c-w>l
-
-" Neocomplete keybindings...
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  "return neocomplete#close_popup() . "\<CR>"
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-
-" <TAB>: completion.
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><C-h>  neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS>   neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
-inoremap <expr><C-e>  neocomplete#cancel_popup()
-
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ neocomplete#start_manual_complete()
-function! s:check_back_space() "{{{
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
-
-" Enable and disable autocomplete
-nmap <silent> a :let g:neocomplete#disable_auto_complete=1<CR>
-nnoremap <silent> <leader>a :let g:neocomplete#disable_auto_complete=0<CR>
