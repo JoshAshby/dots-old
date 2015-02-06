@@ -42,9 +42,7 @@ to_link.flatten!
 
 
 unless Dir.exist? "#{home}/.oh-my-zsh"
-  puts "Installing oh-my-zsh..."
-  `curl -L http://install.ohmyz.sh | sh`
-  puts "\[0;32mInstalled oh-my-zsh"
+  puts "Run `curl -L http://install.ohmyz.sh | sh` to manually install oh-my-zsh"
 end
 
 
