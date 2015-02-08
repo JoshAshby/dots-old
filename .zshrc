@@ -15,7 +15,7 @@ fi
 # Useful little think that prints the time every second,
 # good for piping something into it
 if [ -f "$DOTS/zsh/now/now.sh" ]; then
-  export PATH=$PATH:/home/josh/bin:$DOTS/zsh/now
+  export PATH=$PATH:$HOME/bin:$DOTS/zsh/now
 fi
 
 # z is a nice predictive dir jumper
@@ -28,14 +28,3 @@ export EDITOR="gvim"
 
 source $DOTS/zsh/alias.zsh
 source $DOTS/zsh/functions.zsh
-
-export PGDATA="/usr/local/var/postgres"
-
-export PATH=$PATH:/usr/local/sbin
-
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
-eval "$(rbenv init -)"
-
-[[ -s "$HOME/.nvm/nvm.sh" ]] && source "$HOME/.nvm/nvm.sh"

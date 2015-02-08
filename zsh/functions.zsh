@@ -1,6 +1,6 @@
 # Gives an attach or create style ability to tmux
 tmux() {
-  MUX=/usr/local/bin/tmux
+  MUX=tmux
   if [ ! $1 ] ; then
     $MUX a -d || $MUX
   else
