@@ -30,6 +30,11 @@ node_modules
 *.py[ocd]
 *.so
 
+.config/fish/fishd.*
+.config/fish/utils/custom.fish
+.config/fish/utils/ssh.fish
+.config/fish/fish_history
+
 # Linked files #
 ################
 zsh/ssh.zsh

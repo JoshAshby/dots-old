@@ -1,1 +1,0 @@
-/Users/josh/repos/dots/.config/fish/utils/custom/gloo.fish
