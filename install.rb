@@ -16,7 +16,7 @@ repo = Dir.pwd
 
 dont_link = {
   all: ['README', 'zsh', '.gitignore', '.gitmodules', '.git', '..', '.', __FILE__],
-  osx: ['.conkyrc', '.Xmodmap'],
+  osx: ['.conkyrc', '.Xmodmap', '.config'],
   linux: ['.slate.js']
 }
 
@@ -41,9 +41,9 @@ end
 to_link.flatten!
 
 
-unless Dir.exist? "#{home}/.oh-my-zsh"
-  puts "Run `curl -L http://install.ohmyz.sh | sh` to manually install oh-my-zsh"
-end
+#unless Dir.exist? "#{home}/.oh-my-zsh"
+  #puts "Run `curl -L http://install.ohmyz.sh | sh` to manually install oh-my-zsh"
+#end
 
 
 puts "Linking files..."

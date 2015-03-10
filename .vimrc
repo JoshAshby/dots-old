@@ -73,6 +73,8 @@ filetype plugin indent on
 " enable cwd .vimrc files
 set exrc
 
+set undofile
+
 " Make sure things look pretty and use a nice colorscheme for the gui
 set t_Co=256
 set background=dark

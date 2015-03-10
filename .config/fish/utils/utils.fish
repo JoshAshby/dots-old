@@ -1,12 +1,12 @@
-. ./utils/alias.fish
-. ./utils/git.fish
+. ~/.config/fish/utils/alias.fish
+. ~/.config/fish/utils/git.fish
 
-if test -e ./utils/ssh.fish
-  . ./utils/ssh.fish
+if test -e ~/.config/fish/utils/ssh.fish
+  . ~/.config/fish/utils/ssh.fish
 end
 
-if test -e ./utils/custom.fish
-  . ./utils/custom.fish
+if test -e ~/.config/fish/utils/custom.fish
+  . ~/.config/fish/utils/custom.fish
 end
 
 function _utils

@@ -1,0 +1,7 @@
+[push]
+  default = simple
+[user]
+  name = JoshAshby
+  email = joshuaashby@joshashby.com
+[core]
+  excludesfile = ~/.gitignore_global

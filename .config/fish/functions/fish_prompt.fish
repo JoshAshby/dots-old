@@ -42,9 +42,9 @@ function _left_prompt_end
 end
 
 function _git_prompt
-  set branch (git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
+  set -l branch (git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
 
-  if test branch
+  if test -n "$branch"
     echo -s -n (_left_prompt_segment yellow black) ' ' $_git_branch ' ' $branch
   end
 end

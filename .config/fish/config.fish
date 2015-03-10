@@ -1,2 +1,2 @@
-. ./utils/utils.fish
+. ~/.config/fish/utils/utils.fish
 
