@@ -50,7 +50,7 @@ function _git_prompt
     echo -s -n (_left_prompt_segment yellow black) $_git_branch $branch ' '
 
     # is branch ahead?
-    if test 1
+    if test (git cherry -v $index[2])
       echo -s -n $_git_ahead
     end
 
