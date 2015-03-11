@@ -1,3 +1,5 @@
+set fish_greeting
+
 . ~/.config/fish/utils/alias.fish
 . ~/.config/fish/utils/git.fish
 
@@ -7,8 +9,4 @@ end
 
 if test -e ~/.config/fish/utils/custom.fish
   . ~/.config/fish/utils/custom.fish
-end
-
-function _utils
-  echo 'hia'
 end

@@ -39,7 +39,7 @@ Plugin 'docunext/closetag.vim.git'
 
 Plugin 'vim-scripts/Align'
 
-" Plugin 'techlivezheng/vim-plugin-tagbar-phpctags'
+ "Plugin 'techlivezheng/vim-plugin-tagbar-phpctags'
 " Plugin 'Auto-Pairs'
 " Plugin 'vim-scripts/UltiSnips'
 " Plugin 'tomtom/tlib_vim'

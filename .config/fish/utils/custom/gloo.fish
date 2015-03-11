@@ -14,4 +14,6 @@ set -g PATH $PATH:/usr/local/sbin
 set -g LC_ALL en_US.UTF-8
 set -g LANG en_US.UTF-8
 
-command rbenv init
+set PATH $HOME/.rbenv/bin $PATH
+set PATH $HOME/.rbenv/shims $PATH
+rbenv rehash >/dev/null ^&1
