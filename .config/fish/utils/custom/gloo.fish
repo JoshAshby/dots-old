@@ -1,6 +1,6 @@
-alias g.reset 'bower update and npm install and grunt sass and bundle install and rake db:reset db:preload and rbenv rehash'
-alias g.yard 'yard and yard server --reload'
-alias g.test 'rake and grunt tests'
+alias g.reset 'bower update; and npm install; and grunt sass; and bundle install; and rake db:reset db:preload; and rbenv rehash'
+alias g.yard 'yard; and yard server --reload'
+alias g.test 'rake; and grunt tests'
 
 alias ror.models 'ack "^(?:\s+)(has_|belongs_)"'
 

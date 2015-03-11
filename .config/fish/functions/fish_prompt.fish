@@ -3,7 +3,7 @@ set _right_segement ''
 
 set _ssh_icon 'ಠ_ಠ'
 
-set _git_branch ''
+set _git_branch '  '
 set _git_ahead '↑ '
 set _git_staged '● '
 set _git_unstaged '○ '
@@ -14,6 +14,7 @@ set _status_jobs  ' ⚙ '
 set _status_failed ' ✕ '
 
 set _current_bg NONE
+set _lstatus 0
 
 function _left_prompt_segment
   set -l bg $argv[1]
@@ -42,11 +43,39 @@ function _left_prompt_end
 end
 
 function _git_prompt
+  set index (gitstatus)
   set -l branch (git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
 
   if test -n "$branch"
-    echo -s -n (_left_prompt_segment yellow black) ' ' $_git_branch ' ' $branch
+    echo -s -n (_left_prompt_segment yellow black) $_git_branch $branch ' '
+
+    # is branch ahead?
+    if test 1
+      echo -s -n $_git_ahead
+    end
+
+    # is anything staged?
+    if test $index[3] -ne 0
+      echo -s -n $_git_staged
+    end
+
+    # is anything unstaged?
+    if test $index[4] -ne 0
+      echo -s -n $_git_unstaged
+    end
+
+    # is anything untracked?
+    if test $index[5] -ne 0
+      echo -s -n $_git_untracked
+    end
+
+    # is anything unmerged?
+    if test $index[6] -ne 0
+      echo -s -n $_git_unmerged
+    end
+
   end
+
 end
 
 function _ssh_prompt
@@ -64,15 +93,14 @@ function _status_prompt
     echo -n (_left_prompt_segment white blue) $_status_jobs
   end
 
-#  if test $status -ne 0
-#    echo -n (_left_prompt_segment white red) $_status_failed
-#  end
+  if test $_lstatus -ne 0
+    echo -n (_left_prompt_segment white red) $_status_failed
+  end
 end
 
 function fish_prompt
-
+  set _lstatus $status
   echo -s -n (_ssh_prompt) (_pwd_prompt) (_git_prompt) (_status_prompt) (_left_prompt_end)
-
 end
 
 
@@ -81,7 +109,5 @@ function _git_hash
 end
 
 function fish_right_prompt
-
-  echo -s -n (set_color black) (_git_hash) " " (date "+%b-%d %H:%M:%S") (set_color normal)
-
+  echo -s -n (set_color black) $index[2] ' ' (_git_hash) ' ' (date "+%b-%d %H:%M:%S") (set_color normal)
 end
