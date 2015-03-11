@@ -17,3 +17,5 @@ set -g LANG en_US.UTF-8
 set PATH $HOME/.rbenv/bin $PATH
 set PATH $HOME/.rbenv/shims $PATH
 rbenv rehash >/dev/null ^&1
+
+. ~/.config/fish/utils/custom/nvm-wrapper/nvm.fish
