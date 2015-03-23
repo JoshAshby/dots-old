@@ -1,3 +1,5 @@
+set shell=/bin/sh
+
 "This all needs cleaned up...
 set nocompatible               " be iMproved
 filetype off                   " required!

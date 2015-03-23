@@ -44,15 +44,14 @@ end
 
 function _git_prompt
   set index (gitstatus)
-  set -l branch (git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
 
-  if test -n "$branch"
-    echo -s -n (_left_prompt_segment yellow black) $_git_branch $branch ' '
+  if test -n "$index[1]"
+    echo -s -n (_left_prompt_segment yellow black) $_git_branch $index[1] ' '
 
     # is branch ahead?
-    if test (git cherry -v $index[2])
-      echo -s -n $_git_ahead
-    end
+#    if test -n (git cherry -v $index[2])
+#      echo -s -n $_git_ahead
+#    end
 
     # is anything staged?
     if test $index[3] -ne 0
@@ -98,9 +97,15 @@ function _status_prompt
   end
 end
 
+function _env_prompt
+  if set -q RAILS_ENV
+    echo -s -n (_left_prompt_segment blue white) $RAILS_ENV ' '
+  end
+end
+
 function fish_prompt
   set _lstatus $status
-  echo -s -n (_ssh_prompt) (_pwd_prompt) (_git_prompt) (_status_prompt) (_left_prompt_end)
+  echo -s -n (_env_prompt) (_ssh_prompt) (_pwd_prompt) (_git_prompt) (_status_prompt) (_left_prompt_end)
 end
 
 
