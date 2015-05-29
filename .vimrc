@@ -13,7 +13,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'L9'
 
 " File related bundles
-Plugin 'FuzzyFinder'
+"Plugin 'FuzzyFinder'
 "Plugin 'mileszs/ack.vim'
 "
 " Git related bundles
@@ -33,7 +33,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 
-Plugin 'zirrostig/vim-schlepp'
+"Plugin 'zirrostig/vim-schlepp'
 Plugin 'terryma/vim-multiple-cursors'
 
 Plugin 'Raimondi/delimitMate'
@@ -54,17 +54,17 @@ Plugin 'ervandew/supertab'
 " Plugin 'AndrewRadev/linediff.vim'
 
 " Colors!
-Plugin 'godlygeek/csapprox'
+"Plugin 'godlygeek/csapprox'
 Plugin 'chriskempson/base16-vim'
-Plugin 'flazz/vim-colorschemes'
+"Plugin 'flazz/vim-colorschemes'
 " Plugin 'altercation/vim-colors-solarized'
 
 " Language additions
-Plugin 'groenewege/vim-less'
+"Plugin 'groenewege/vim-less'
 Plugin 'skammer/vim-css-color'
-Plugin 'kchmck/vim-coffee-script'
+"Plugin 'kchmck/vim-coffee-script'
 Plugin 'plasticboy/vim-markdown'
-Plugin 'Glench/Vim-Jinja2-Syntax'
+"Plugin 'Glench/Vim-Jinja2-Syntax'
 
 "Plugin 'FredKSchott/CoVim'
 Plugin 'kien/ctrlp.vim'
@@ -93,7 +93,7 @@ endif
 
 set number
 set title
-set showtabline=0
+set showtabline=1
 set nofoldenable
 
 set laststatus=2
@@ -115,7 +115,7 @@ autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby autocmd B
 
 " Enable html tag closing on typical html style file types
 autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
-autocmd BufRead,BufNewFile *.jbuilder set filetype=Ruby
+autocmd BufRead,BufNewFile *.jbuilder,*.thor set filetype=Ruby
 
 set wildmenu
 set wildmode=list:longest,full
@@ -148,7 +148,7 @@ set ruler
 
 " add git status to statusline; otherwise emulate standard line with ruler
 " set statusline=[%{&fo}]%<%{fugitive#statusline()}\ %f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-" set laststatus=2
+set laststatus=2
 
 " keep lots of command-line history
 set history=3500
@@ -212,6 +212,9 @@ let g:nerdtree_tabs_open_on_gui_startup=0
 " buffergator stuff
 let g:buffergator_suppress_keymaps=1
 
+" ctrlp ignore settings
+let g:ctrlp_custom_ignore = '\v[\/](public\/dist|tmp|node_modules)|(\.(git|hg|svn))$'
+
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -234,6 +237,12 @@ let g:airline#extensions#branch#enabled=1
 let g:airline#extensions#branch#empty_message=''
 
 let g:airline#extensions#syntastic#enabled=1
+
+" This line blew up at me when I symlinked this file. no clue why
+set listchars=tab:¿\ ,trail:·
+set list
+
+set foldmethod=indent
 
 " ====================== Keybindings...
 " =====================================
@@ -277,13 +286,10 @@ nnoremap <silent> <leader>s :set nospell<CR>
 nmap <silent> <leader>y :tabnew<CR>
 
 " fuzzyfinder
-nmap <leader>f :FufFile<CR>
+"nmap <leader>f :FufFile<CR>
 
 " display tabs - ,s will toggle (redraws just in case)
 nmap <silent> <leader>t :set nolist!<CR>:redr<CR>
-" This line blew up at me when I symlinked this file. no clue why
-set listchars=tab:¿\ ,trail:·
-set list
 
 " remap ;to : since I tend to use : more often
 nnoremap ; :

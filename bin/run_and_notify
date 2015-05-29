@@ -2,6 +2,7 @@
 
 require 'washbullet'
 require 'thor'
+require 'open3'
 
 class CommandCLI < Thor
 
@@ -29,11 +30,21 @@ class CommandCLI < Thor
 
     res = {
       command: command,
-      result: system(command),
-      status: $?.exitstatus
+      result: [],
+      status: nil
     }
 
-    if res[:status] != 0
+    Open3.popen2e command do |i, o, t|
+      while line = o.gets do
+        puts line
+        res[:result] << line
+      end
+
+      res[:status] = t.value
+      res[:result] = res[:result].join("\n")
+    end
+
+    unless res[:status].success?
       message = options[:message] % res
       #puts "Would push notification: #{ options[:title] } - #{ message }"
       pushbullet_client.push_note nil, options[:title], message

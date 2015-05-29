@@ -40,7 +40,7 @@ function face() {
   // This provides a closure for Slate to execute when bound to a hotkey.
   // Inside the closure, we execute the transformation stack to build the hash
   // and then pass that has on to window.doOperation.
-  this.op = function(operation){
+  this.op = function(operation) {
     var that = this;
     return (
         function(win) {
@@ -56,52 +56,84 @@ function face() {
   return this;
 }
 
-// Workstation specific extensions for me
-face.prototype.top_major     = function () { return this.h('screenSizeY-150').y('screenOriginY') }
-face.prototype.bottom_major  = function () { return this.h('screenSizeY-150').y('screenOriginY+150') }
-face.prototype.left_major    = function () { return this.w('screenSizeX-150').x('screenOriginX') }
-face.prototype.right_major   = function () { return this.w('screenSizeX-150').x('screenOriginX+150') }
-face.prototype.middle_major  = function () { return this.w('screenSizeX-300').x('screenOriginX+150') }
+// Majors, or simply 150 padding on one or more sides
+face.prototype.top_major        = function () { return this.h('screenSizeY-150').y('screenOriginY') }
+face.prototype.bottom_major     = function () { return this.h('screenSizeY-150').y('screenOriginY+150') }
+face.prototype.left_major       = function () { return this.w('screenSizeX-150').x('screenOriginX') }
+face.prototype.right_major      = function () { return this.w('screenSizeX-150').x('screenOriginX+150') }
 
-face.prototype.top_minor     = function () { return this.h(150).y('screenOriginY') }
-face.prototype.bottom_minor  = function () { return this.h(150).y('screenSizeY-150') }
-face.prototype.left_minor    = function () { return this.w(150).x('screenOriginX') }
-face.prototype.right_minor   = function () { return this.w(150).x('screenSizeX-150') }
+face.prototype.middle_major_col = function () { return this.w('screenSizeX-300').x('screenOriginX+150') }
+face.prototype.middle_major_row = function () { return this.h('screenSizeY-300').y('screenOriginY+150') }
 
-face.prototype.top_half     = function () { return this.h('screenSizeY/2').y('screenOriginY') }
-face.prototype.bottom_half  = function () { return this.h('screenSizeY/2').y('screenOriginY+screenSizeY/2') }
-face.prototype.left_half    = function () { return this.w('screenSizeX/2').x('screenOriginX')  }
-face.prototype.right_half   = function () { return this.w('screenSizeX/2').x('screenSizeX/2+screenOriginX')  }
-face.prototype.middle_half  = function () { return this.w('screenSizeX/2').x('screenSizeX/4+screenOriginX') }
-
-// Full and Center
-S.bind('f:f6', O_().mv() );
-S.bind('f:f5', O_().middle_major().h('screenSizeY-300').y('screenOriginY+150').mv() );
-
-// Middles
-S.bind('m:f6', O_().middle_half().mv() );
-S.bind('m:f5', O_().middle_major().mv() );
-
-// Majors
-S.bind('y:f5', O_().top_major().mv() );
-S.bind('b:f5', O_().bottom_major().mv() );
-S.bind('g:f5', O_().left_major().mv() );
-S.bind('h:f5', O_().right_major().mv() );
-
-// Minors
-S.bind('e:f5', O_().top_minor().mv() );
-S.bind('x:f5', O_().bottom_minor().mv() );
-S.bind('s:f5', O_().left_minor().mv() );
-S.bind('d:f5', O_().right_minor().mv() );
 
 // Halfs
-S.bind('y:f6', O_().top_half().mv() );
-S.bind('b:f6', O_().bottom_half().mv() );
-S.bind('g:f6', O_().left_half().mv() );
-S.bind('h:f6', O_().right_half().mv() );
+face.prototype.top_half         = function () { return this.h('screenSizeY/2').y('screenOriginY') }
+face.prototype.bottom_half      = function () { return this.h('screenSizeY/2').y('screenOriginY+screenSizeY/2') }
+face.prototype.left_half        = function () { return this.w('screenSizeX/2').x('screenOriginX')  }
+face.prototype.right_half       = function () { return this.w('screenSizeX/2').x('screenSizeX/2+screenOriginX')  }
 
-//Corners
-S.bind('t:f6', O_().top_half().left_half().mv() );
-S.bind('v:f6', O_().left_half().bottom_half().mv() );
-S.bind('u:f6', O_().top_half().right_half().mv() );
-S.bind('n:f6', O_().right_half().bottom_half().mv() );
+face.prototype.middle_half_col  = function () { return this.w('screenSizeX/2').x('screenSizeX/4+screenOriginX') }
+face.prototype.middle_half_row  = function () { return this.h('screenSizeY/2').y('screenSizeY/4+screenOriginY') }
+
+
+// Slivers, or simply 150 wide
+face.prototype.top_sliver       = function () { return this.h(150).y('screenOriginY') }
+face.prototype.bottom_sliver    = function () { return this.h(150).y('screenSizeY-150') }
+face.prototype.left_sliver      = function () { return this.w(150).x('screenOriginX') }
+face.prototype.right_sliver     = function () { return this.w(150).x('screenSizeX-150') }
+
+
+// Majors
+  // Sides
+  S.bind('r:f5', O_().top_major().mv() );
+  S.bind('d:f5', O_().left_major().mv() );
+  S.bind('v:f5', O_().bottom_major().mv() );
+  S.bind('g:f5', O_().right_major().mv() )
+
+  // Middle Column
+  S.bind('w:f5', O_().middle_major_col().mv() );
+
+  // Middle Row
+  S.bind('x:f5', O_().middle_major_row().mv() );
+
+  // Center
+  S.bind('f:f5', O_().middle_major_row().middle_major_col().mv() );
+
+  // Corners
+  S.bind('e:f5', O_().top_major().left_major().mv() );
+  S.bind('c:f5', O_().left_major().bottom_major().mv() );
+  S.bind('b:f5', O_().right_major().bottom_major().mv() );
+  S.bind('t:f5', O_().top_major().right_major().mv() );
+
+
+// Halfs
+  // Sides
+  S.bind('r:f6', O_().top_half().mv() );
+  S.bind('d:f6', O_().left_half().mv() );
+  S.bind('v:f6', O_().bottom_half().mv() );
+  S.bind('g:f6', O_().right_half().mv() );
+
+  // Middle Column
+  S.bind('w:f6', O_().middle_half_col().mv() );
+
+  // Middle Row
+  S.bind('x:f6', O_().middle_half_row().mv() );
+
+  // Center
+  S.bind('f:f6', O_().middle_half_row().middle_half_col().mv() );
+
+  // Corners
+  S.bind('e:f6', O_().top_half().left_half().mv() );
+  S.bind('c:f6', O_().left_half().bottom_half().mv() );
+  S.bind('b:f6', O_().right_half().bottom_half().mv() );
+  S.bind('t:f6', O_().top_half().right_half().mv() );
+
+
+// Full
+  S.bind('j:f6', O_().mv() );
+
+// Slivers
+  S.bind('u:f6', O_().top_sliver().mv() );
+  S.bind('h:f6', O_().left_sliver().mv() );
+  S.bind('m:f6', O_().bottom_sliver().mv() );
+  S.bind('k:f6', O_().right_sliver().mv() );
