@@ -114,5 +114,5 @@ function _git_hash
 end
 
 function fish_right_prompt
-  echo -s -n (set_color black) $index[2] ' ' (_git_hash) ' ' (date "+%b-%d %H:%M:%S") (set_color normal)
+  echo -s -n (set_color black) (_git_hash) ' ' (date "+%b-%d %H:%M:%S") (set_color normal)
 end
