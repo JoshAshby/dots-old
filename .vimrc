@@ -12,21 +12,17 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'L9'
 
-" File related bundles
-"Plugin 'FuzzyFinder'
-"Plugin 'mileszs/ack.vim'
-"
 " Git related bundles
-Plugin 'fugitive.vim'
+"Plugin 'fugitive.vim'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'vim-scripts/vcscommand.vim'
 
 " Utils
 Plugin 'scrooloose/nerdtree'
 Plugin 'jeetsukumaran/vim-buffergator'
 
 Plugin 'bling/vim-airline'
-Plugin 'majutsushi/tagbar'
-"Plugin 'mkitt/tabline.vim'
+"Plugin 'majutsushi/tagbar'
 
 "Plugin 'Shougo/neocomplete.vim'
 
@@ -35,38 +31,31 @@ Plugin 'scrooloose/syntastic'
 
 "Plugin 'zirrostig/vim-schlepp'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'tpope/vim-surround'
 
-Plugin 'Raimondi/delimitMate'
+"Plugin 'Raimondi/delimitMate'
 Plugin 'docunext/closetag.vim.git'
 
 Plugin 'vim-scripts/Align'
 
- "Plugin 'techlivezheng/vim-plugin-tagbar-phpctags'
-" Plugin 'Auto-Pairs'
 " Plugin 'vim-scripts/UltiSnips'
-" Plugin 'tomtom/tlib_vim'
 " Plugin 'garbas/vim-snipmate'
 " Plugin 'honza/vim-snippets'
 " Plugin 'vim-scripts/TaskList.vim'
 Plugin 'ervandew/supertab'
 " Plugin 'davidhalter/jedi-vim'
-" Plugin 'tpope/vim-surround'
 " Plugin 'AndrewRadev/linediff.vim'
 
 " Colors!
 "Plugin 'godlygeek/csapprox'
 Plugin 'chriskempson/base16-vim'
-"Plugin 'flazz/vim-colorschemes'
-" Plugin 'altercation/vim-colors-solarized'
+Plugin 'Junza/Spink'
 
 " Language additions
-"Plugin 'groenewege/vim-less'
 Plugin 'skammer/vim-css-color'
-"Plugin 'kchmck/vim-coffee-script'
 Plugin 'plasticboy/vim-markdown'
-"Plugin 'Glench/Vim-Jinja2-Syntax'
+Plugin 'othree/yajs.vim'
 
-"Plugin 'FredKSchott/CoVim'
 Plugin 'kien/ctrlp.vim'
 
 call vundle#end()
@@ -81,14 +70,22 @@ set undofile
 set t_Co=256
 set background=dark
 let g:airline_powerline_fonts=1
-color base16-tomorrow
+color slate
+
+set cursorline
 
 syntax on
 
 if has('gui_running')
   set guifont=Liberation\ Mono\ for\ Powerline "make sure to escape the spaces in the name properly
-  color base16-default
+  color spink
   set guioptions=e
+
+  " Disable hover tooltips
+  set noballooneval
+  let g:netrw_nobeval=1
+
+  autocmd VimEnter * NERDTree
 endif
 
 set number
@@ -104,25 +101,25 @@ set fo-=t
 
 set grepprg=egrep\ -nH\ $*
 
-" highlight if we go over 79 chars wide
+" highlight if we go over 120 chars wide
 augroup vimrc_autocmds
-        autocmd BufEnter * highlight OverLength ctermbg=green guibg=#592929
-        autocmd BufEnter * match OverLength /\%79v.*/
+  autocmd BufEnter * highlight OverLength ctermbg=green guibg=#592929
+  autocmd BufEnter * match OverLength /\%120v.*/
 augroup END
+
+" Set some additional filetypes...
+autocmd BufRead,BufNewFile *.jbuilder,*.thor,*.rabl set filetype=ruby
+autocmd BufRead,BufNewFile *.es6 set filetype=javascript
 
 " Strip whitespace when working in these filetypes
 autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 " Enable html tag closing on typical html style file types
 autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
-autocmd BufRead,BufNewFile *.jbuilder,*.thor set filetype=Ruby
 
 set wildmenu
 set wildmode=list:longest,full
 set nohidden
-
-" set cursorline highlight
-hi CursorLine term=none cterm=none ctermbg=1
 
 " fast terminal
 set ttyfast
@@ -182,45 +179,64 @@ set smartindent
 " turn off tab expansion for Makefiles
 au FileType make setlocal noexpandtab
 
-" Setup supertab to use omni complete and such
-set omnifunc=syntaxcomplete#Complete
-
-let g:SuperTabDefaultCompletionType = "context"
-set completeopt=menuone,longest,preview
-
-let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
-let g:SuperTabContextTextOmniPrecedence = ['&normalfunc', '&omnifunc', '&completefunc']
-let g:SuperTabContextDiscoverDiscovery =
-    \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>", "&normalfunc:<c-x><c-n>"]
-"let g:SuperTabDefaultCompletionType = "<c-x><c-n>"
-
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+"my little pinky isa bit slow coming off that shift key sometimes.
+command! W w
+command! Q q
+command! Wq wq
 
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menu,preview,longest
 
-" nerdtree stuff
-let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-" let NERDTreeChDirMode=0
-" let NERDTreeShowHidden=1
-let NERDTreeMouseMode=2
-let NERDTreeShowHidden=1
-let NERDTreeKeepTreeInNewTab=1
-let g:nerdtree_tabs_open_on_gui_startup=0
-
-" buffergator stuff
-let g:buffergator_suppress_keymaps=1
-
-" ctrlp ignore settings
-let g:ctrlp_custom_ignore = '\v[\/](public\/dist|tmp|node_modules)|(\.(git|hg|svn))$'
-
-" Enable omni completion.
+autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+
+let g:SuperTabCrMapping = 0
+let g:SuperTabDefaultCompletionType = 'context'
+let g:SuperTabContextDefaultCompletionType = '<c-x><c-u>'
+autocmd FileType *
+    \ if &omnifunc != '' |
+    \     call SuperTabChain(&omnifunc, '<c-p>') |
+    \ endif
+
+" NERDTree enhancements/fixes
+"   Nerdtree defaults for window splitting are backwards from vim defaults.
+let NERDTreeMapOpenVSplit='i'
+let NERDTreeMapOpenSplit='s'
+
+let NERDTreeShowBookmarks=1
+
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+
+let NERDTreeMouseMode=2
+let NERDTreeShowHidden=1
+
+let NERDTreeKeepTreeInNewTab=1
+let NERDTreeTabsOpenOnGuiStartup=1
+
+let NERDTreeWinSize=35
+
+" nerdcommenter things
+let g:NERDCustomDelimiters = {
+\ 'ruby': { 'left': '# ', 'right': '', 'leftAlt': '# ', 'rightAlt': '' }
+\ }
+
+let NERD_ruby_alt_style=1
+
+" buffergator stuff
+let g:buffergator_suppress_keymaps=1
+
+" ctrlp ignore settings
+if exists("g:ctrl_user_command")
+  unlet g:ctrlp_user_command
+endif
+
+set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/*,*/.git/*
+" let g:ctrlp_custom_ignore = '\v[\/](public\/dist|tmp|node_modules)|(\.(git|hg|svn))$'
 
 python import sys; sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
 
@@ -239,7 +255,8 @@ let g:airline#extensions#branch#empty_message=''
 let g:airline#extensions#syntastic#enabled=1
 
 " This line blew up at me when I symlinked this file. no clue why
-set listchars=tab:¿\ ,trail:·
+set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
+" set listchars=nbsp:¬,eol:¶,tab:>-,extends:»,precedes:«,trail:•
 set list
 
 set foldmethod=indent
@@ -282,9 +299,6 @@ map <silent> <F9> :set invhlsearch<CR>
 nmap <silent> s :set spell<CR>
 nnoremap <silent> <leader>s :set nospell<CR>
 
-" new tab:
-nmap <silent> <leader>y :tabnew<CR>
-
 " fuzzyfinder
 "nmap <leader>f :FufFile<CR>
 
@@ -297,7 +311,7 @@ nnoremap ; :
 " Better space unfolding
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
-nnoremap <silent> zj o<Esc>
+nnoremap <silent> zj o<Esc>,<F10>
 nnoremap <silent> zk O<Esc>
 "nnoremap <space> za
 "
@@ -326,3 +340,21 @@ map <C-J> <C-W>j
 map <C-K> <C-W>k
 map <c-h> <c-w>h
 map <c-l> <c-w>l
+
+" Disable F1 help and change it to esc
+map <F1> <Esc>
+imap <F1> <Esc>
+
+" Highlight things
+nnoremap <silent> <leader>l ml:execute 'match Search /\%'.line('.').'l/'<CR>
+nnoremap <silent> <leader>k :execute 'match Search /\%'.virtcol('.').'v/'<CR>
+nnoremap <silent> <leader>j :call clearmatches()<CR>
+
+" Highlight cursor line and columns
+nnoremap <silent> <leader>c :set cursorline! cursorcolumn!<CR>
+nnoremap <silent> <leader>z :set cursorline!<CR>
+nnoremap <silent> <leader>x :set cursorcolumn!<CR>
+
+" VCS things
+nnoremap <silent> <leader>b :VCSBlame<CR>
+nnoremap <silent> <leader>d :VCSDiff<CR>
