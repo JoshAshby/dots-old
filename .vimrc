@@ -21,7 +21,10 @@ Plugin 'vim-scripts/vcscommand.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jeetsukumaran/vim-buffergator'
 
-Plugin 'bling/vim-airline'
+if has('gui_running')
+  Plugin 'bling/vim-airline'
+endif
+
 Plugin 'majutsushi/tagbar'
 
 "Plugin 'Shougo/neocomplete.vim'
@@ -237,25 +240,24 @@ endif
 set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/*,*/.git/*
 " let g:ctrlp_custom_ignore = '\v[\/](public\/dist|tmp|node_modules)|(\.(git|hg|svn))$'
 
-" NeoVim doesn't have a python provider?
+" airline stuff
 if ! has('nvim')
   python import sys; sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
+
+  let g:airline_powerline_fonts=1
+  let g:airline#extensions#hunks#enabled=0
+
+  let g:airline#extensions#tagbar#enabled=1
+  let g:airline#extensions#tagbar#flags='s'
+
+  let g:airline#extensions#tabline#enabled=0
+  let g:airline#extensions#tabline#show_buffers=1
+
+  let g:airline#extensions#branch#enabled=1
+  let g:airline#extensions#branch#empty_message=''
+
+  let g:airline#extensions#syntastic#enabled=1
 end
-
-" airline stuff
-let g:airline_powerline_fonts=1
-let g:airline#extensions#hunks#enabled=0
-
-let g:airline#extensions#tagbar#enabled=1
-let g:airline#extensions#tagbar#flags='s'
-
-let g:airline#extensions#tabline#enabled=0
-let g:airline#extensions#tabline#show_buffers=1
-
-let g:airline#extensions#branch#enabled=1
-let g:airline#extensions#branch#empty_message=''
-
-let g:airline#extensions#syntastic#enabled=1
 
 " This line blew up at me when I symlinked this file. no clue why
 set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
