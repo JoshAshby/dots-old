@@ -22,7 +22,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'jeetsukumaran/vim-buffergator'
 
 Plugin 'bling/vim-airline'
-"Plugin 'majutsushi/tagbar'
+Plugin 'majutsushi/tagbar'
 
 "Plugin 'Shougo/neocomplete.vim'
 
@@ -66,27 +66,31 @@ set exrc
 
 set undofile
 
-" Make sure things look pretty and use a nice colorscheme for the gui
-set t_Co=256
-set background=dark
-let g:airline_powerline_fonts=1
-color slate
-
-set cursorline
-
 syntax on
 
-if has('gui_running')
-  set guifont=Liberation\ Mono\ for\ Powerline "make sure to escape the spaces in the name properly
+function! TermSetup()
+  " Make sure things look pretty and use a nice colorscheme for the gui
+  set t_Co=256
+  set background=dark
   color spink
+
+  set guifont=Fira\ Code " Make sure to escape the spaces in the name properly
   set guioptions=e
 
+  set cursorline
+endfunction
+
+function! GuiSetup()
   " Disable hover tooltips
+  " This still doesn't work with ruby code >:|
   set noballooneval
   let g:netrw_nobeval=1
 
-  autocmd VimEnter * NERDTree
-endif
+  NERDTree " Show nerdtree on window open
+endfunction
+
+autocmd VimEnter * call TermSetup()
+autocmd GUIEnter * call GuiSetup()
 
 set number
 set title
@@ -116,6 +120,17 @@ autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby autocmd B
 
 " Enable html tag closing on typical html style file types
 autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
+
+" turn off tab expansion for Makefiles
+autocmd FileType make setlocal noexpandtab
+
+autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
 set wildmenu
 set wildmode=list:longest,full
@@ -176,24 +191,8 @@ set smartindent
 " Use + register (X Window clipboard) as unnamed register
 "set clipboard=unnamed,autoselect
 
-" turn off tab expansion for Makefiles
-au FileType make setlocal noexpandtab
-
-"my little pinky isa bit slow coming off that shift key sometimes.
-command! W w
-command! Q q
-command! Wq wq
-
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menu,preview,longest
-
-autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
 let g:SuperTabCrMapping = 0
 let g:SuperTabDefaultCompletionType = 'context'
@@ -238,9 +237,13 @@ endif
 set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/*,*/.git/*
 " let g:ctrlp_custom_ignore = '\v[\/](public\/dist|tmp|node_modules)|(\.(git|hg|svn))$'
 
-python import sys; sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
+" NeoVim doesn't have a python provider?
+if ! has('nvim')
+  python import sys; sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
+end
 
 " airline stuff
+let g:airline_powerline_fonts=1
 let g:airline#extensions#hunks#enabled=0
 
 let g:airline#extensions#tagbar#enabled=1
@@ -260,6 +263,13 @@ set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
 set list
 
 set foldmethod=indent
+
+set gdefault    "automagically adds /g on a regex. /g to disable<Paste>
+
+"my little pinky isa bit slow coming off that shift key sometimes.
+command! W w
+command! Q q
+command! Wq wq
 
 " ====================== Keybindings...
 " =====================================
@@ -281,10 +291,6 @@ noremap <silent> <leader><F3> :tabnext<CR>
 nmap <silent> <F4> :bprevious<CR>bdelete \#<CR>
 noremap <silent> <leader><f4> :tabclose<CR>
 
-" Buffergator stuff
-noremap <silent> <F10> :BuffergatorToggle<CR>
-noremap <silent> <leader><F10> :BuffergatorTabsToggle<CR>
-
 " toggle nerdtree and Tagbar
 noremap <silent> <F7> :NERDTreeToggle<CR>
 nnoremap <silent> <leader><F7> :TagbarToggle<CR>
@@ -295,6 +301,10 @@ map <silent> <leader><F8> :set fo-=t<CR>
 
 " remove/hide highlighting from searches
 map <silent> <F9> :set invhlsearch<CR>
+
+" Buffergator stuff
+noremap <silent> <F10> :BuffergatorToggle<CR>
+noremap <silent> <leader><F10> :BuffergatorTabsToggle<CR>
 
 nmap <silent> s :set spell<CR>
 nnoremap <silent> <leader>s :set nospell<CR>
@@ -317,6 +327,10 @@ nnoremap <silent> zk O<Esc>
 "
 map N Nzz
 map n nzz
+
+" dont deselect on indent
+vnoremap < <gv
+vnoremap > >gv
 
 " Ctrl+backspace will delete the current work
 inoremap <C-BS> <C-O>b<C-O>dw

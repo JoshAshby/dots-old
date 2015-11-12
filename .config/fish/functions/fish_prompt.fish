@@ -72,9 +72,11 @@ function _git_prompt
     if test $index[6] -ne 0
       echo -s -n $_git_unmerged
     end
-
   end
+end
 
+function _git_hash
+  echo -n (git log -1 ^/dev/null | sed -n -e 's/^commit \([a-z0-9]\{8\}\)[a-z0-9]\{32\}/\1/p')
 end
 
 function _ssh_prompt
@@ -99,20 +101,17 @@ end
 
 function _env_prompt
   if set -q RAILS_ENV
-    echo -s -n (_left_prompt_segment blue white) $RAILS_ENV ' '
+    echo -s -n (set_color white -b blue) ' ' $RAILS_ENV ' ' (set_color normal)
   end
 end
 
 function fish_prompt
   set _lstatus $status
-  echo -s -n (_env_prompt) (_ssh_prompt) (_pwd_prompt) (_git_prompt) (_status_prompt) (_left_prompt_end)
-end
-
-
-function _git_hash
-  echo -n (git log -1 ^/dev/null | sed -n -e 's/^commit \([a-z0-9]\{8\}\)[a-z0-9]\{32\}/\1/p')
+  echo -s -n '┌─' (_env_prompt) ' ' (date "+%b-%d %H:%M:%S")
+  echo
+  echo -s -n '└─' (_ssh_prompt) (_pwd_prompt) (_git_prompt) (_status_prompt) (_left_prompt_end)
 end
 
 function fish_right_prompt
-  echo -s -n (set_color black) (_git_hash) ' ' (date "+%b-%d %H:%M:%S") (set_color normal)
+  echo -s -n (set_color black) (_git_hash) (set_color normal)
 end
