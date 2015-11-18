@@ -103,6 +103,10 @@ function _env_prompt
   if set -q RAILS_ENV
     echo -s -n (set_color white -b blue) ' ' $RAILS_ENV ' ' (set_color normal)
   end
+
+  if set -q RAKE_ENV
+    echo -s -n (set_color white -b blue) ' ' $RAKE_ENV ' ' (set_color normal)
+  end
 end
 
 function fish_prompt

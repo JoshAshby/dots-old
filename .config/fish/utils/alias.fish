@@ -1,8 +1,8 @@
 alias vi 'vim'
-alias mv 'gvim'
 alias nv 'nvim'
-alias v 'open -a Neovim'
-alias nano 'nvim'
+alias v 'gvim'
+#alias v 'open -a Neovim'
+alias nano 'gvim'
 
 alias la 'ls -la'
 alias sl 'ls -aCS1hl'
