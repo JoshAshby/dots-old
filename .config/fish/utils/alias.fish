@@ -24,3 +24,5 @@ alias redis 'redis'
 alias redis.m 'redis-cli monitor'
 
 alias ran 'run_and_notify'
+
+alias dokku 'bash $HOME/.dokku/contrib/dokku_client.sh'

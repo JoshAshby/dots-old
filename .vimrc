@@ -20,6 +20,7 @@ Plugin 'vim-scripts/vcscommand.vim'
 " Utils
 Plugin 'scrooloose/nerdtree'
 Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'vimwiki/vimwiki'
 
 if has('gui_running')
   Plugin 'bling/vim-airline'
@@ -59,10 +60,20 @@ Plugin 'skammer/vim-css-color'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'othree/yajs.vim'
 
+" Quick fuzzy searching for files
 Plugin 'kien/ctrlp.vim'
 
 call vundle#end()
 filetype plugin indent on
+
+let g:vimwiki_list = [{
+  \ 'auto_export': 1,
+  \ 'auto_toc': 1,
+  \ 'path': '~/vimwiki/',
+  \ 'path_html': '~/vimwiki_html/',
+  \ 'template_path': '~/vimwiki/templates/',
+  \ 'template_default': 'default',
+  \ 'template_ext': '.tpl'}]
 
 " enable cwd .vimrc files
 set exrc
