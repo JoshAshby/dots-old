@@ -20,6 +20,6 @@ dirs_to_link.each do |dir|
 end
 
 hard_links.each do |file|
-  target = File.join home, ".#{file}"
+  target = File.join home, ".#{ file }"
   `ln "#{ File.join dotfiles, file }" "#{ target }"`
 end
