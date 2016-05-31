@@ -5,7 +5,7 @@ home = File.expand_path '~'
 dotfiles = File.expand_path '~/repos/dots'
 
 hard_links = %w||
-dirs_to_link = %w| bin .ssh .config/fish .config/nvim .vim |
+dirs_to_link = %w| bin .ssh .config/fish .config/nvim .vim .hammerspoon |
 skip_links = [ %w| README bootstrap.rb |, dirs_to_link, hard_links ].flatten
 
 Dir['*'].each do |file|
