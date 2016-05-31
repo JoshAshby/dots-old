@@ -42,11 +42,15 @@ function _left_prompt_end
   set _current_bg NONE
 end
 
+function _git_hash
+  echo -n (git log -1 ^/dev/null | sed -n -e 's/^commit \([a-z0-9]\{8\}\)[a-z0-9]\{32\}/\1/p')
+end
+
 function _git_prompt
   set index (gitstatus)
 
   if test -n "$index[1]"
-    echo -s -n (_left_prompt_segment yellow black) $_git_branch $index[1] ' '
+    echo -s -n (_left_prompt_segment red black) $_git_branch $index[1] ' '
 
     # is branch ahead?
 #    if test -n (git cherry -v $index[2])
@@ -75,10 +79,6 @@ function _git_prompt
   end
 end
 
-function _git_hash
-  echo -n (git log -1 ^/dev/null | sed -n -e 's/^commit \([a-z0-9]\{8\}\)[a-z0-9]\{32\}/\1/p')
-end
-
 function _ssh_prompt
   if set -q SSH_CONNECTION
     echo -s -n (_left_prompt_segment red white) $_ssh_icon
@@ -86,7 +86,7 @@ function _ssh_prompt
 end
 
 function _pwd_prompt
-  echo -s -n (_left_prompt_segment black white) (prompt_pwd)
+  echo -s -n (_left_prompt_segment white black) (prompt_pwd)
 end
 
 function _status_prompt
@@ -101,21 +101,31 @@ end
 
 function _env_prompt
   if set -q RAILS_ENV
-    echo -s -n (set_color white -b blue) ' ' $RAILS_ENV ' ' (set_color normal)
+    echo -s -n (_left_prompt_segment white blue) ' ' $RAILS_ENV ' ' (set_color normal)
   end
 
   if set -q RAKE_ENV
-    echo -s -n (set_color white -b blue) ' ' $RAKE_ENV ' ' (set_color normal)
+    echo -s -n (_left_prompt_segment white blue) ' ' $RAKE_ENV ' ' (set_color normal)
   end
+end
+
+function _git_hash_prompt
+  echo -s -n (_left_prompt_segment black black) ' ' (_git_hash) ' ' (set_color normal)
+end
+
+function _date_prompt
+  echo -s -n (_left_prompt_segment black white) ' ' (date "+%b-%d %H:%M:%S") ' ' (set_color normal)
 end
 
 function fish_prompt
   set _lstatus $status
-  echo -s -n '┌─' (_env_prompt) ' ' (date "+%b-%d %H:%M:%S")
+  echo -s -n '┌─' (_status_prompt) (_env_prompt) (_date_prompt) (_left_prompt_end)
   echo
-  echo -s -n '└─' (_ssh_prompt) (_pwd_prompt) (_git_prompt) (_status_prompt) (_left_prompt_end)
+  echo -s -n '| ' (_ssh_prompt) (_git_hash_prompt) (_left_prompt_end)
+  echo
+  echo -s -n '└─' (_pwd_prompt) (_git_prompt) (_left_prompt_end)
 end
 
-function fish_right_prompt
-  echo -s -n (set_color black) (_git_hash) (set_color normal)
-end
+# function fish_right_prompt
+#   echo -s -n (set_color black) (_git_hash) (set_color normal)
+# end
