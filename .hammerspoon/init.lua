@@ -1,5 +1,4 @@
 -- hashtag automatic reload
-hs.window.animationDuration = 0
 function reloadConfig(files)
   doReload = false
   for _,file in pairs(files) do
@@ -32,10 +31,13 @@ function onScreenChange()
 end
 hs.screen.watcher.new(onScreenChange):start()
 
+hs.window.animationDuration = 0
+hs.window.setFrameCorrectness = true
 
 -- modelyolo, mutation and state were stolen from robacarps hammerspoon here\
 -- https://github.com/robacarp/config_files/blob/master/.hammerspoon/init.lua
-
+--
+--
 -- modalyolo keeps track of bindings and allows us to wrap all events
 ModalYoLo = {}
 function ModalYoLo:new(modal_key)
@@ -63,24 +65,20 @@ end
   function ModalYoLo:bind(key, mutator)
     self.binding:bind('', key, function()
       self.binding:exit()
-      mutator(State:new(), Mutation:new())
+      mutator(Mutation:new())
     end)
   end
 
 -- a mutation object is what allows chainable transforms
 Mutation = {}
 function Mutation:new()
-  local win = hs.window.focusedWindow()
-  local scr = win:screen()
-
   local obby = {
     frame_x = 0,
     frame_y = 0,
     frame_w = 1000,
     frame_h = 1000,
-    frame   = win:frame(),
-    screen  = scr,
-    window  = win
+    screen  = hs.screen.mainScreen():fullFrame(),
+    window  = hs.window.focusedWindow()
   }
 
   self.__index = self
@@ -88,7 +86,15 @@ function Mutation:new()
 end
 
   function Mutation:debug()
-    hs.alert.show( table.tostring(self), 6 )
+   -- hs.alert.show(
+    --   "Heights: frame:" .. scr:frame().h .. ", fullFrame:" .. scr:fullFrame().h .. "\n" ..
+    --   "\tframe / fullFrame:" .. scr:frame().h / scr:fullFrame().h
+    -- )
+
+    hs.alert.show(
+      "X / Y: " .. self.frame_x .. ", " .. self.frame_y .. "\n" ..
+      "W / H: " .. self.frame_w .. ", " .. self.frame.h
+    , 3)
   end
 
   function Mutation:x(ex)
@@ -111,35 +117,33 @@ end
     return self
   end
 
-  function Mutation:commit()
-    self.frame.x = self.frame_x
-    self.frame.y = self.frame_y
-    self.frame.w = self.frame_w
-    self.frame.h = self.frame_h
+  function Mutation:adjust_frame()
+    screen = hs.screen.mainScreen()
+    local y_offset = screen:fullFrame().h - screen:frame().h
+    local x_offset = screen:fullFrame().w - screen:frame().w
 
-    self.window:setFrame(self.frame)
+    h_multiplier = screen:frame().h / screen:fullFrame().h
+    w_multiplier = screen:frame().w / screen:fullFrame().w
+
+    self.frame_x = self.frame_x * w_multiplier + x_offset
+    self.frame_y = self.frame_y * h_multiplier + y_offset
+    self.frame_w = self.frame_w * w_multiplier
+    self.frame_h = self.frame_h * h_multiplier
   end
 
+  function Mutation:commit()
+    self:adjust_frame()
+    self.window:setFrame(self:buildFrame())
+  end
 
--- State objects are constructed before each key responder
-State = {}
-function State:new()
-  local win = hs.window.focusedWindow()
-  local scr = win:screen()
-
-  local obby = {
-    frame_x = win:frame().x,
-    frame_y = win:frame().y,
-    frame_h = win:frame().h,
-    frame_w = win:frame().w,
-
-    scr_w   = scr:frame().w,
-    scr_h   = scr:frame().h
-  }
-
-  self.__index = self
-  return setmetatable(obby, self)
-end
+  function Mutation:buildFrame()
+    return hs.geometry(
+      self.frame_x,
+      self.frame_y,
+      self.frame_w,
+      self.frame_h
+    )
+  end
 
 -- Keys for screen resize are generally laid out as the following:
 -- [ e r t ]
@@ -159,96 +163,96 @@ end
 half_modal = ModalYoLo:new('f6')
 
 -- Top Left corner
-half_modal:bind('e', function(s,mutator)
-  mutator:x(0):y(0):w(s.scr_w * 0.5):h(s.scr_h * 0.5):commit()
+half_modal:bind('e', function(mutator)
+  mutator:x(0):y(0):w(mutator.screen.w / 2):h(mutator.screen.h / 2):commit()
 end)
 
 -- Top half
-half_modal:bind('r', function(s,mutator)
-  mutator:x(0):y(0):w(s.scr_w):h(s.scr_h * 0.5):commit()
+half_modal:bind('r', function(mutator)
+  mutator:x(0):y(0):w(mutator.screen.w):h(mutator.screen.h / 2):commit()
 end)
 
 -- Top Right corner
-half_modal:bind('t', function(s,mutator)
-  mutator:x(s.scr_w * 0.5):y(0):w(s.scr_w * 0.5):h(s.scr_h * 0.5):commit()
+half_modal:bind('t', function(mutator)
+  mutator:x(mutator.screen.w / 2):y(0):w(mutator.screen.w / 2):h(mutator.screen.h / 2):commit()
 end)
 
 -- Left half
-half_modal:bind('d', function(s,mutator)
-  mutator:x(0):y(0):w(s.scr_w * 0.5):h(s.scr_h):commit()
+half_modal:bind('d', function(mutator)
+  mutator:x(0):y(0):w(mutator.screen.w / 2):h(mutator.screen.h):commit()
 end)
 
 -- Full Screen
-half_modal:bind('f', function(s, mutator)
-  mutator:x(0):y(0):w(s.scr_w):h(s.scr_h):commit()
+half_modal:bind('f', function( mutator)
+  mutator:x(0):y(0):w(mutator.screen.w):h(mutator.screen.h):commit()
 end)
 
 -- Right half
-half_modal:bind('g', function(s,mutator)
-  mutator:x(s.scr_w * 0.5):y(0):w(s.scr_w * 0.5):h(s.scr_h):commit()
+half_modal:bind('g', function(mutator)
+  mutator:x(mutator.screen.w / 2):y(0):w(mutator.screen.w / 2):h(mutator.screen.h):commit()
 end)
 
 -- Bottom Left corner
-half_modal:bind('c', function(s,mutator)
-  mutator:x(0):y(s.scr_h * 0.5):w(s.scr_w * 0.5):h(s.scr_h * 0.5):commit()
+half_modal:bind('c', function(mutator)
+  mutator:x(0):y(mutator.screen.h / 2):w(mutator.screen.w / 2):h(mutator.screen.h / 2):commit()
 end)
 
 -- Bottom half
-half_modal:bind('v', function(s,mutator)
-  mutator:x(0):y(s.scr_h * 0.5):w(s.scr_w):h(s.scr_h * 0.5):commit()
+half_modal:bind('v', function(mutator)
+  mutator:x(0):y(mutator.screen.h / 2):w(mutator.screen.w):h(mutator.screen.h / 2):commit()
 end)
 
 -- Bottom Right corner
-half_modal:bind('b', function(s,mutator)
-  mutator:x(s.scr_w * 0.5):y(s.scr_h * 0.5):w(s.scr_w * 0.5):h(s.scr_h * 0.5):commit()
+half_modal:bind('b', function(mutator)
+  mutator:x(mutator.screen.w / 2):y(mutator.screen.h / 2):w(mutator.screen.w / 4):h(mutator.screen.h / 4):commit()
 end)
 
 -- 80% size modal
 eighty_percent_modal = ModalYoLo:new('f5')
 
 -- Top Left corner
-eighty_percent_modal:bind('e', function(s,mutator)
-  mutator:x(0):y(0):w(s.scr_w * 0.8):h(s.scr_h * 0.8):commit()
+eighty_percent_modal:bind('e', function(mutator)
+  mutator:x(0):y(0):w(mutator.screen.w - 150):h(mutator.screen.h - 150):commit()
 end)
 
 -- Top eighty_percent
-eighty_percent_modal:bind('r', function(s,mutator)
-  mutator:x(0):y(0):w(s.scr_w):h(s.scr_h * 0.8):commit()
+eighty_percent_modal:bind('r', function(mutator)
+  mutator:x(0):y(0):w(mutator.screen.w):h(mutator.screen.h - 150):commit()
 end)
 
 -- Top Right corner
-eighty_percent_modal:bind('t', function(s,mutator)
-  mutator:x(s.scr_w * 0.2):y(0):w(s.scr_w * 0.8):h(s.scr_h * 0.8):commit()
+eighty_percent_modal:bind('t', function(mutator)
+  mutator:x(150):y(0):w(mutator.screen.w - 150):h(mutator.screen.h - 150):commit()
 end)
 
 -- Left eighty_percent
-eighty_percent_modal:bind('d', function(s,mutator)
-  mutator:x(0):y(0):w(s.scr_w * 0.8):h(s.scr_h):commit()
+eighty_percent_modal:bind('d', function(mutator)
+  mutator:x(0):y(0):w(mutator.screen.w - 150):h(mutator.screen.h):commit()
 end)
 
 -- Full Screen
-eighty_percent_modal:bind('f', function(s, mutator)
-  mutator:x(s.scr_w * 0.2):y(s.scr_h * 0.2):w(s.scr_w * 0.6):h(s.scr_h * 0.6):commit()
+eighty_percent_modal:bind('f', function( mutator)
+  mutator:x(150):y(150):w(mutator.screen.w - 300):h(mutator.screen.h - 300):commit()
 end)
 
 -- Right eighty_percent
-eighty_percent_modal:bind('g', function(s,mutator)
-  mutator:x(s.scr_w * 0.2):y(0):w(s.scr_w * 0.8):h(s.scr_h):commit()
+eighty_percent_modal:bind('g', function(mutator)
+  mutator:x(150):y(0):w(mutator.screen.w - 150):h(mutator.screen.h):commit()
 end)
 
 -- Bottom Left corner
-eighty_percent_modal:bind('c', function(s,mutator)
-  mutator:x(0):y(s.scr_h * 0.2):w(s.scr_w * 0.8):h(s.scr_h * 0.8):commit()
+eighty_percent_modal:bind('c', function(mutator)
+  mutator:x(0):y(150):w(mutator.screen.w - 150):h(mutator.screen.h - 150):commit()
 end)
 
 -- Bottom eighty_percent
-eighty_percent_modal:bind('v', function(s,mutator)
-  mutator:x(0):y(s.scr_h * 0.2):w(s.scr_w):h(s.scr_h * 0.8):commit()
+eighty_percent_modal:bind('v', function(mutator)
+  mutator:x(0):y(150):w(mutator.screen.w):h(mutator.screen.h - 150):commit()
 end)
 
 -- Bottom Right corner
-eighty_percent_modal:bind('b', function(s,mutator)
-  mutator:x(s.scr_w * 0.2):y(s.scr_h * 0.2):w(s.scr_w * 0.8):h(s.scr_h * 0.8):commit()
+eighty_percent_modal:bind('b', function(mutator)
+  mutator:x(150):y(150):w(mutator.screen.w - 150):h(mutator.screen.h - 150):commit()
 end)
 
 
