@@ -104,8 +104,8 @@ function _env_prompt
     echo -s -n (_left_prompt_segment white blue) ' ' $RAILS_ENV ' ' (set_color normal)
   end
 
-  if set -q RAKE_ENV
-    echo -s -n (_left_prompt_segment white blue) ' ' $RAKE_ENV ' ' (set_color normal)
+  if set -q RACK_ENV
+    echo -s -n (_left_prompt_segment white blue) ' ' $RACK_ENV ' ' (set_color normal)
   end
 end
 

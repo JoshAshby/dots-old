@@ -33,3 +33,5 @@ alias gcob 'git checkout -b'
 alias gb 'git branch'
 
 alias gsh 'git stash'
+
+alias gptch 'git apply -3'

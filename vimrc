@@ -61,10 +61,13 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'othree/yajs.vim'
 
 " Quick fuzzy searching for files
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'mantiz/vim-plugin-dirsettings'
 
 call vundle#end()
 filetype plugin indent on
+
+call dirsettings#Install()
 
 let g:vimwiki_list = [{
   \ 'auto_export': 1,
