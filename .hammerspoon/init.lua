@@ -173,134 +173,130 @@ half_modal = ModalYoLo:new('f6')
 
 -- Top Left corner
 half_modal:bind('w', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w / 2):h(mutator.frame.h / 2):commit()
+  mutator:x(0):y(0):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
 end)
 
--- Top half
+-- Top eighty_percent
 half_modal:bind('e', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w):h(mutator.frame.h / 2):commit()
+  mutator:x(0):y(0):w(mutator.frame.w):h(mutator.frame.h - 150):commit()
 end)
 
 -- Top Right corner
 half_modal:bind('r', function(mutator)
-  mutator:x(mutator.frame.w / 2):y(0):w(mutator.frame.w / 2):h(mutator.frame.h / 2):commit()
+  mutator:x(150):y(0):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
 end)
 
--- Left half
+-- Left eighty_percent
 half_modal:bind('s', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w / 2):h(mutator.frame.h):commit()
+  mutator:x(0):y(0):w(mutator.frame.w - 150):h(mutator.frame.h):commit()
 end)
 
 -- Full Screen
 half_modal:bind('d', function( mutator)
-  mutator:x(0):y(0):w(mutator.frame.w):h(mutator.frame.h):commit()
+  mutator:x(150):y(150):w(mutator.frame.w - 300):h(mutator.frame.h - 300):commit()
 end)
 
--- Right half
+-- Right eighty_percent
 half_modal:bind('f', function(mutator)
-  mutator:x(mutator.frame.w / 2):y(0):w(mutator.frame.w / 2):h(mutator.frame.h):commit()
+  mutator:x(150):y(0):w(mutator.frame.w - 150):h(mutator.frame.h):commit()
 end)
 
 -- Bottom Left corner
 half_modal:bind('x', function(mutator)
-  mutator:x(0):y(mutator.frame.h / 2):w(mutator.frame.w / 2):h(mutator.frame.h / 2):commit()
+  mutator:x(0):y(150):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
 end)
 
--- Bottom half
+-- Bottom eighty_percent
 half_modal:bind('c', function(mutator)
-  mutator:x(0):y(mutator.frame.h / 2):w(mutator.frame.w):h(mutator.frame.h / 2):commit()
+  mutator:x(0):y(150):w(mutator.frame.w):h(mutator.frame.h - 150):commit()
 end)
 
 -- Bottom Right corner
 half_modal:bind('v', function(mutator)
-  mutator:x(mutator.frame.w / 2):y(mutator.frame.h / 2):w(mutator.frame.w / 2):h(mutator.frame.h / 2):commit()
+  mutator:x(150):y(150):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
 end)
 
 
-
-eighty_percent_modal = ModalYoLo:new('f5')
+ultrawide_modal = ModalYoLo:new('f5')
 
 -- Top Left 1/2 Tall 1/2 Wide
-eighty_percent_modal:bind('q', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w - (mutator.frame.w/2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('q', function(mutator)
+  mutator:x(0):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
 end)
 
 -- Full Left 1 Tall 1/2 Wide
-eighty_percent_modal:bind('a', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w - (mutator.frame.w/2)):h(mutator.frame.h):commit()
+ultrawide_modal:bind('a', function(mutator)
+  mutator:x(0):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
 end)
 
 -- Bottom Left 1/2 Tall 1/2 Wide
-eighty_percent_modal:bind('z', function(mutator)
-  mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w - (mutator.frame.w/2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('z', function(mutator)
+  mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
 end)
 
 
 -- Top Left 1/2 Tall 1/3 Wide
-eighty_percent_modal:bind('w', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('w', function(mutator)
+  mutator:x(0):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
 end)
 
 -- Full Left 1 Tall 1/3 Wide
-eighty_percent_modal:bind('s', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h):commit()
+ultrawide_modal:bind('s', function(mutator)
+  mutator:x(0):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
 end)
 
 -- Bottom Left 1/2 Tall 1/3 Wide
-eighty_percent_modal:bind('x', function(mutator)
-  mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('x', function(mutator)
+  mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
 end)
 
 
 -- Top Center 1/2 Tall 1/3 Wide
-eighty_percent_modal:bind('e', function(mutator)
-  mutator:x(mutator.frame.w/3):y(0):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('e', function(mutator)
+  mutator:x(mutator.frame.w/3):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
 end)
 
 -- Full Center 1 Tall 1/3 Wide
-eighty_percent_modal:bind('d', function(mutator)
-  mutator:x(mutator.frame.w/3):y(0):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h):commit()
+ultrawide_modal:bind('d', function(mutator)
+  mutator:x(mutator.frame.w/3):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
 end)
 
 -- Bottom Center 1/2 Tall 1/3 Wide
-eighty_percent_modal:bind('c', function(mutator)
-  mutator:x(mutator.frame.w/3):y(mutator.frame.h/2):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('c', function(mutator)
+  mutator:x(mutator.frame.w/3):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
 end)
 
 
 -- Top Right 1/2 Tall 1/3 Wide
-eighty_percent_modal:bind('r', function(mutator)
-  mutator:x((mutator.frame.w/3)*2):y(0):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('r', function(mutator)
+  mutator:x((mutator.frame.w/3)*2):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
 end)
 
 -- Full Right 1 Tall 1/3 Wide
-eighty_percent_modal:bind('f', function(mutator)
-  mutator:x((mutator.frame.w/3)*2):y(0):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h):commit()
+ultrawide_modal:bind('f', function(mutator)
+  mutator:x((mutator.frame.w/3)*2):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
 end)
 
 -- Bottom Right 1/2 Tall 1/3 Wide
-eighty_percent_modal:bind('v', function(mutator)
-  mutator:x((mutator.frame.w/3)*2):y(mutator.frame.h/2):w(mutator.frame.w - ((mutator.frame.w/3)*2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('v', function(mutator)
+  mutator:x((mutator.frame.w/3)*2):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
 end)
 
 
 -- Top Right 1/2 Tall 1/2 Wide
-eighty_percent_modal:bind('t', function(mutator)
-  mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w - (mutator.frame.w/2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('t', function(mutator)
+  mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
 end)
 
 -- Full Right 1 Tall 1/2 Wide
-eighty_percent_modal:bind('g', function(mutator)
-  mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w - (mutator.frame.w/2)):h(mutator.frame.h):commit()
+ultrawide_modal:bind('g', function(mutator)
+  mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
 end)
 
 -- Bottom Right 1/2 Tall 1/2 Wide
-eighty_percent_modal:bind('b', function(mutator)
-  mutator:x(mutator.frame.w/2):y(mutator.frame.h/2):w(mutator.frame.w - (mutator.frame.w/2)):h(mutator.frame.h - (mutator.frame.h/2)):commit()
+ultrawide_modal:bind('b', function(mutator)
+  mutator:x(mutator.frame.w/2):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
 end)
-
-
-
 
 
 -- And finally let me know that you are all loaded
