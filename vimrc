@@ -19,14 +19,14 @@ Plugin 'vim-scripts/vcscommand.vim'
 
 " Utils
 Plugin 'scrooloose/nerdtree'
-Plugin 'jeetsukumaran/vim-buffergator'
+"Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'vimwiki/vimwiki'
 
 if has('gui_running')
   Plugin 'bling/vim-airline'
 endif
 
-Plugin 'majutsushi/tagbar'
+"Plugin 'majutsushi/tagbar'
 
 "Plugin 'Shougo/neocomplete.vim'
 
@@ -52,12 +52,12 @@ Plugin 'ervandew/supertab'
 
 " Colors!
 "Plugin 'godlygeek/csapprox'
-Plugin 'chriskempson/base16-vim'
+"Plugin 'chriskempson/base16-vim'
 Plugin 'Junza/Spink'
 
 " Language additions
 Plugin 'skammer/vim-css-color'
-Plugin 'plasticboy/vim-markdown'
+"Plugin 'plasticboy/vim-markdown'
 Plugin 'othree/yajs.vim'
 
 " Quick fuzzy searching for files
@@ -214,7 +214,8 @@ set completeopt=menu,preview,longest
 
 let g:SuperTabCrMapping = 0
 let g:SuperTabDefaultCompletionType = 'context'
-let g:SuperTabContextDefaultCompletionType = '<c-x><c-u>'
+"let g:SuperTabContextDefaultCompletionType = '<c-x><c-u>'
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
 autocmd FileType *
     \ if &omnifunc != '' |
     \     call SuperTabChain(&omnifunc, '<c-p>') |
@@ -245,7 +246,7 @@ let g:NERDCustomDelimiters = {
 let NERD_ruby_alt_style=1
 
 " buffergator stuff
-let g:buffergator_suppress_keymaps=1
+" let g:buffergator_suppress_keymaps=1
 
 " ctrlp ignore settings
 if exists("g:ctrl_user_command")
@@ -320,8 +321,8 @@ map <silent> <leader><F8> :set fo-=t<CR>
 map <silent> <F9> :set invhlsearch<CR>
 
 " Buffergator stuff
-noremap <silent> <F10> :BuffergatorToggle<CR>
-noremap <silent> <leader><F10> :BuffergatorTabsToggle<CR>
+"noremap <silent> <F10> :BuffergatorToggle<CR>
+"noremap <silent> <leader><F10> :BuffergatorTabsToggle<CR>
 
 nmap <silent> s :set spell<CR>
 nnoremap <silent> <leader>s :set nospell<CR>
