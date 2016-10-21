@@ -50,9 +50,9 @@ function ModalYoLo:new(modal_key)
     obby.binding:exit()
   end)
 
-  -- automatically disable modal key after 1 second
+  -- automatically disable modal key after 5 seconds
   function obby.binding:entered()
-    hs.timer.doAfter(2, function()
+    hs.timer.doAfter(5, function()
       obby.binding:exit()
     end)
   end
@@ -79,7 +79,8 @@ function Mutation:new()
     frame_h = 1000,
     window  = hs.window.focusedWindow(),
     screen  = hs.window.focusedWindow():screen(),
-    frame   = hs.window.focusedWindow():screen():fullFrame()
+    frame   = hs.window.focusedWindow():screen():fullFrame(),
+    ratio   =  math.floor(hs.window.focusedWindow():screen():fullFrame().w/hs.window.focusedWindow():screen():fullFrame().h)
   }
 
   self.__index = self
@@ -154,148 +155,326 @@ end
 --  icon:setTitle("MP: " .. mouse.x .. " " .. mouse.y .. "")
 --end)
 
--- Keys for screen resize are generally laid out as the following:
+-- Keys for screen resize are laid out as the following:
 -- [ q | w  e  r | t ]
 -- [ a | s (d) f | g ]
 -- [ z | x  c  v | b ]
--- Where each letter represents the area that the window will take up, eg
--- `r` will put the window to full width and dock it to the top of the screen,
--- with the given modal keys height function. `e` will dock the window to the
--- top left corner and the width and height will both be taken from the modal
--- key.
 --
 -- The modal keys that I use are:
 -- - f6 for half sized windows
 -- - f5 for half, third columns for an ultrawide monitor
 
--- Half size modal
-half_modal = ModalYoLo:new('f6')
+primary_modal = ModalYoLo:new('f5')
 
--- Top Left corner
-half_modal:bind('w', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+-- UW : Top Left 1/2 Tall 2/3 Wide
+-- SQ : Top Left 1/2 Tall 1/2 Wide
+primary_modal:bind('q', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(0):w((mutator.frame.w/3)*2):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  end
 end)
 
--- Top eighty_percent
-half_modal:bind('e', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w):h(mutator.frame.h - 150):commit()
+-- UW : Full Left 1 Tall 2/3 Wide
+-- SQ : Full Left 1 Tall 1/2 Wide
+primary_modal:bind('a', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(0):w((mutator.frame.w/3)*2):h(mutator.frame.h):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
+  end
 end)
 
--- Top Right corner
-half_modal:bind('r', function(mutator)
-  mutator:x(150):y(0):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
-end)
-
--- Left eighty_percent
-half_modal:bind('s', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w - 150):h(mutator.frame.h):commit()
-end)
-
--- Full Screen
-half_modal:bind('d', function( mutator)
-  mutator:x(150):y(150):w(mutator.frame.w - 300):h(mutator.frame.h - 300):commit()
-end)
-
--- Right eighty_percent
-half_modal:bind('f', function(mutator)
-  mutator:x(150):y(0):w(mutator.frame.w - 150):h(mutator.frame.h):commit()
-end)
-
--- Bottom Left corner
-half_modal:bind('x', function(mutator)
-  mutator:x(0):y(150):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
-end)
-
--- Bottom eighty_percent
-half_modal:bind('c', function(mutator)
-  mutator:x(0):y(150):w(mutator.frame.w):h(mutator.frame.h - 150):commit()
-end)
-
--- Bottom Right corner
-half_modal:bind('v', function(mutator)
-  mutator:x(150):y(150):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+-- UW : Bottom Left 1/2 Tall 2/3 Wide
+-- SQ : Bottom Left 1/2 Tall 1/2 Wide
+primary_modal:bind('z', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(mutator.frame.h/2):w((mutator.frame.w/3)*2):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  end
 end)
 
 
-ultrawide_modal = ModalYoLo:new('f5')
-
--- Top Left 1/2 Tall 1/2 Wide
-ultrawide_modal:bind('q', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+-- UW : Top Left 1/2 Tall 1/3 Wide
+-- SQ : Top Left 80% Tall 80% Wide
+primary_modal:bind('w', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+  end
 end)
 
--- Full Left 1 Tall 1/2 Wide
-ultrawide_modal:bind('a', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
+-- UW : Full Left 1 Tall 1/3 Wide
+-- SQ : Full Left 1 Tall 80% Wide
+primary_modal:bind('s', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w - 150):h(mutator.frame.h):commit()
+  end
 end)
 
--- Bottom Left 1/2 Tall 1/2 Wide
-ultrawide_modal:bind('z', function(mutator)
-  mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
-end)
-
-
--- Top Left 1/2 Tall 1/3 Wide
-ultrawide_modal:bind('w', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
-end)
-
--- Full Left 1 Tall 1/3 Wide
-ultrawide_modal:bind('s', function(mutator)
-  mutator:x(0):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
-end)
-
--- Bottom Left 1/2 Tall 1/3 Wide
-ultrawide_modal:bind('x', function(mutator)
-  mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+-- UW : Bottom Left 1/2 Tall 1/3 Wide
+-- SQ : Bottom Left 80% Tall 80% Wide
+primary_modal:bind('x', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(150):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+  end
 end)
 
 
--- Top Center 1/2 Tall 1/3 Wide
-ultrawide_modal:bind('e', function(mutator)
-  mutator:x(mutator.frame.w/3):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+-- UW : Top Center 1/2 Tall 1/3 Wide
+-- SQ : Top Center 80% Tall 1   Wide
+primary_modal:bind('e', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/3):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w):h(mutator.frame.h - 150):commit()
+  end
 end)
 
--- Full Center 1 Tall 1/3 Wide
-ultrawide_modal:bind('d', function(mutator)
-  mutator:x(mutator.frame.w/3):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
+-- UW : Full Center 1 Tall 1/3 Wide
+-- SQ : Full Center 1 Tall 1   Wide
+primary_modal:bind('d', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/3):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w):h(mutator.frame.h):commit()
+  end
 end)
 
--- Bottom Center 1/2 Tall 1/3 Wide
-ultrawide_modal:bind('c', function(mutator)
-  mutator:x(mutator.frame.w/3):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
-end)
-
-
--- Top Right 1/2 Tall 1/3 Wide
-ultrawide_modal:bind('r', function(mutator)
-  mutator:x((mutator.frame.w/3)*2):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
-end)
-
--- Full Right 1 Tall 1/3 Wide
-ultrawide_modal:bind('f', function(mutator)
-  mutator:x((mutator.frame.w/3)*2):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
-end)
-
--- Bottom Right 1/2 Tall 1/3 Wide
-ultrawide_modal:bind('v', function(mutator)
-  mutator:x((mutator.frame.w/3)*2):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+-- UW : Bottom Center 1/2 Tall 1/3 Wide
+-- SQ : Bottom Center 80% Tall 1   Wide
+primary_modal:bind('c', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/3):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(150):w(mutator.frame.w):h(mutator.frame.h - 150):commit()
+  end
 end)
 
 
--- Top Right 1/2 Tall 1/2 Wide
-ultrawide_modal:bind('t', function(mutator)
-  mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+-- UW : Top Right 1/2 Tall 1/3 Wide
+-- SQ : Top Right 80% Tall 80% Wide
+primary_modal:bind('r', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x((mutator.frame.w/3)*2):y(0):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(150):y(0):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+  end
 end)
 
--- Full Right 1 Tall 1/2 Wide
-ultrawide_modal:bind('g', function(mutator)
-  mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
+-- UW : Full Right 1 Tall 1/3 Wide
+-- SQ : Full Right 1 Tall 80% Wide
+primary_modal:bind('f', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x((mutator.frame.w/3)*2):y(0):w(mutator.frame.w/3):h(mutator.frame.h):commit()
+  else
+    mutator:x(150):y(0):w(mutator.frame.w - 150):h(mutator.frame.h):commit()
+  end
 end)
 
--- Bottom Right 1/2 Tall 1/2 Wide
-ultrawide_modal:bind('b', function(mutator)
-  mutator:x(mutator.frame.w/2):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+-- UW : Bottom Right 1/2 Tall 1/3 Wide
+-- SQ : Bottom Right 80% Tall 80% Wide
+primary_modal:bind('v', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x((mutator.frame.w/3)*2):y(mutator.frame.h/2):w(mutator.frame.w/3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(150):y(150):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+  end
+end)
+
+
+-- UW : Top Right 1/2 Tall 2/3 Wide
+-- SQ : Top Right 1/2 Tall 1/2 Wide
+primary_modal:bind('t', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/3):y(0):w((mutator.frame.w/3)*2):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  end
+end)
+
+-- UW : Full Right 1 Tall 2/3 Wide
+-- SQ : Full Right 1 Tall 1/2 Wide
+primary_modal:bind('g', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/3):y(0):w((mutator.frame.w/3)*2):h(mutator.frame.h):commit()
+  else
+    mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
+  end
+end)
+
+-- UW : Bottom Right 1/2 Tall 2/3 Wide
+-- SQ : Bottom Right 1/2 Tall 1/2 Wide
+primary_modal:bind('b', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/3):y(mutator.frame.h/2):w((mutator.frame.w/3)*2):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(mutator.frame.w/2):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  end
+end)
+
+
+secondary_modal = ModalYoLo:new('f6')
+
+-- UW : Top Left 1/2 Tall 3/4 Wide
+-- SQ : Top Left 1/2 Tall 1/2 Wide
+secondary_modal:bind('q', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(0):w((mutator.frame.w/4)*3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  end
+end)
+
+-- UW : Full Left 1 Tall 3/4 Wide
+-- SQ : Full Left 1 Tall 1/2 Wide
+secondary_modal:bind('a', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(0):w((mutator.frame.w/4)*3):h(mutator.frame.h):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
+  end
+end)
+
+-- UW : Bottom Left 1/2 Tall 3/4 Wide
+-- SQ : Bottom Left 1/2 Tall 1/2 Wide
+secondary_modal:bind('z', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(mutator.frame.h/2):w((mutator.frame.w/4)*3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  end
+end)
+
+
+-- UW : Top Left 1/2 Tall 1/4 Wide
+-- SQ : Top Left 80% Tall 80% Wide
+secondary_modal:bind('w', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(0):w(mutator.frame.w/4):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+  end
+end)
+
+-- UW : Full Left 1 Tall 1/4 Wide
+-- SQ : Full Left 1 Tall 80% Wide
+secondary_modal:bind('s', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(0):w(mutator.frame.w/4):h(mutator.frame.h):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w - 150):h(mutator.frame.h):commit()
+  end
+end)
+
+-- UW : Bottom Left 1/2 Tall 1/4 Wide
+-- SQ : Bottom Left 80% Tall 80% Wide
+secondary_modal:bind('x', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(0):y(mutator.frame.h/2):w(mutator.frame.w/4):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(150):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+  end
+end)
+
+
+-- UW : Top Center 1/2 Tall 1/2 Wide
+-- SQ : Top Center 80% Tall 1   Wide
+secondary_modal:bind('e', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/4):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w):h(mutator.frame.h - 150):commit()
+  end
+end)
+
+-- UW : Full Center 1 Tall 1/2 Wide
+-- SQ : Full Center 1 Tall 1   Wide
+secondary_modal:bind('d', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/4):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
+  else
+    mutator:x(0):y(0):w(mutator.frame.w):h(mutator.frame.h):commit()
+  end
+end)
+
+-- UW : Bottom Center 1/2 Tall 1/2 Wide
+-- SQ : Bottom Center 80% Tall 1   Wide
+secondary_modal:bind('c', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/4):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(0):y(150):w(mutator.frame.w):h(mutator.frame.h - 150):commit()
+  end
+end)
+
+
+-- UW : Top Right 1/2 Tall 1/4 Wide
+-- SQ : Top Right 80% Tall 80% Wide
+secondary_modal:bind('r', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x((mutator.frame.w/4)*3):y(0):w(mutator.frame.w/4):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(150):y(0):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+  end
+end)
+
+-- UW : Full Right 1 Tall 1/4 Wide
+-- SQ : Full Right 1 Tall 80% Wide
+secondary_modal:bind('f', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x((mutator.frame.w/4)*3):y(0):w(mutator.frame.w/4):h(mutator.frame.h):commit()
+  else
+    mutator:x(150):y(0):w(mutator.frame.w - 150):h(mutator.frame.h):commit()
+  end
+end)
+
+-- UW : Bottom Right 1/2 Tall 1/4 Wide
+-- SQ : Bottom Right 80% Tall 80% Wide
+secondary_modal:bind('v', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x((mutator.frame.w/4)*3):y(mutator.frame.h/2):w(mutator.frame.w/4):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(150):y(150):w(mutator.frame.w - 150):h(mutator.frame.h - 150):commit()
+  end
+end)
+
+
+-- UW : Top Right 1/2 Tall 3/4 Wide
+-- SQ : Top Right 1/2 Tall 1/2 Wide
+secondary_modal:bind('t', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/4):y(0):w((mutator.frame.w/4)*3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  end
+end)
+
+-- UW : Full Right 1 Tall 3/4 Wide
+-- SQ : Full Right 1 Tall 1/2 Wide
+secondary_modal:bind('g', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/4):y(0):w((mutator.frame.w/4)*3):h(mutator.frame.h):commit()
+  else
+    mutator:x(mutator.frame.w/2):y(0):w(mutator.frame.w/2):h(mutator.frame.h):commit()
+  end
+end)
+
+-- UW : Bottom Right 1/2 Tall 3/4 Wide
+-- SQ : Bottom Right 1/2 Tall 1/2 Wide
+secondary_modal:bind('b', function(mutator)
+  if mutator.ratio == 2 then
+    mutator:x(mutator.frame.w/4):y(mutator.frame.h/2):w((mutator.frame.w/4)*3):h(mutator.frame.h/2):commit()
+  else
+    mutator:x(mutator.frame.w/2):y(mutator.frame.h/2):w(mutator.frame.w/2):h(mutator.frame.h/2):commit()
+  end
 end)
 
 
