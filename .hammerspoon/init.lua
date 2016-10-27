@@ -57,7 +57,7 @@ hs.window.animationDuration = 0
 --   }
 -- }
 modal_setup = {
-  [ 'f5' ] = {
+  [ { '', 'f5' } ] = {
     [ 1 ] = {
       q = { 'TL', 1/2, 1/2 }, w = { 'TL', 9/10, 8/10 }, e = { 'T' , 1   , 8/10 }, r = { 'TR', 9/10, 8/10 }, t = { 'TR', 1/2, 1/2 },
       a = { 'L' , 1/2,   1 }, s = { 'L' , 9/10,  1   }, d = { 'C' , 1   ,  1   }, f = { 'R' , 9/10,  1   }, g = { 'R' , 1/2,  1  },
@@ -69,7 +69,7 @@ modal_setup = {
       z = { 'BL', 2/3, 1/2 }, x = { 'BL', 1/3 , 1/2  }, c = { 'BC', 1/3 , 1/2  }, v = { 'BR', 1/3 , 1/2  }, b = { 'BR', 2/3, 1/2 }
     }
   },
-  [ 'f6' ] = {
+  [ { '', 'f6' } ] = {
     [ 1 ] = {
                                                         e = { 'T' ,  1  , 1/2  },
                                                         d = { 'C' , 9/10, 8/10 },
@@ -176,7 +176,7 @@ end
 
 
 for modal_key, modal_settings in pairs(modal_setup) do
-  local modal = ModalYoLo:new(modal_key)
+  local modal = ModalYoLo:new(table.unpack(modal_key))
 
   -- Reformats our modal setup to be a bit easier to work with below
   local keys = {}

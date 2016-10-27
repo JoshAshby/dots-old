@@ -4,9 +4,9 @@
 --
 -- modalyolo keeps track of bindings and allows us to wrap all events
 ModalYoLo = {}
-function ModalYoLo:new(modal_key)
+function ModalYoLo:new(mod_key, modal_key)
   local obby = {
-    binding = hs.hotkey.modal.new('', modal_key)
+    binding = hs.hotkey.modal.new(mod_key, modal_key)
   }
 
   -- disable binding on escape key
