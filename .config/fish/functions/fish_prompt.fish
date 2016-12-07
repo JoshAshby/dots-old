@@ -117,11 +117,17 @@ function _date_prompt
   echo -s -n (_left_prompt_segment black white) ' ' (date "+%b-%d %H:%M:%S") ' ' (set_color normal)
 end
 
+function _delta_prompt
+  if test "$_exec_delta" -gt 5
+    echo -s -n (_left_prompt_segment black black) ' ∆t=' (decode_time $_exec_delta) ' ' (set_color_normal)
+  end
+end
+
 function fish_prompt
   set _lstatus $status
   echo -s -n '┌─' (_status_prompt) (_env_prompt) (_date_prompt) (_left_prompt_end)
   echo
-  echo -s -n '| ' (_ssh_prompt) (_git_hash_prompt) (_left_prompt_end)
+  echo -s -n '| ' (_ssh_prompt) (_git_hash_prompt) (_delta_prompt) (_left_prompt_end)
   echo
   echo -s -n '└─' (_pwd_prompt) (_git_prompt) (_left_prompt_end)
 end
