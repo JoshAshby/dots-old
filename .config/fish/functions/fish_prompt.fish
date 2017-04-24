@@ -119,7 +119,7 @@ end
 
 function _delta_prompt
   if test "$_exec_delta" -gt 5
-    echo -s -n (_left_prompt_segment black black) ' ∆t=' (decode_time $_exec_delta) ' ' (set_color_normal)
+    echo -s -n (_left_prompt_segment black black) ' ∆t=' (decode_time $_exec_delta) ' ' (set_color normal)
   end
 end
 

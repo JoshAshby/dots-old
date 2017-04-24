@@ -3,5 +3,13 @@
 *.un~
 .DS_Store
 .ackrc
+.vimrc
+
+custom_patch
+polymer/config/initializers/awesome_print.rb
+polymer/config/initializers/scubaru.rb
+polymer/lib/tasks/josh.rake
+polymer/strip.pl
+polymer/db/dumps/
 
 .gems/

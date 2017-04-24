@@ -13,17 +13,17 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'L9'
 
 " Git related bundles
-"Plugin 'fugitive.vim'
+Plugin 'fugitive.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-scripts/vcscommand.vim'
 
 " Utils
 Plugin 'scrooloose/nerdtree'
 "Plugin 'jeetsukumaran/vim-buffergator'
-Plugin 'vimwiki/vimwiki'
+"Plugin 'vimwiki/vimwiki'
 
 if has('gui_running')
-  Plugin 'bling/vim-airline'
+  Plugin 'vim-airline/vim-airline'
 endif
 
 "Plugin 'majutsushi/tagbar'
@@ -49,6 +49,8 @@ Plugin 'vim-scripts/Align'
 Plugin 'ervandew/supertab'
 " Plugin 'davidhalter/jedi-vim'
 " Plugin 'AndrewRadev/linediff.vim'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-session'
 
 " Colors!
 "Plugin 'godlygeek/csapprox'
@@ -56,9 +58,11 @@ Plugin 'ervandew/supertab'
 Plugin 'Junza/Spink'
 
 " Language additions
-Plugin 'skammer/vim-css-color'
+Plugin 'chrisbra/Colorizer'
+"Plugin 'skammer/vim-css-color'
 "Plugin 'plasticboy/vim-markdown'
 Plugin 'othree/yajs.vim'
+Plugin 'vim-ruby/vim-ruby'
 
 " Quick fuzzy searching for files
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -85,6 +89,10 @@ set undofile
 
 syntax on
 
+" Use an older regex engine, which is supposedly faster for Ruby syntaxt
+" highlighting
+set re=1
+
 function! TermSetup()
   " Make sure things look pretty and use a nice colorscheme for the gui
   set t_Co=256
@@ -103,11 +111,15 @@ function! GuiSetup()
   set noballooneval
   let g:netrw_nobeval=1
 
+  set macligatures
+
   NERDTree " Show nerdtree on window open
 endfunction
 
 autocmd VimEnter * call TermSetup()
 autocmd GUIEnter * call GuiSetup()
+
+let g:session_autosave = 'no'
 
 set number
 set title
@@ -258,10 +270,9 @@ set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/
 
 " airline stuff
 if ! has('nvim')
-  python import sys; sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python')
-
   let g:airline_powerline_fonts=1
-  let g:airline#extensions#hunks#enabled=0
+
+  let g:airline#extensions#hunks#enabled=1
 
   let g:airline#extensions#tagbar#enabled=1
   let g:airline#extensions#tagbar#flags='s'
@@ -270,7 +281,6 @@ if ! has('nvim')
   let g:airline#extensions#tabline#show_buffers=1
 
   let g:airline#extensions#branch#enabled=1
-  let g:airline#extensions#branch#empty_message=''
 
   let g:airline#extensions#syntastic#enabled=1
 end
@@ -390,3 +400,7 @@ nnoremap <silent> <leader>x :set cursorcolumn!<CR>
 " VCS things
 nnoremap <silent> <leader>b :VCSBlame<CR>
 nnoremap <silent> <leader>d :VCSDiff<CR>
+
+" Copy full and short file paths to the clipboard
+nmap <silent> ,yf :let @*=expand("%")<CR>
+nmap <silent> ,ys :let @*=expand("%:p")<CR>
