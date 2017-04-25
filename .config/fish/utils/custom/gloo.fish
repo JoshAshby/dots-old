@@ -15,6 +15,7 @@ alias b 'bundle exec'
 alias ra 'bundle exec rake'
 alias rc 'bundle exec rails c'
 alias rs 'bundle exec rails s'
+alias rails 'bundle exec rails'
 
 alias r.yard 'bundle exec yard; and bundle exec yard server --reload'
 

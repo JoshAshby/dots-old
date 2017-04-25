@@ -38,9 +38,9 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-surround'
 
 "Plugin 'Raimondi/delimitMate'
-Plugin 'docunext/closetag.vim.git'
+"Plugin 'docunext/closetag.vim.git'
 
-Plugin 'vim-scripts/Align'
+"Plugin 'vim-scripts/Align'
 
 " Plugin 'vim-scripts/UltiSnips'
 " Plugin 'garbas/vim-snipmate'
@@ -73,14 +73,14 @@ filetype plugin indent on
 
 call dirsettings#Install()
 
-let g:vimwiki_list = [{
-  \ 'auto_export': 1,
-  \ 'auto_toc': 1,
-  \ 'path': '~/vimwiki/',
-  \ 'path_html': '~/vimwiki_html/',
-  \ 'template_path': '~/vimwiki/templates/',
-  \ 'template_default': 'default',
-  \ 'template_ext': '.tpl'}]
+"let g:vimwiki_list = [{
+  "\ 'auto_export': 1,
+  "\ 'auto_toc': 1,
+  "\ 'path': '~/vimwiki/',
+  "\ 'path_html': '~/vimwiki_html/',
+  "\ 'template_path': '~/vimwiki/templates/',
+  "\ 'template_default': 'default',
+  "\ 'template_ext': '.tpl'}]
 
 " enable cwd .vimrc files
 set exrc
@@ -132,10 +132,14 @@ set laststatus=2
 set textwidth=79
 set fo-=t
 
+set re=1
+let ruby_no_expensive=1
+
 set grepprg=egrep\ -nH\ $*
 
 " highlight if we go over 120 chars wide
 augroup vimrc_autocmds
+  autocmd!
   autocmd BufEnter * highlight OverLength ctermbg=green guibg=#592929
   autocmd BufEnter * match OverLength /\%120v.*/
 augroup END
@@ -146,7 +150,7 @@ autocmd BufRead,BufNewFile *.es6 set filetype=javascript
 autocmd BufRead,BufNewFile *.lookml set filetype=yaml
 
 " Strip whitespace when working in these filetypes
-autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby,yaml autocmd BufWritePre <buffer> :%s/\s\+$//e
+"autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby,yaml autocmd BufWritePre <buffer> :%s/\s\+$//e
 
 " Enable html tag closing on typical html style file types
 autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
@@ -155,9 +159,9 @@ autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=
 autocmd FileType make setlocal noexpandtab
 
 autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
@@ -221,7 +225,7 @@ set smartindent
 " Use + register (X Window clipboard) as unnamed register
 "set clipboard=unnamed,autoselect
 
-autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+"autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menu,preview,longest
 
 let g:SuperTabCrMapping = 0
