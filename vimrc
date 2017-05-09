@@ -21,7 +21,8 @@ Plugin 'vim-scripts/vcscommand.vim'
 " Utils
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-" Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'majutsushi/tagbar'
+Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'sjl/gundo.vim'
 
 if has('gui_running')
@@ -68,17 +69,19 @@ call vundle#end()
 filetype plugin indent on
 
 " Make sure things look pretty and use a nice colorscheme for the gui
+" We need to set this here and not in the TermSetup() because otherwise it
+" messes with the colorscheme for lightline
 set t_Co=256
 set background=dark
 "colorscheme spink
 "colorscheme base16-default-dark
 colorscheme hybrid
 
-call dirsettings#Install()
-
 " enable cwd .vimrc files
+call dirsettings#Install()
 set exrc
 
+" Use undo files for everything, so that undo is persisted across sessions
 set undofile
 
 function! TermSetup()
@@ -100,7 +103,6 @@ function! GuiSetup()
   NERDTree
 endfunction
 
-" display commands as-typed + current position in file
 set laststatus=2
 let g:lightline = {
       \ 'colorscheme': 'default',
@@ -124,7 +126,7 @@ let g:lightline = {
       \ }
 
 function! LightlineModified()
-  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '○' : &modifiable ? '' : '-'
 endfunction
 
 function! LightlineReadonly()
@@ -242,6 +244,7 @@ set title
 set showtabline=1
 set noshowmode
 set nofoldenable
+set hidden
 
 " set a line width and don't automatically reformat text to fit (toggle with ,<F8>
 set textwidth=79
@@ -348,15 +351,23 @@ let g:NERDCustomDelimiters = {
 \ 'ruby': { 'left': '# ', 'right': '', 'leftAlt': '# ', 'rightAlt': '' }
 \ }
 
+" Default to the alt style comments for ruby
 let NERD_ruby_alt_style=1
 
 " buffergator stuff
-" let g:buffergator_suppress_keymaps=1
+" Use the right side of the screen
+let g:buffergator_viewport_split_policy='R'
+" And let me use my own keymaps
+let g:buffergator_suppress_keymaps=1
 
-" ctrlp ignore settings
+" ctrlp settings
 if exists("g:ctrl_user_command")
   unlet g:ctrlp_user_command
 endif
+" Use the nearest .git directory as the cwd
+" This makes a lot of sense if you are working on a project that is in version
+" control. It also supports works with .svn, .hg, .bzr.
+let g:ctrlp_working_path_mode = 'r'
 
 set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/*,*/.git/*
 
@@ -377,32 +388,25 @@ let mapleader = ","
 " reformat a paragraph
 nmap <leader>q gqip
 
-" forward and backward in tabs and buffers
-noremap <silent> <f2> :bprev<CR>
-noremap <silent> <leader><F2> :tabprev<CR>
-noremap <silent> <f3> :bnext<CR>
-noremap <silent> <leader><F3> :tabnext<CR>
-
-nmap <silent> <F4> :bprevious<CR>bdelete \#<CR>
-noremap <silent> <leader><f4> :tabclose<CR>
-
 " toggle nerdtree and Tagbar
 noremap <silent> <F7> :NERDTreeToggle<CR>
-nnoremap <silent> <leader><F7> :TagbarToggle<CR>
-
-"toggle paragraph formating
-map <silent> <F8> :set fo+=t<CR>
-map <silent> <leader><F8> :set fo-=t<CR>
-
-" remove/hide highlighting from searches
-map <silent> <F9> :set invhlsearch<CR>
 
 " Buffergator stuff
-"noremap <silent> <F10> :BuffergatorToggle<CR>
-"noremap <silent> <leader><F10> :BuffergatorTabsToggle<CR>
+noremap <silent> <F8> :BuffergatorTabsToggle<CR>
+noremap <silent> <leader><F8> :BuffergatorToggle<CR>
 
 " Gundo stuff
-noremap <silent> <F10> :GundoToggle<CR>
+noremap <silent> <F9> :GundoToggle<CR>
+
+" Tagbar stuff
+nnoremap <silent> <F10> :TagbarToggle<CR>
+
+" remove/hide highlighting from searches
+map <silent> <F11> :set invhlsearch<CR>
+
+"toggle paragraph formating
+map <silent> <F12> :set fo+=t<CR>
+map <silent> <leader><F12> :set fo-=t<CR>
 
 nmap <silent> s :set spell<CR>
 nnoremap <silent> <leader>s :set nospell<CR>
@@ -465,3 +469,23 @@ nnoremap <silent> <leader>d :VCSDiff<CR>
 " Copy full and short file paths to the clipboard
 nmap <silent> <leader>yf :let @*=expand("%")<CR>
 nmap <silent> <leader>ys :let @*=expand("%:p")<CR>
+
+" Use a leader instead of the actual named binding
+nmap <leader>p :CtrlP<cr>
+
+" Easy bindings for its various modes
+nmap <leader>bb :CtrlPBuffer<cr>
+nmap <leader>bm :CtrlPMixed<cr>
+nmap <leader>bs :CtrlPMRU<cr>
+
+" Go to the previous buffer open
+nmap <leader>jj :BuffergatorMruCyclePrev<cr>
+
+" Go to the next buffer open
+nmap <leader>kk :BuffergatorMruCycleNext<cr>
+
+" View the entire list of buffers open
+nmap <leader>bl :BuffergatorOpen<cr>
+
+
+nmap <leader>bq :bp <BAR> bd #<cr>

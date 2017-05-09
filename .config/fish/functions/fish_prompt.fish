@@ -107,6 +107,10 @@ function _env_prompt
   if set -q RACK_ENV
     echo -s -n (_left_prompt_segment white blue) ' ' $RACK_ENV ' ' (set_color normal)
   end
+
+  if set -q APP_ENV
+    echo -s -n (_left_prompt_segment white blue) ' ' $APP_ENV ' ' (set_color normal)
+  end
 end
 
 function _git_hash_prompt
@@ -127,9 +131,9 @@ function fish_prompt
   set _lstatus $status
   echo -s -n '┌─' (_status_prompt) (_env_prompt) (_date_prompt) (_left_prompt_end)
   echo
-  echo -s -n '| ' (_ssh_prompt) (_git_hash_prompt) (_delta_prompt) (_left_prompt_end)
+  echo -s -n '| ' (_ssh_prompt) (_git_prompt) (_git_hash_prompt) (_delta_prompt) (_left_prompt_end)
   echo
-  echo -s -n '└─' (_pwd_prompt) (_git_prompt) (_left_prompt_end)
+  echo -s -n '└─' (_pwd_prompt) (_left_prompt_end)
 end
 
 # function fish_right_prompt
