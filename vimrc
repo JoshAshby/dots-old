@@ -4,6 +4,7 @@ set shell=/bin/sh
 set nocompatible               " be iMproved
 filetype off                   " required!
 set encoding=utf-8
+scriptencoding utf-8
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -19,90 +20,71 @@ Plugin 'vim-scripts/vcscommand.vim'
 
 " Utils
 Plugin 'scrooloose/nerdtree'
-"Plugin 'jeetsukumaran/vim-buffergator'
-"Plugin 'vimwiki/vimwiki'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+" Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'sjl/gundo.vim'
 
 if has('gui_running')
-  Plugin 'vim-airline/vim-airline'
+  " Plugin 'vim-airline/vim-airline'
+  Plugin 'itchyny/lightline.vim'
 endif
-
-"Plugin 'majutsushi/tagbar'
-
-"Plugin 'Shougo/neocomplete.vim'
 
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 
-"Plugin 'zirrostig/vim-schlepp'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-surround'
 
-"Plugin 'Raimondi/delimitMate'
-"Plugin 'docunext/closetag.vim.git'
+" Plugin 'Raimondi/delimitMate'
+" Plugin 'docunext/closetag.vim.git'
 
-"Plugin 'vim-scripts/Align'
+Plugin 'vim-scripts/Align'
 
-" Plugin 'vim-scripts/UltiSnips'
-" Plugin 'garbas/vim-snipmate'
-" Plugin 'honza/vim-snippets'
-" Plugin 'vim-scripts/TaskList.vim'
 Plugin 'ervandew/supertab'
-" Plugin 'davidhalter/jedi-vim'
 " Plugin 'AndrewRadev/linediff.vim'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-session'
+" Plugin 'xolox/vim-misc'
+" Plugin 'xolox/vim-session'
 
 " Colors!
-"Plugin 'godlygeek/csapprox'
-"Plugin 'chriskempson/base16-vim'
+" Plugin 'godlygeek/csapprox'
+Plugin 'chriskempson/base16-vim'
 Plugin 'Junza/Spink'
+Plugin 'w0ng/vim-hybrid'
 
 " Language additions
-Plugin 'chrisbra/Colorizer'
-"Plugin 'skammer/vim-css-color'
-"Plugin 'plasticboy/vim-markdown'
-Plugin 'othree/yajs.vim'
-Plugin 'vim-ruby/vim-ruby'
+" Plugin 'chrisbra/Colorizer'
+" Plugin 'skammer/vim-css-color'
+" Plugin 'plasticboy/vim-markdown'
+" Plugin 'othree/yajs.vim'
+" Plugin 'vim-ruby/vim-ruby'
 
 " Quick fuzzy searching for files
 Plugin 'ctrlpvim/ctrlp.vim'
+
+" Allow me to have .vimrc in directories
 Plugin 'mantiz/vim-plugin-dirsettings'
 
 call vundle#end()
 filetype plugin indent on
 
-call dirsettings#Install()
+" Make sure things look pretty and use a nice colorscheme for the gui
+set t_Co=256
+set background=dark
+"colorscheme spink
+"colorscheme base16-default-dark
+colorscheme hybrid
 
-"let g:vimwiki_list = [{
-  "\ 'auto_export': 1,
-  "\ 'auto_toc': 1,
-  "\ 'path': '~/vimwiki/',
-  "\ 'path_html': '~/vimwiki_html/',
-  "\ 'template_path': '~/vimwiki/templates/',
-  "\ 'template_default': 'default',
-  "\ 'template_ext': '.tpl'}]
+call dirsettings#Install()
 
 " enable cwd .vimrc files
 set exrc
 
 set undofile
 
-syntax on
-
-" Use an older regex engine, which is supposedly faster for Ruby syntaxt
-" highlighting
-set re=1
-
 function! TermSetup()
-  " Make sure things look pretty and use a nice colorscheme for the gui
-  set t_Co=256
-  set background=dark
-  color spink
-
-  set guifont=Fira\ Code " Make sure to escape the spaces in the name properly
+  " Make sure to escape the spaces in the name properly
+  set guifont=Fira\ Code
   set guioptions=e
-
-  set cursorline
 endfunction
 
 function! GuiSetup()
@@ -111,67 +93,187 @@ function! GuiSetup()
   set noballooneval
   let g:netrw_nobeval=1
 
+  " Make things look pretty with ligature fonts :3
   set macligatures
 
-  NERDTree " Show nerdtree on window open
+  " Show nerdtree on window open
+  NERDTree
 endfunction
 
-autocmd VimEnter * call TermSetup()
-autocmd GUIEnter * call GuiSetup()
+" display commands as-typed + current position in file
+set laststatus=2
+let g:lightline = {
+      \ 'colorscheme': 'default',
+      \ 'mode_map': { 'c': 'NORMAL' },
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
+      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component_function': {
+      \   'modified': 'LightlineModified',
+      \   'readonly': 'LightlineReadonly',
+      \   'fugitive': 'LightlineFugitive',
+      \   'filename': 'LightlineFilename',
+      \   'fileformat': 'LightlineFileformat',
+      \   'filetype': 'LightlineFiletype',
+      \   'fileencoding': 'LightlineFileencoding',
+      \   'mode': 'LightlineMode',
+      \ },
+      \ 'separator': { 'left': '⮀', 'right': '⮂' },
+      \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+      \ }
 
-let g:session_autosave = 'no'
+function! LightlineModified()
+  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+endfunction
+
+function! LightlineReadonly()
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '⭤' : ''
+endfunction
+
+function! LightlineFilename()
+  let fname = expand('%:t')
+  return fname == 'ControlP' && has_key(g:lightline, 'ctrlp_item') ? g:lightline.ctrlp_item :
+        \ fname == '__Tagbar__' ? g:lightline.fname :
+        \ fname =~ '__Gundo\|NERD_tree' ? '' :
+        \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+        \ &ft == 'unite' ? unite#get_status_string() :
+        \ &ft == 'vimshell' ? vimshell#get_status_string() :
+        \ ('' != LightlineReadonly() ? LightlineReadonly() . ' ' : '') .
+        \ ('' != fname ? fname : '[No Name]') .
+        \ ('' != LightlineModified() ? ' ' . LightlineModified() : '')
+endfunction
+
+function! LightlineFugitive()
+  try
+    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+      let mark = '⭠'
+      let branch = fugitive#head()
+      return branch !=# '' ? mark.' '.branch : ''
+    endif
+  catch
+  endtry
+  return ''
+endfunction
+
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+
+function! LightlineFileencoding()
+  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+endfunction
+
+function! LightlineMode()
+  let fname = expand('%:t')
+  return fname == '__Tagbar__' ? 'Tagbar' :
+        \ fname == 'ControlP' ? 'CtrlP' :
+        \ fname == '__Gundo__' ? 'Gundo' :
+        \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+        \ fname =~ 'NERD_tree' ? 'NERDTree' :
+        \ &ft == 'unite' ? 'Unite' :
+        \ &ft == 'vimfiler' ? 'VimFiler' :
+        \ &ft == 'vimshell' ? 'VimShell' :
+        \ winwidth(0) > 60 ? lightline#mode() : ''
+endfunction
+
+function! s:syntastic()
+  SyntasticCheck
+  call lightline#update()
+endfunction
+
+augroup vimrc_autocmds
+  autocmd!
+
+  " Auto reload the vimrc when saving it
+  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
+
+  " highlight if we go over 120 chars wide
+  autocmd BufEnter * highlight OverLength ctermbg=green guibg=#592929
+  autocmd BufEnter * match OverLength /\%120v.*/
+
+  " Set some additional filetypes...
+  autocmd BufRead,BufNewFile *.jbuilder,*.thor,*.rabl set filetype=ruby
+  autocmd BufRead,BufNewFile *.es6 set filetype=javascript
+  autocmd BufRead,BufNewFile *.lookml set filetype=yaml
+
+  " Strip whitespace when working in these filetypes
+  autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby,yaml autocmd BufWritePre <buffer> :%s/\s\+$//e
+
+  " Enable html tag closing on typical html style file types
+  autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
+
+  " turn off tab expansion for Makefiles
+  autocmd FileType make setlocal noexpandtab
+
+  " Autocomplete setup for various files
+  autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
+  "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+
+  " Setup supertab
+  autocmd FileType *
+      \ if &omnifunc != '' |
+      \     call SuperTabChain(&omnifunc, '<c-p>') |
+      \ endif
+
+  "autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+augroup END
+
+augroup vim_start
+  autocmd!
+
+  autocmd VimEnter * call TermSetup()
+  autocmd GUIEnter * call GuiSetup()
+augroup END
+
+"let g:session_autosave = 'no'
 
 set number
 set title
 set showtabline=1
+set noshowmode
 set nofoldenable
-
-set laststatus=2
 
 " set a line width and don't automatically reformat text to fit (toggle with ,<F8>
 set textwidth=79
 set fo-=t
 
-set re=1
-let ruby_no_expensive=1
-
 set grepprg=egrep\ -nH\ $*
 
-" highlight if we go over 120 chars wide
-augroup vimrc_autocmds
-  autocmd!
-  autocmd BufEnter * highlight OverLength ctermbg=green guibg=#592929
-  autocmd BufEnter * match OverLength /\%120v.*/
-augroup END
+" Turn syntax highlighting on
+syntax on
 
-" Set some additional filetypes...
-autocmd BufRead,BufNewFile *.jbuilder,*.thor,*.rabl set filetype=ruby
-autocmd BufRead,BufNewFile *.es6 set filetype=javascript
-autocmd BufRead,BufNewFile *.lookml set filetype=yaml
+" fast terminal
+set ttyfast
+set synmaxcol=128
+syntax sync minlines=256
+set lazyredraw
 
-" Strip whitespace when working in these filetypes
-"autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby,yaml autocmd BufWritePre <buffer> :%s/\s\+$//e
+" Use an older regex engine, which is supposedly faster for Ruby syntaxt
+" highlighting
+set re=2
+" Don't do expensive regex for ruby
+let ruby_no_expensive=1
 
-" Enable html tag closing on typical html style file types
-autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
-
-" turn off tab expansion for Makefiles
-autocmd FileType make setlocal noexpandtab
-
-autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
-"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-"autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+" automagically adds /g on a regex. /g to disable
+set gdefault
 
 set wildmenu
 set wildmode=list:longest,full
 set nohidden
 
-" fast terminal
-set ttyfast
+set foldmethod=manual
+set noballooneval
+let g:netrw_nobeval=1
 
 " do not beep or flash at me
 " vb is needed to stop beep
@@ -187,14 +289,6 @@ set mouse=a
 
 " let me delete stuff like crazy in insert mode
 set backspace=indent,eol,start
-
-" display commands as-typed + current position in file
-set showcmd
-set ruler
-
-" add git status to statusline; otherwise emulate standard line with ruler
-" set statusline=[%{&fo}]%<%{fugitive#statusline()}\ %f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-set laststatus=2
 
 " keep lots of command-line history
 set history=3500
@@ -225,17 +319,12 @@ set smartindent
 " Use + register (X Window clipboard) as unnamed register
 "set clipboard=unnamed,autoselect
 
-"autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menu,preview,longest
 
 let g:SuperTabCrMapping = 0
 let g:SuperTabDefaultCompletionType = 'context'
 "let g:SuperTabContextDefaultCompletionType = '<c-x><c-u>'
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
-autocmd FileType *
-    \ if &omnifunc != '' |
-    \     call SuperTabChain(&omnifunc, '<c-p>') |
-    \ endif
 
 " NERDTree enhancements/fixes
 "   Nerdtree defaults for window splitting are backwards from vim defaults.
@@ -270,33 +359,10 @@ if exists("g:ctrl_user_command")
 endif
 
 set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/*,*/.git/*
-" let g:ctrlp_custom_ignore = '\v[\/](public\/dist|tmp|node_modules)|(\.(git|hg|svn))$'
-
-" airline stuff
-if ! has('nvim')
-  let g:airline_powerline_fonts=1
-
-  let g:airline#extensions#hunks#enabled=1
-
-  let g:airline#extensions#tagbar#enabled=1
-  let g:airline#extensions#tagbar#flags='s'
-
-  let g:airline#extensions#tabline#enabled=0
-  let g:airline#extensions#tabline#show_buffers=1
-
-  let g:airline#extensions#branch#enabled=1
-
-  let g:airline#extensions#syntastic#enabled=1
-end
 
 " This line blew up at me when I symlinked this file. no clue why
 set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
-" set listchars=nbsp:¬,eol:¶,tab:>-,extends:»,precedes:«,trail:•
 set list
-
-set foldmethod=indent
-
-set gdefault    "automagically adds /g on a regex. /g to disable<Paste>
 
 "my little pinky isa bit slow coming off that shift key sometimes.
 command! W w
@@ -310,9 +376,6 @@ let mapleader = ","
 
 " reformat a paragraph
 nmap <leader>q gqip
-
-" write all changed buffers
-nmap <silent> <leader>w :wa<CR>
 
 " forward and backward in tabs and buffers
 noremap <silent> <f2> :bprev<CR>
@@ -338,17 +401,14 @@ map <silent> <F9> :set invhlsearch<CR>
 "noremap <silent> <F10> :BuffergatorToggle<CR>
 "noremap <silent> <leader><F10> :BuffergatorTabsToggle<CR>
 
+" Gundo stuff
+noremap <silent> <F10> :GundoToggle<CR>
+
 nmap <silent> s :set spell<CR>
 nnoremap <silent> <leader>s :set nospell<CR>
 
-" fuzzyfinder
-"nmap <leader>f :FufFile<CR>
-
-" display tabs - ,s will toggle (redraws just in case)
+" display tabs - ,t will toggle (redraws just in case)
 nmap <silent> <leader>t :set nolist!<CR>:redr<CR>
-
-" remap ;to : since I tend to use : more often
-nnoremap ; :
 
 " Better space unfolding
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
@@ -356,17 +416,14 @@ vnoremap <Space> zf
 nnoremap <silent> zj o<Esc>,<F10>
 nnoremap <silent> zk O<Esc>
 "nnoremap <space> za
-"
+
+" Better navigation on search results
 map N Nzz
 map n nzz
 
 " dont deselect on indent
 vnoremap < <gv
 vnoremap > >gv
-
-" Ctrl+backspace will delete the current work
-inoremap <C-BS> <C-O>b<C-O>dw
-noremap <C-BS> bdw
 
 " Search for selected text, forwards or backwards.
 vnoremap <silent> * :<C-U>
@@ -406,5 +463,5 @@ nnoremap <silent> <leader>b :VCSBlame<CR>
 nnoremap <silent> <leader>d :VCSDiff<CR>
 
 " Copy full and short file paths to the clipboard
-nmap <silent> ,yf :let @*=expand("%")<CR>
-nmap <silent> ,ys :let @*=expand("%:p")<CR>
+nmap <silent> <leader>yf :let @*=expand("%")<CR>
+nmap <silent> <leader>ys :let @*=expand("%:p")<CR>
