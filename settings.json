@@ -1,0 +1,26 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "editor.fontFamily": "'Fira Code', 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 12,
+    "editor.roundedSelection": false,
+    "editor.renderControlCharacters": true,
+    "editor.renderWhitespace": "boundary",
+    "editor.folding": false,
+    "editor.codeLens": false,
+    "editor.rulers": [ 80, 120 ],
+    "editor.wordWrap": true,
+    "terminal.external.osxExec": "iTerm.app",
+    "terminal.integrated.fontFamily": "'Fira Code', 'Courier New', monospace",
+    "terminal.integrated.fontLigatures": true,
+    "terminal.integrated.fontSize": 12,
+    "terminal.integrated.cursorBlinking": true,
+    "files.trimTrailingWhitespace": true,
+    "csharp.suppressDotnetInstallWarning": true,
+    "git.confirmSync": false,
+    "workbench.activityBar.visible": true,
+    "workbench.statusBar.visible": true,
+    "workbench.colorTheme": "One Monokai",
+    "workbench.iconTheme": "file-icons",
+    "vim.disableAnnoyingNeovimMessage": true
+}

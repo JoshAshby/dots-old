@@ -30,6 +30,9 @@ node_modules
 *.py[ocd]
 *.so
 
+.ssh/*id_*
+.ssh/known_hosts
+
 .config/fish/fishd.*
 .config/fish/utils/custom.fish
 .config/fish/utils/ssh.fish
