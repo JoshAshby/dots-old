@@ -371,6 +371,17 @@ let g:ctrlp_working_path_mode = 'r'
 
 set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/*,*/.git/*
 
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+\ }
+
 " This line blew up at me when I symlinked this file. no clue why
 set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
 set list
