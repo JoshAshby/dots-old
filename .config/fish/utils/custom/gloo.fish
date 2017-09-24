@@ -1,7 +1,7 @@
 alias g.ap "echo \"gem 'scubaru', path: '~/repos/scubaru', require: 'scubaru'\" >> Gemfile"
 
 set PGDATA '/usr/local/var/postgres'
-set ES_JAVA_OPTS '-XX:-MaxFDLimit'
+set ES_JAVA_OPTS "-XX:-MaxFDLimit -Xms8g -Xmx8g"
 
 if test -d $HOME/.rbenv
   set PATH $HOME/.rbenv/shims $PATH

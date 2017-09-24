@@ -15,3 +15,5 @@ end
 set PATH /usr/local/sbin $HOME/bin $PATH
 
 set DOTS $HOME/repos/dots
+
+test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish

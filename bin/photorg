@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+
+require "pathname"
+require "fileutils"
+require "pry"
+
+class Photorg
+  IGNORE = [
+    ".DS_Store"
+  ].freeze
+
+  def root
+    @root ||= Pathname.new Dir.pwd
+  end
+
+  def dates
+    @dates ||= {}
+  end
+
+  def format_time time
+    time.strftime("%Y_%m_%d")
+  end
+
+  def run
+    puts "Organizing files in #{ root }, ignoring directories ..."
+
+    files = root.children
+      .reject(&:directory?)
+      .reject { |path| IGNORE.include? path.basename.to_s }
+      .each do |file|
+        next if file.extname == ".xmp"
+          # base = file.sub_ext ""
+
+          # directory = root.join format_time dates.fetch(base.to_s, base.birthtime)
+        # else
+          directory = root.join format_time file.birthtime
+          # dates[ file.to_s ] = file.birthname
+        # end
+
+        destination = directory.join file.basename
+
+        directory.mkpath
+
+        FileUtils.mv file, destination, verbose: true
+      end
+
+    puts "Moved #{ files.length } files into date sorted directories ..."
+  end
+end
+
+Photorg.new.run if __FILE__ == $0
