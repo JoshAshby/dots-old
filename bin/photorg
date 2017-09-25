@@ -2,7 +2,6 @@
 
 require "pathname"
 require "fileutils"
-require "pry"
 
 class Photorg
   IGNORE = [
@@ -22,24 +21,16 @@ class Photorg
   end
 
   def run
-    puts "Organizing files in #{ root }, ignoring directories ..."
+    puts "Organizing files in #{ root }, ignoring directories and #{ IGNORE.join ", " } ..."
 
     files = root.children
       .reject(&:directory?)
       .reject { |path| IGNORE.include? path.basename.to_s }
       .each do |file|
-        next if file.extname == ".xmp"
-          # base = file.sub_ext ""
-
-          # directory = root.join format_time dates.fetch(base.to_s, base.birthtime)
-        # else
-          directory = root.join format_time file.birthtime
-          # dates[ file.to_s ] = file.birthname
-        # end
+        directory = root.join format_time file.birthtime
+        directory.mkpath
 
         destination = directory.join file.basename
-
-        directory.mkpath
 
         FileUtils.mv file, destination, verbose: true
       end
