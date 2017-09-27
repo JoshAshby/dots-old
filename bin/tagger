@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+require "pry"
+require_relative "./lib/finder_utils"
+
+class Runner
+  using FinderUtils
+
+  IGNORE = [
+    ".DS_Store"
+  ].freeze
+
+  JPG_EXT = ".JPG".freeze
+  JPG_GOOD_TAG = FinderUtils::Tag.new(name: "Green", color: :green).freeze
+
+  RAW_EXT = ".CR2".freeze
+  RAW_GOOD_TAGS = [
+    FinderUtils::Tag.new(name: "Good", color: :green)
+  ].freeze
+
+  def root
+    @root ||= Pathname.new Dir.pwd
+  end
+
+  def run
+    files = root.children
+      .reject(&:directory?)
+      .reject { |path| IGNORE.include? path.basename.to_s }
+      .select { |path| path.extname == JPG_EXT }
+      .select { |path| path.tag? JPG_GOOD_TAG }
+      .each do |file|
+        raw_file = file.sub_ext RAW_EXT
+
+        existing_tags = raw_file.tags
+
+        raw_file.reset_tags!
+        raw_file.merge_tags RAW_GOOD_TAGS.dup
+
+        new_tags = raw_file.tags
+
+        puts "Tagged #{ raw_file.to_s } from #{ existing_tags } to #{ new_tags } ..."
+      end
+
+    puts "Tagged #{ files.length } raw file(s) as #{ RAW_GOOD_TAGS } based off of jpeg(s) tagged #{ JPG_GOOD_TAG } ..."
+  end
+end
+
+Runner.new.run
