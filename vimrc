@@ -478,8 +478,8 @@ nnoremap <silent> <leader>b :VCSBlame<CR>
 nnoremap <silent> <leader>d :VCSDiff<CR>
 
 " Copy full and short file paths to the clipboard
-nmap <silent> <leader>yf :let @*=expand("%")<CR>
-nmap <silent> <leader>ys :let @*=expand("%:p")<CR>
+nmap <silent> <leader>yf :let @*=expand("%:p")<CR>
+nmap <silent> <leader>ys :let @*=expand("%")<CR>
 
 " Use a leader instead of the actual named binding
 nmap <leader>p :CtrlP<cr>

@@ -1,1 +1,1 @@
-complete -x -c gloo -a "(\ls -1 ~/gloo/)"
+complete -c gloo -x -a '(__fish_complete_directories ~/gloo/(commandline -ct) | cut -d "/" -f 5-)' --description 'Directory'
