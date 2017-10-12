@@ -58,22 +58,22 @@ function _git_prompt
 #    end
 
     # is anything staged?
-    if test $index[3] -ne 0
+    if test $index[3] != 0
       echo -s -n $_git_staged
     end
 
     # is anything unstaged?
-    if test $index[4] -ne 0
+    if test $index[4] != 0
       echo -s -n $_git_unstaged
     end
 
     # is anything untracked?
-    if test $index[5] -ne 0
+    if test $index[5] != 0
       echo -s -n $_git_untracked
     end
 
     # is anything unmerged?
-    if test $index[6] -ne 0
+    if test $index[6] != 0
       echo -s -n $_git_unmerged
     end
   end
@@ -90,11 +90,11 @@ function _pwd_prompt
 end
 
 function _status_prompt
-  if test (jobs -l | wc -l) -gt 0
+  if test (jobs -l | wc -l) -gt 1
     echo -n (_left_prompt_segment white blue) $_status_jobs
   end
 
-  if test $_lstatus -ne 0
+  if test $_lstatus != 0
     echo -n (_left_prompt_segment white red) $_status_failed
   end
 end
@@ -122,7 +122,11 @@ function _date_prompt
 end
 
 function _delta_prompt
-  if test "$_exec_delta" -gt 5
+  if test ! (set -q _exec_delta)
+    set _exec_delta 0
+  end
+
+  if test "$_exec_delta" -gt 0
     echo -s -n (_left_prompt_segment black black) ' ∆t=' (decode_time $_exec_delta) ' ' (set_color normal)
   end
 end
