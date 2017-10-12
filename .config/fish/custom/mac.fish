@@ -1,21 +1,18 @@
-alias g.ap "echo \"gem 'scubaru', path: '~/repos/scubaru', require: 'scubaru'\" >> Gemfile"
-
-set PGDATA '/usr/local/var/postgres'
-set ES_JAVA_OPTS "-XX:-MaxFDLimit -Xms8g -Xmx8g"
+set -x PGDATA /usr/local/var/postgres
+set -x ES_JAVA_OPTS '-XX:-MaxFDLimit -Xms8g -Xmx8g'
 
 if test -d $HOME/.rbenv
   set PATH $HOME/.rbenv/shims $PATH
   . (rbenv init -|psub)
 end
 
-set EDITOR 'gvim'
+set -U EDITOR gvim
 
 alias r 'bundle exec ruby'
 alias b 'bundle exec'
 alias ra 'bundle exec rake'
 alias rc 'bundle exec rails c'
 alias rs 'bundle exec rails s'
-alias rails 'bundle exec rails'
 
 alias r.yard 'bundle exec yard; and bundle exec yard server --reload'
 
@@ -26,4 +23,6 @@ alias redis.m 'redis-cli monitor'
 
 alias ran 'run_and_notify'
 
-alias meep 'echo "http://"(ipconfig getifaddr en0)":8080" | pbcopy'
+alias g.ap "echo \"gem 'scubaru', path: '~/repos/scubaru', require: 'scubaru'\" >> Gemfile"
+
+test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish

@@ -22,5 +22,6 @@
     "workbench.statusBar.visible": true,
     "workbench.colorTheme": "One Monokai",
     "workbench.iconTheme": "file-icons",
-    "vim.disableAnnoyingNeovimMessage": true
+    "vim.disableAnnoyingNeovimMessage": true,
+    "extensions.ignoreRecommendations": true
 }

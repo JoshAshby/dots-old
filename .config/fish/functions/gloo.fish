@@ -1,3 +1,7 @@
 function gloo
-  cd ~/gloo/$argv
+  if test -n "$argv"
+    cd ~/gloo/$argv
+  else
+    cd ~/gloo/
+  end
 end
