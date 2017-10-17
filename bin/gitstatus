@@ -13,22 +13,6 @@ class GitStatus
     [:unmerged, "✕ "]
   ].freeze
 
-  def repository
-    @repository ||= Rugged::Repository.discover Dir.pwd
-  rescue Rugged::RepositoryError
-    nil
-  end
-
-  def status
-    @status ||= Hash.new { |hash, key| hash[key] = 0 }.tap do |hash|
-      repository.status do |path, data|
-        next if data.include? :ignored
-
-        data.each { |type| hash[type] += 1 }
-      end
-    end
-  end
-
   def run
     return unless repository
 
@@ -44,6 +28,24 @@ class GitStatus
     output.compact!
 
     print output.join("")
+  end
+
+  private
+
+  def repository
+    @repository ||= Rugged::Repository.discover Dir.pwd
+  rescue Rugged::RepositoryError
+    nil
+  end
+
+  def status
+    @status ||= Hash.new { |hash, key| hash[key] = 0 }.tap do |hash|
+      repository.status do |path, data|
+        next if data.include? :ignored
+
+        data.each { |type| hash[type] += 1 }
+      end
+    end
   end
 
   def branch
