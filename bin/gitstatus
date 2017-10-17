@@ -7,6 +7,7 @@ class GitStatus
   ICONS = [
     [:branch, "  "],
     [:ahead, "↑ "],
+    # [:behind, ""]
     [:staged, "● "],
     [:unstaged, "○ "],
     [:untracked, "ᚐ "],
@@ -52,20 +53,28 @@ class GitStatus
     repository.head.name.gsub(%r{refs\/heads\/}, "")
   end
 
+  def ahead_behind
+    @ahead_behind ||= repository.ahead_behind(repository.head.target, repository.ref("refs/remotes/origin/HEAD").target.target)
+  end
+
   def ahead
-    repository.ahead_behind(repository.head.target, repository.ref("refs/remotes/origin/HEAD").target.target).first > 0
+    ahead_behind[0] > 0
+  end
+
+  def behind
+    ahead_behind[1] > 0
   end
 
   def staged
-    status[:index_modified] + status[:index_deleted] + status[:index_new] > 1
+    [:index_modified, :index_deleted, :index_new].sum { |key| status[key] } > 0
   end
 
   def unstaged
-    status[:worktree_modified] + status[:worktree_deleted] > 1
+    [:worktree_modified, :worktree_deleted].sum { |key| status[key] } > 0
   end
 
   def untracked
-    status[:worktree_new] > 1
+    status[:worktree_new] > 0
   end
 
   def unmerged
