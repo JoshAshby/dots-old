@@ -1,0 +1,74 @@
+#!/usr/bin/env ruby
+
+require "rugged"
+# require "pry"
+
+class GitStatus
+  ICONS = [
+    [:branch, "  "],
+    [:ahead, "↑ "],
+    [:staged, "● "],
+    [:unstaged, "○ "],
+    [:untracked, "ᚐ "],
+    [:unmerged, "✕ "]
+  ].freeze
+
+  def repository
+    @repository ||= Rugged::Repository.discover Dir.pwd
+  rescue Rugged::RepositoryError
+    nil
+  end
+
+  def status
+    @status ||= Hash.new { |hash, key| hash[key] = 0 }.tap do |hash|
+      repository.status do |path, data|
+        next if data.include? :ignored
+
+        data.each { |type| hash[type] += 1 }
+      end
+    end
+  end
+
+  def run
+    return unless repository
+
+    output = ICONS.flat_map do |name, icon|
+      extra = send name
+
+      next unless extra
+      next icon unless extra.kind_of? String
+
+      [ icon, extra, " " ]
+    end
+
+    output.compact!
+
+    print output.join("")
+  end
+
+  def branch
+    repository.head.name.gsub(%r{refs\/heads\/}, "")
+  end
+
+  def ahead
+    repository.ahead_behind(repository.head.target, repository.ref("refs/remotes/origin/HEAD").target.target).first > 0
+  end
+
+  def staged
+    status[:index_modified] + status[:index_deleted] + status[:index_new] > 1
+  end
+
+  def unstaged
+    status[:worktree_modified] + status[:worktree_deleted] > 1
+  end
+
+  def untracked
+    status[:worktree_new] > 1
+  end
+
+  def unmerged
+    # binding.pry
+  end
+end
+
+GitStatus.new.run if __FILE__ == $0

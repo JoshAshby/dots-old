@@ -3,13 +3,6 @@ set _right_segement ''
 
 set _ssh_icon 'ಠ_ಠ'
 
-set _git_branch '  '
-set _git_ahead '↑ '
-set _git_staged '● '
-set _git_unstaged '○ '
-set _git_untracked 'ᚐ '
-set _git_unmerged '✕ '
-
 set _status_jobs  ' ⚙ '
 set _status_failed ' ✕ '
 
@@ -42,6 +35,7 @@ function _left_prompt_end
   set _current_bg NONE
 end
 
+# display the latest git hash for the current branch if we're in a git dir
 function _git_hash
   echo -n (git log -1 ^/dev/null | sed -n -e 's/^commit \([a-z0-9]\{8\}\)[a-z0-9]\{32\}/\1/p')
 end
@@ -50,32 +44,7 @@ function _git_prompt
   set index (gitstatus)
 
   if test -n "$index[1]"
-    echo -s -n (_left_prompt_segment red black) $_git_branch $index[1] ' '
-
-    # is branch ahead?
-#    if test -n (git cherry -v $index[2])
-#      echo -s -n $_git_ahead
-#    end
-
-    # is anything staged?
-    if test $index[3] != 0
-      echo -s -n $_git_staged
-    end
-
-    # is anything unstaged?
-    if test $index[4] != 0
-      echo -s -n $_git_unstaged
-    end
-
-    # is anything untracked?
-    if test $index[5] != 0
-      echo -s -n $_git_untracked
-    end
-
-    # is anything unmerged?
-    if test $index[6] != 0
-      echo -s -n $_git_unmerged
-    end
+    echo -s -n (_left_prompt_segment red black) $index
   end
 end
 
