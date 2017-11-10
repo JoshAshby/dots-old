@@ -48,9 +48,10 @@ Plugin 'ervandew/supertab'
 
 " Colors!
 " Plugin 'godlygeek/csapprox'
-Plugin 'chriskempson/base16-vim'
-Plugin 'Junza/Spink'
-Plugin 'w0ng/vim-hybrid'
+" Plugin 'chriskempson/base16-vim'
+" Plugin 'Junza/Spink'
+" Plugin 'w0ng/vim-hybrid'
+Plugin 'joshdick/onedark.vim'
 
 " Language additions
 " Plugin 'chrisbra/Colorizer'
@@ -75,7 +76,7 @@ set t_Co=256
 set background=dark
 "colorscheme spink
 "colorscheme base16-default-dark
-colorscheme hybrid
+colorscheme onedark
 
 " enable cwd .vimrc files
 call dirsettings#Install()
@@ -105,11 +106,11 @@ endfunction
 
 set laststatus=2
 let g:lightline = {
-      \ 'colorscheme': 'default',
+      \ 'colorscheme': 'onedark',
       \ 'mode_map': { 'c': 'NORMAL' },
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
-      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'modified': 'LightlineModified',
@@ -121,8 +122,8 @@ let g:lightline = {
       \   'fileencoding': 'LightlineFileencoding',
       \   'mode': 'LightlineMode',
       \ },
-      \ 'separator': { 'left': '⮀', 'right': '⮂' },
-      \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+      \   'separator': { 'left': '', 'right': '' },
+      \   'subseparator': { 'left': '|', 'right': '|' }
       \ }
 
 function! LightlineModified()
@@ -130,7 +131,7 @@ function! LightlineModified()
 endfunction
 
 function! LightlineReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '⭤' : ''
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '🔏' : ''
 endfunction
 
 function! LightlineFilename()
@@ -149,7 +150,7 @@ endfunction
 function! LightlineFugitive()
   try
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-      let mark = '⭠'
+      let mark = ''
       let branch = fugitive#head()
       return branch !=# '' ? mark.' '.branch : ''
     endif
@@ -182,6 +183,14 @@ function! LightlineMode()
         \ &ft == 'vimshell' ? 'VimShell' :
         \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
+
+function! LightlineReload()
+  call lightline#init()
+  call lightline#colorscheme()
+  call lightline#update()
+endfunction
+
+command! LightlineReload call LightlineReload()
 
 function! s:syntastic()
   SyntasticCheck
@@ -498,5 +507,5 @@ nmap <leader>kk :BuffergatorMruCycleNext<cr>
 " View the entire list of buffers open
 nmap <leader>bl :BuffergatorOpen<cr>
 
-
+" close, delete and move to the next buffer
 nmap <leader>bq :bp <BAR> bd #<cr>
