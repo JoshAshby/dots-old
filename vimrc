@@ -45,6 +45,9 @@ Plugin 'ervandew/supertab'
 " Plugin 'AndrewRadev/linediff.vim'
 " Plugin 'xolox/vim-misc'
 " Plugin 'xolox/vim-session'
+Plugin 'mileszs/ack.vim'
+Plugin 'sk1418/QFGrep'
+Plugin 'Shougo/neocomplete.vim'
 
 " Colors!
 " Plugin 'godlygeek/csapprox'
@@ -69,6 +72,8 @@ Plugin 'mantiz/vim-plugin-dirsettings'
 call vundle#end()
 filetype plugin indent on
 
+
+" Terminal and GUI setup {{{
 " Make sure things look pretty and use a nice colorscheme for the gui
 " We need to set this here and not in the TermSetup() because otherwise it
 " messes with the colorscheme for lightline
@@ -104,6 +109,142 @@ function! GuiSetup()
   NERDTree
 endfunction
 
+augroup vimrc_autocmds
+  autocmd!
+
+  " Auto reload the vimrc when saving it
+  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
+
+  " highlight if we go over 120 chars wide
+  autocmd BufEnter * highlight OverLength ctermbg=green guibg=#592929
+  autocmd BufEnter * match OverLength /\%120v.*/
+
+  " Set some additional filetypes...
+  autocmd BufRead,BufNewFile *.jbuilder,*.thor,*.rabl set filetype=ruby
+  autocmd BufRead,BufNewFile *.es6 set filetype=javascript
+  autocmd BufRead,BufNewFile *.lookml set filetype=yaml
+
+  " Strip whitespace when working in these filetypes
+  autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby,yaml autocmd BufWritePre <buffer> :%s/\s\+$//e
+
+  " Enable html tag closing on typical html style file types
+  autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
+
+  " turn off tab expansion for Makefiles
+  autocmd FileType make setlocal noexpandtab
+
+  " Autocomplete setup for various files
+  autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
+  "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+
+  " Setup supertab
+  autocmd FileType *
+      \ if &omnifunc != '' |
+      \     call SuperTabChain(&omnifunc, '<c-p>') |
+      \ endif
+
+  "autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+augroup END
+
+augroup vim_start
+  autocmd!
+
+  autocmd VimEnter * call TermSetup()
+  autocmd GUIEnter * call GuiSetup()
+augroup END
+
+set number
+set title
+set showtabline=1
+set noshowmode
+set nofoldenable
+set hidden
+
+" set a line width and don't automatically reformat text to fit (toggle with ,<F8>
+set textwidth=79
+set fo-=t
+
+" Turn syntax highlighting on
+syntax on
+
+" fast terminal
+set ttyfast
+set synmaxcol=128
+syntax sync minlines=256
+set lazyredraw
+
+" Use an older regex engine, which is supposedly faster for Ruby syntaxt
+" highlighting
+set re=2
+" Don't do expensive regex for ruby
+let ruby_no_expensive=1
+
+" automagically adds /g on a regex. /g to disable
+set gdefault
+set nohidden
+
+set foldmethod=manual
+set noballooneval
+let g:netrw_nobeval=1
+
+" do not beep or flash at me
+" vb is needed to stop beep
+" t_vb sets visual bell action, we're nulling it out here)
+set visualbell
+set t_vb=
+set noeb vb t_vb=
+set vb t_vb=
+
+" enable mouse for (a)ll, (n)ormal, (v)isual, (i)nsert, or (c)ommand line
+" mode -- seems to work in most terminals
+set mouse=a
+
+" let me delete stuff like crazy in insert mode
+set backspace=indent,eol,start
+
+" keep lots of command-line history
+set history=3500
+
+" check spelling
+set nospell
+set spl=en
+
+" search
+set hlsearch
+set showmatch
+set incsearch
+set nu
+set incsearch
+set ignorecase
+set smartcase
+
+" display tab characters as 4 spaces, indent 4 spaces,
+" always use spaces instead of tabs
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set autoindent
+set smarttab
+set smartindent
+
+" Use + register (X Window clipboard) as unnamed register
+"set clipboard=unnamed,autoselect
+
+"let g:session_autosave = 'no'
+
+" This line blew up at me when I symlinked this file. no clue why
+set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
+set list
+" }}}
+
+
+" Lightline {{{
 set laststatus=2
 let g:lightline = {
       \ 'colorscheme': 'onedark',
@@ -192,153 +333,83 @@ endfunction
 
 command! LightlineReload call LightlineReload()
 
-function! s:syntastic()
-  SyntasticCheck
-  call lightline#update()
-endfunction
+  " Syntastic Lightline {{{
+  function! s:syntastic()
+    SyntasticCheck
+    call lightline#update()
+  endfunction
+  " }}}
+" }}}
 
-augroup vimrc_autocmds
-  autocmd!
 
-  " Auto reload the vimrc when saving it
-  autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
-
-  " highlight if we go over 120 chars wide
-  autocmd BufEnter * highlight OverLength ctermbg=green guibg=#592929
-  autocmd BufEnter * match OverLength /\%120v.*/
-
-  " Set some additional filetypes...
-  autocmd BufRead,BufNewFile *.jbuilder,*.thor,*.rabl set filetype=ruby
-  autocmd BufRead,BufNewFile *.es6 set filetype=javascript
-  autocmd BufRead,BufNewFile *.lookml set filetype=yaml
-
-  " Strip whitespace when working in these filetypes
-  autocmd FileType c,cpp,java,php,python,coffee,javascript,css,less,ruby,yaml autocmd BufWritePre <buffer> :%s/\s\+$//e
-
-  " Enable html tag closing on typical html style file types
-  autocmd FileType html,djangohtml,jinjahtml,eruby,mako let b:closetag_html_style=1
-
-  " turn off tab expansion for Makefiles
-  autocmd FileType make setlocal noexpandtab
-
-  " Autocomplete setup for various files
-  autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
-  "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-  autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-
-  " Setup supertab
-  autocmd FileType *
-      \ if &omnifunc != '' |
-      \     call SuperTabChain(&omnifunc, '<c-p>') |
-      \ endif
-
-  "autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-augroup END
-
-augroup vim_start
-  autocmd!
-
-  autocmd VimEnter * call TermSetup()
-  autocmd GUIEnter * call GuiSetup()
-augroup END
-
-"let g:session_autosave = 'no'
-
-set number
-set title
-set showtabline=1
-set noshowmode
-set nofoldenable
-set hidden
-
-" set a line width and don't automatically reformat text to fit (toggle with ,<F8>
-set textwidth=79
-set fo-=t
-
-set grepprg=egrep\ -nH\ $*
-
-" Turn syntax highlighting on
-syntax on
-
-" fast terminal
-set ttyfast
-set synmaxcol=128
-syntax sync minlines=256
-set lazyredraw
-
-" Use an older regex engine, which is supposedly faster for Ruby syntaxt
-" highlighting
-set re=2
-" Don't do expensive regex for ruby
-let ruby_no_expensive=1
-
-" automagically adds /g on a regex. /g to disable
-set gdefault
-
+" Autocomplete {{{
 set wildmenu
 set wildmode=list:longest,full
-set nohidden
-
-set foldmethod=manual
-set noballooneval
-let g:netrw_nobeval=1
-
-" do not beep or flash at me
-" vb is needed to stop beep
-" t_vb sets visual bell action, we're nulling it out here)
-set visualbell
-set t_vb=
-set noeb vb t_vb=
-set vb t_vb=
-
-" enable mouse for (a)ll, (n)ormal, (v)isual, (i)nsert, or (c)ommand line
-" mode -- seems to work in most terminals
-set mouse=a
-
-" let me delete stuff like crazy in insert mode
-set backspace=indent,eol,start
-
-" keep lots of command-line history
-set history=3500
-
-" check spelling
-set nospell
-set spl=en
-
-" search
-set hlsearch
-set showmatch
-set incsearch
-set nu
-set incsearch
-set ignorecase
-set smartcase
-
-" display tab characters as 4 spaces, indent 4 spaces,
-" always use spaces instead of tabs
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set expandtab
-set autoindent
-set smarttab
-set smartindent
-
-" Use + register (X Window clipboard) as unnamed register
-"set clipboard=unnamed,autoselect
-
 set completeopt=menu,preview,longest
 
-let g:SuperTabCrMapping = 0
-let g:SuperTabDefaultCompletionType = 'context'
+"let g:SuperTabCrMapping = 0
+"let g:SuperTabDefaultCompletionType = 'context'
 "let g:SuperTabContextDefaultCompletionType = '<c-x><c-u>'
-let g:SuperTabContextDefaultCompletionType = "<c-n>"
+"let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
-" NERDTree enhancements/fixes
+  " neocomplete {{{
+  let g:neocomplete#data_directory = '~/.vim/tmp/neocomplete'
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_auto_select = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#auto_completion_start_length = 2
+
+  " increase limit for tag cache files
+  let g:neocomplete#sources#tags#cache_limit_size = 16777216 " 16MB
+
+  " fuzzy completion breaks dot-repeat more noticeably
+  " https://github.com/Shougo/neocomplete.vim/issues/332
+  let g:neocomplete#enable_fuzzy_completion = 0
+
+  " always use completions from all buffers
+  if !exists('g:neocomplete#same_filetypes')
+    let g:neocomplete#same_filetypes = {}
+  endif
+  let g:neocomplete#same_filetypes._ = '_'
+
+  " enable omni-completion for Ruby and PHP
+  call neocomplete#util#set_default_dictionary(
+        \'g:neocomplete#sources#omni#input_patterns', 'ruby',
+        \'[^. *\t]\.\h\w*\|\h\w*::\w*')
+  call neocomplete#util#set_default_dictionary(
+        \'g:neocomplete#sources#omni#input_patterns',
+        \'php',
+        \'[^. \t]->\h\w*\|\h\w*::\w*')
+
+  " disable for Python
+  call neocomplete#util#set_default_dictionary(
+        \'g:neocomplete#sources#omni#input_patterns',
+        \'python',
+        \'')
+
+  " from neocomplete.txt:
+  " ---------------------
+
+  " Plugin key-mappings.
+  inoremap <expr> <C-g> neocomplete#undo_completion()
+  inoremap <expr> <C-l> neocomplete#complete_common_string()
+
+  " Recommended key-mappings.
+  " <CR>: cancel popup and insert newline.
+  inoremap <silent> <CR> <C-r>=neocomplete#smart_close_popup()<CR><CR>
+  " <TAB>: completion.
+  " <TAB>: completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  " <C-h>, <BS>: close popup and delete backword char.
+  inoremap <expr> <C-h> neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr> <BS>  neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr> <C-y> neocomplete#close_popup()
+  inoremap <expr> <C-e> neocomplete#cancel_popup()
+  " }}}
+" }}}
+
+
+" NERDTree {{{
 "   Nerdtree defaults for window splitting are backwards from vim defaults.
 let NERDTreeMapOpenVSplit='i'
 let NERDTreeMapOpenSplit='s'
@@ -362,14 +433,18 @@ let g:NERDCustomDelimiters = {
 
 " Default to the alt style comments for ruby
 let NERD_ruby_alt_style=1
+" }}}
 
-" buffergator stuff
+
+" Buffergator {{{
 " Use the right side of the screen
 let g:buffergator_viewport_split_policy='R'
 " And let me use my own keymaps
 let g:buffergator_suppress_keymaps=1
+" }}}
 
-" ctrlp settings
+
+" ctrlp {{{
 if exists("g:ctrl_user_command")
   unlet g:ctrlp_user_command
 endif
@@ -379,7 +454,10 @@ endif
 let g:ctrlp_working_path_mode = 'r'
 
 set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/*,*/.git/*
+" }}}
 
+
+" Tagbar {{{
 let g:tagbar_type_ruby = {
     \ 'kinds' : [
         \ 'm:modules',
@@ -390,11 +468,17 @@ let g:tagbar_type_ruby = {
         \ 'F:singleton methods'
     \ ]
 \ }
+" }}}
 
-" This line blew up at me when I symlinked this file. no clue why
-set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
-set list
+" Searching {{{
+set grepprg=egrep\ -nH\ $*
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+" }}}
 
+
+" Keymappings {{{
 "my little pinky isa bit slow coming off that shift key sometimes.
 command! W w
 command! Q q
@@ -509,3 +593,4 @@ nmap <leader>bl :BuffergatorOpen<cr>
 
 " close, delete and move to the next buffer
 nmap <leader>bq :bp <BAR> bd #<cr>
+" }}}
