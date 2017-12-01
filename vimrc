@@ -243,6 +243,39 @@ set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
 set list
 " }}}
 
+" Auto change directories in a smart way
+"
+" {{{
+" follow symlinked file
+function! FollowSymlink()
+  let current_file = expand('%:p')
+  " check if file type is a symlink
+  if getftype(current_file) == 'link'
+    " if it is a symlink resolve to the actual file path
+    "   and open the actual file
+    let actual_file = resolve(current_file)
+    silent! execute 'file ' . actual_file
+  end
+endfunction
+
+" set working directory to git project root
+" or directory of current file if not git project
+function! SetProjectRoot()
+  " default to the current file's directory
+  lcd %:p:h
+  let git_dir = system("git rev-parse --show-toplevel")
+  " See if the command output starts with 'fatal' (if it does, not in a git repo)
+  let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
+  " if git project, change local directory to git project root
+  if empty(is_not_git_dir)
+    lcd `=git_dir`
+  endif
+endfunction
+
+autocmd BufRead *
+  \ call FollowSymlink() |
+  \ call SetProjectRoot()
+" }}}
 
 " Lightline {{{
 set laststatus=2
@@ -272,7 +305,7 @@ function! LightlineModified()
 endfunction
 
 function! LightlineReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '🔏' : ''
+  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '' : ''
 endfunction
 
 function! LightlineFilename()
@@ -343,9 +376,9 @@ command! LightlineReload call LightlineReload()
 
 
 " Autocomplete {{{
-set wildmenu
-set wildmode=list:longest,full
-set completeopt=menu,preview,longest
+"set wildmenu
+"set wildmode=list:longest,full
+"set completeopt=menu,preview,longest
 
 "let g:SuperTabCrMapping = 0
 "let g:SuperTabDefaultCompletionType = 'context'
@@ -353,11 +386,17 @@ set completeopt=menu,preview,longest
 "let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
   " neocomplete {{{
+  let g:acp_enableAtStartup = 0
+  
   let g:neocomplete#data_directory = '~/.vim/tmp/neocomplete'
   let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_auto_select = 1
   let g:neocomplete#enable_smart_case = 1
+
+  " Require 2 characters to start
   let g:neocomplete#auto_completion_start_length = 2
+
+  " 
+  "let g:neocomplete#enable_auto_select = 1
 
   " increase limit for tag cache files
   let g:neocomplete#sources#tags#cache_limit_size = 16777216 " 16MB
@@ -372,39 +411,42 @@ set completeopt=menu,preview,longest
   endif
   let g:neocomplete#same_filetypes._ = '_'
 
-  " enable omni-completion for Ruby and PHP
-  call neocomplete#util#set_default_dictionary(
-        \'g:neocomplete#sources#omni#input_patterns', 'ruby',
-        \'[^. *\t]\.\h\w*\|\h\w*::\w*')
-  call neocomplete#util#set_default_dictionary(
-        \'g:neocomplete#sources#omni#input_patterns',
-        \'php',
-        \'[^. \t]->\h\w*\|\h\w*::\w*')
-
-  " disable for Python
-  call neocomplete#util#set_default_dictionary(
-        \'g:neocomplete#sources#omni#input_patterns',
-        \'python',
-        \'')
-
+  " enable omni-completion for Ruby
+  "call neocomplete#util#set_default_dictionary(
+        "\'g:neocomplete#sources#omni#input_patterns', 'ruby',
+        "\'[^. *\t]\.\h\w*\|\h\w*::\w*')
+        "
   " from neocomplete.txt:
-  " ---------------------
-
   " Plugin key-mappings.
   inoremap <expr> <C-g> neocomplete#undo_completion()
   inoremap <expr> <C-l> neocomplete#complete_common_string()
 
   " Recommended key-mappings.
-  " <CR>: cancel popup and insert newline.
-  inoremap <silent> <CR> <C-r>=neocomplete#smart_close_popup()<CR><CR>
+  " <CR>: close popup and save indent.
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+
+  function! s:my_cr_function()
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? "\<C-y>" : "\<CR>"
+  endfunction
+
   " <TAB>: completion.
-  " <TAB>: completion.
-  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ neocomplete#start_manual_complete()
+
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+  endfunction
+
   " <C-h>, <BS>: close popup and delete backword char.
-  inoremap <expr> <C-h> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr> <BS>  neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr> <C-y> neocomplete#close_popup()
-  inoremap <expr> <C-e> neocomplete#cancel_popup()
+  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+  " Close popup by <Space>.
+  inoremap <expr><Space> (pumvisible() ? "\<C-y>" : "") . "\<Space>"
   " }}}
 " }}}
 
