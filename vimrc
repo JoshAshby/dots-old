@@ -243,9 +243,7 @@ set listchars=tab:¿\ ,trail:·,nbsp:¬,extends:»,precedes:«
 set list
 " }}}
 
-" Auto change directories in a smart way
-"
-" {{{
+" Auto change directories in a smart way {{{
 " follow symlinked file
 function! FollowSymlink()
   let current_file = expand('%:p')

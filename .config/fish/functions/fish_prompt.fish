@@ -41,7 +41,7 @@ function _git_hash
 end
 
 function _git_prompt
-  set index (gitstatus)
+  set index (/usr/local/bin/fish -lc "$HOME/.rbenv/versions/2.4.2/bin/ruby $HOME/bin/gitstatus")
 
   if test -n "$index[1]"
     echo -s -n (_left_prompt_segment red black) $index

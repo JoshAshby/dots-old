@@ -66,11 +66,11 @@ class GitStatus
   end
 
   def staged
-    [:index_modified, :index_deleted, :index_new].map { |key| status[key] }.inject(:+) > 0
+    [:index_modified, :index_deleted, :index_new].sum { |key| status[key] } > 0
   end
 
   def unstaged
-    [:worktree_modified, :worktree_deleted].map { |key| status[key] }.inject(:+) > 0
+    [:worktree_modified, :worktree_deleted].sum { |key| status[key] } > 0
   end
 
   def untracked
