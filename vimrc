@@ -425,8 +425,9 @@ let NERDTreeKeepTreeInNewTab=1
 let NERDTreeTabsOpenOnGuiStartup=1
 
 let NERDTreeWinSize=35
+" }}}
 
-" nerdcommenter things
+" NERDcommenter {{{
 let g:NERDCustomDelimiters = {
 \ 'ruby': { 'left': '# ', 'right': '', 'leftAlt': '# ', 'rightAlt': '' }
 \ }
@@ -474,6 +475,13 @@ let g:tagbar_type_ruby = {
 set grepprg=egrep\ -nH\ $*
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
+endif
+" }}}
+
+
+" Gundo {{{
+if has('python3')
+  let g:gundo_prefer_python3 = 1
 endif
 " }}}
 
