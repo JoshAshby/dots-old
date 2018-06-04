@@ -3,6 +3,7 @@
 [user]
   name = JoshAshby
   email = joshuaashby@joshashby.com
+	signingkey = FBFC9CACDB411BA6
 [core]
   excludesfile = ~/.gitignore_global
   editor = /usr/local/bin/vim
@@ -10,3 +11,5 @@
   clean = git hawser clean %f
   smudge = git hawser smudge %f
   required = true
+[commit]
+	gpgsign = true

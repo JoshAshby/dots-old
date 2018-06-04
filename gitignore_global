@@ -4,6 +4,13 @@
 .DS_Store
 .ackrc
 .vimrc
+*.iml
+
+log/
+.idea/
+
+.bundle/
+.ignore
 
 custom_patch
 polymer/config/initializers/awesome_print.rb

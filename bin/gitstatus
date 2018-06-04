@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require "rugged"
-# require "pry"
+require "pry"
 
 class GitStatus
   ICONS = [
@@ -15,7 +15,7 @@ class GitStatus
   ].freeze
 
   def run
-    return unless repository
+    return unless repository && repository&.head
 
     output = ICONS.flat_map do |name, icon|
       extra = send name
@@ -54,7 +54,11 @@ class GitStatus
   end
 
   def ahead_behind
-    @ahead_behind ||= repository.ahead_behind(repository.head.target, repository.ref("refs/remotes/origin/HEAD").target.target)
+    remote = repository.refs.find(&:remote?)
+    @ahead_behind ||= [0, 0] unless remote
+
+    remote_ref = remote.target
+    @ahead_behind ||= repository.ahead_behind(repository.head.target, remote_ref)
   end
 
   def ahead

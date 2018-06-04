@@ -40,6 +40,7 @@ Plugin 'tpope/vim-surround'
 " Plugin 'docunext/closetag.vim.git'
 
 Plugin 'vim-scripts/Align'
+Plugin 'Yggdroot/indentLine'
 
 Plugin 'ervandew/supertab'
 " Plugin 'AndrewRadev/linediff.vim'
@@ -62,6 +63,8 @@ Plugin 'joshdick/onedark.vim'
 " Plugin 'plasticboy/vim-markdown'
 " Plugin 'othree/yajs.vim'
 " Plugin 'vim-ruby/vim-ruby'
+Plugin 'dag/vim-fish'
+Plugin 'ap/vim-css-color'
 
 " Quick fuzzy searching for files
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -282,7 +285,7 @@ let g:lightline = {
       \ 'mode_map': { 'c': 'NORMAL' },
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ] ],
-      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'filetype' ] ]
+      \   'right': [ [ 'syntastic', 'lineinfo' ], [ 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'modified': 'LightlineModified',
