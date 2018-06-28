@@ -42,7 +42,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/Align'
 Plugin 'Yggdroot/indentLine'
 
-Plugin 'ervandew/supertab'
+" Plugin 'ervandew/supertab'
 " Plugin 'AndrewRadev/linediff.vim'
 " Plugin 'xolox/vim-misc'
 " Plugin 'xolox/vim-session'
@@ -60,6 +60,7 @@ Plugin 'joshdick/onedark.vim'
 " Language additions
 " Plugin 'chrisbra/Colorizer'
 " Plugin 'skammer/vim-css-color'
+Plugin 'ap/vim-css-color'
 " Plugin 'plasticboy/vim-markdown'
 " Plugin 'othree/yajs.vim'
 " Plugin 'vim-ruby/vim-ruby'
@@ -137,19 +138,19 @@ augroup vimrc_autocmds
   autocmd FileType make setlocal noexpandtab
 
   " Autocomplete setup for various files
-  autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
+  "autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
   "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
   "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
   "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-  autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+  "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  "autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
   " Setup supertab
-  autocmd FileType *
-      \ if &omnifunc != '' |
-      \     call SuperTabChain(&omnifunc, '<c-p>') |
-      \ endif
+  "autocmd FileType *
+      "\ if &omnifunc != '' |
+      "\     call SuperTabChain(&omnifunc, '<c-p>') |
+      "\ endif
 
   "autocmd CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 augroup END

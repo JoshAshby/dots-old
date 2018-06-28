@@ -54,11 +54,8 @@ class GitStatus
   end
 
   def ahead_behind
-    remote = repository.refs.find(&:remote?)
-    @ahead_behind ||= [0, 0] unless remote
-
-    remote_ref = remote.target
-    @ahead_behind ||= repository.ahead_behind(repository.head.target, remote_ref)
+    @ahead_behind = [0, 0] unless repository.ref("refs/remotes/origin/#{ branch || 'master' }")&.target
+    @ahead_behind ||= repository.ahead_behind(repository.head.target, repository.ref("refs/remotes/origin/#{ branch || 'master' }").target)
   end
 
   def ahead
