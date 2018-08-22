@@ -59,8 +59,6 @@ Plugin 'joshdick/onedark.vim'
 
 " Language additions
 " Plugin 'chrisbra/Colorizer'
-" Plugin 'skammer/vim-css-color'
-Plugin 'ap/vim-css-color'
 " Plugin 'plasticboy/vim-markdown'
 " Plugin 'othree/yajs.vim'
 " Plugin 'vim-ruby/vim-ruby'
