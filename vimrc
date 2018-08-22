@@ -63,6 +63,8 @@ Plugin 'joshdick/onedark.vim'
 " Plugin 'plasticboy/vim-markdown'
 " Plugin 'othree/yajs.vim'
 " Plugin 'vim-ruby/vim-ruby'
+Plugin 'leafgarland/typescript-vim'
+Plugin 'isRuslan/vim-es6'
 Plugin 'dag/vim-fish'
 Plugin 'ap/vim-css-color'
 
@@ -124,6 +126,7 @@ augroup vimrc_autocmds
 
   " Set some additional filetypes...
   autocmd BufRead,BufNewFile *.jbuilder,*.thor,*.rabl set filetype=ruby
+  augroup filetype javascript syntax=javascript
   autocmd BufRead,BufNewFile *.es6 set filetype=javascript
   autocmd BufRead,BufNewFile *.lookml set filetype=yaml
 
@@ -174,6 +177,7 @@ set fo-=t
 
 " Turn syntax highlighting on
 syntax on
+let g:indentLine_setConceal=0
 
 " fast terminal
 set ttyfast
