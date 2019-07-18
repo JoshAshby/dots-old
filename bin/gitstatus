@@ -28,6 +28,10 @@ class GitStatus
     output.compact!
 
     print output.join("")
+
+  rescue Rugged::ReferenceError
+    print " ✕ ref 404 "
+    return
   end
 
   private

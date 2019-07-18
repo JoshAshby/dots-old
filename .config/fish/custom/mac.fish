@@ -6,6 +6,8 @@ if test -d $HOME/.rbenv
   . (rbenv init - | psub)
 end
 
+test -d {$HOME}/.cargo ; and set PATH $HOME/.cargo/bin $PATH
+
 set -g EDITOR gvim
 
 alias r 'bundle exec ruby'
