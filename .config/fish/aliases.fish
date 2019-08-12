@@ -11,6 +11,8 @@ alias nope "echo 'Oh, okay... :('"
 
 alias c '/bin/cat'
 
-. ~/.config/fish/aliases/git.fish
-. ~/.config/fish/aliases/ssh.fish
 . ~/.config/fish/aliases/docker.fish
+. ~/.config/fish/aliases/git.fish
+. ~/.config/fish/aliases/redis.fish
+. ~/.config/fish/aliases/ruby.fish
+. ~/.config/fish/aliases/ssh.fish

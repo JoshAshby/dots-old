@@ -1,8 +1,6 @@
 set fish_greeting
 
-. ~/.config/fish/alias.fish
-. ~/.config/fish/git.fish
-. ~/.config/fish/ssh.fish
+. ~/.config/fish/aliases.fish
 
 if test -e ~/.config/fish/custom.fish
   . ~/.config/fish/custom.fish
