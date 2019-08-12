@@ -2,11 +2,8 @@
 source "https://rubygems.org"
 ruby "2.4.1"
 
-gem "ash_frame", path: "~/repos/ashFrame" # Local
-# gem "ash_frame", git: "http://code.isin.space/JoshAshby/AshFrame.git", branch: "master" # Git
-
-gem "rake"
-gem "require_all"
+# gem "rake"
 
 gem "ffi-xattr"
 gem "cfpropertylist"
+gem "rugged"
