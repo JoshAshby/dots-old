@@ -1,6 +1,10 @@
 set _left_segment ''
 set _right_segement ''
 
+if set -q SSH_CONNECTION
+  set _left_segment '>'
+end
+
 set _ssh_icon 'ಠ_ಠ'
 
 set _status_jobs  ' ⚙ '
@@ -41,7 +45,7 @@ function _git_hash
 end
 
 function _git_prompt
-  set index (/usr/local/bin/fish -lc "$HOME/.rbenv/versions/2.4.2/bin/ruby $HOME/bin/gitstatus")
+  set index (/usr/local/bin/fish -lc "eval (asdf where ruby 2.6.3)/bin/ruby $DOTS/bin/gitstatus")
 
   if test -n "$index[1]"
     echo -s -n (_left_prompt_segment red black) $index

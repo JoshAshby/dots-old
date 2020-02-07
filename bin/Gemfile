@@ -1,9 +1,15 @@
 # frozen_string_literal: true
 source "https://rubygems.org"
-ruby "2.4.1"
+ruby "2.6.3"
 
 # gem "rake"
 
 gem "ffi-xattr"
-gem "cfpropertylist"
+gem "CFPropertyList"
 gem "rugged"
+
+gem "exiftool_vendored"
+
+gem "byebug"
+gem "pry"
+gem "pry-byebug"

@@ -44,6 +44,10 @@ class GitStatus
 
   def status
     @status ||= Hash.new { |hash, key| hash[key] = 0 }.tap do |hash|
+      # TODO: this is causing a problem with segfaulting when the repo is in
+      # some weird state
+      next
+
       repository.status do |path, data|
         next if data.include? :ignored
 
@@ -56,13 +60,18 @@ class GitStatus
     repository.head.name.gsub(%r{refs\/heads\/}, "")
   end
 
-  def ahead_behind
+  def _ahead_behind
     remote = repository.refs.find(&:remote?)
-    @ahead_behind ||= [0, 0] unless remote
+    return [0, 0] unless remote
 
     remote_ref = remote.target
     remote_ref = remote_ref.resolve.target if remote_ref.is_a? Rugged::Reference
-    @ahead_behind ||= repository.ahead_behind(repository.head.target, remote_ref)
+
+    repository.ahead_behind(repository.head.target, remote_ref)
+  end
+
+  def ahead_behind
+    @ahead_behind ||= _ahead_behind
   end
 
   def ahead

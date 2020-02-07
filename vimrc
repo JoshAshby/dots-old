@@ -1,5 +1,3 @@
-set shell=/bin/sh
-
 "This all needs cleaned up...
 set nocompatible               " be iMproved
 filetype off                   " required!
@@ -34,7 +32,10 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 
 Plugin 'terryma/vim-multiple-cursors'
+
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-rails'
 
 " Plugin 'Raimondi/delimitMate'
 " Plugin 'docunext/closetag.vim.git'
@@ -46,9 +47,12 @@ Plugin 'Yggdroot/indentLine'
 " Plugin 'AndrewRadev/linediff.vim'
 " Plugin 'xolox/vim-misc'
 " Plugin 'xolox/vim-session'
-Plugin 'mileszs/ack.vim'
-Plugin 'sk1418/QFGrep'
-Plugin 'Shougo/neocomplete.vim'
+"Plugin 'mileszs/ack.vim'
+"Plugin 'sk1418/QFGrep'
+"Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'roxma/nvim-yarp'
+Plugin 'roxma/vim-hug-neovim-rpc'
 
 " Colors!
 " Plugin 'godlygeek/csapprox'
@@ -66,6 +70,7 @@ Plugin 'leafgarland/typescript-vim'
 Plugin 'isRuslan/vim-es6'
 Plugin 'dag/vim-fish'
 Plugin 'ap/vim-css-color'
+Plugin 'ziglang/zig.vim'
 
 " Quick fuzzy searching for files
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -184,7 +189,7 @@ set synmaxcol=128
 syntax sync minlines=256
 set lazyredraw
 
-" Use an older regex engine, which is supposedly faster for Ruby syntaxt
+" Use an older regex engine, which is supposedly faster for Ruby synaxt
 " highlighting
 set re=2
 " Don't do expensive regex for ruby
@@ -211,7 +216,7 @@ set vb t_vb=
 set mouse=a
 
 " let me delete stuff like crazy in insert mode
-set backspace=indent,eol,start
+"set backspace=indent,eol,start
 
 " keep lots of command-line history
 set history=3500
@@ -380,6 +385,26 @@ command! LightlineReload call LightlineReload()
 
 
 " Autocomplete {{{
+
+" deoplete {{{
+let g:deoplete#enable_at_startup = 1
+call deoplete#custom#option('auto_complete', v:false)
+
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+"inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#manual_complete()
+
+function! s:check_back_space() abort "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+" }}}
+
 "set wildmenu
 "set wildmode=list:longest,full
 "set completeopt=menu,preview,longest
@@ -390,30 +415,30 @@ command! LightlineReload call LightlineReload()
 "let g:SuperTabContextDefaultCompletionType = "<c-n>"
 
   " neocomplete {{{
-  let g:acp_enableAtStartup = 0
+  "let g:acp_enableAtStartup = 0
   
-  let g:neocomplete#data_directory = '~/.vim/tmp/neocomplete'
-  let g:neocomplete#enable_at_startup = 1
-  let g:neocomplete#enable_smart_case = 1
+  "let g:neocomplete#data_directory = '~/.vim/tmp/neocomplete'
+  "let g:neocomplete#enable_at_startup = 1
+  "let g:neocomplete#enable_smart_case = 1
 
   " Require 2 characters to start
-  let g:neocomplete#auto_completion_start_length = 2
+  "let g:neocomplete#auto_completion_start_length = 2
 
   " 
   "let g:neocomplete#enable_auto_select = 1
 
   " increase limit for tag cache files
-  let g:neocomplete#sources#tags#cache_limit_size = 16777216 " 16MB
+  "let g:neocomplete#sources#tags#cache_limit_size = 16777216 " 16MB
 
   " fuzzy completion breaks dot-repeat more noticeably
   " https://github.com/Shougo/neocomplete.vim/issues/332
-  let g:neocomplete#enable_fuzzy_completion = 0
+  "let g:neocomplete#enable_fuzzy_completion = 0
 
   " always use completions from all buffers
-  if !exists('g:neocomplete#same_filetypes')
-    let g:neocomplete#same_filetypes = {}
-  endif
-  let g:neocomplete#same_filetypes._ = '_'
+  "if !exists('g:neocomplete#same_filetypes')
+    "let g:neocomplete#same_filetypes = {}
+  "endif
+  "let g:neocomplete#same_filetypes._ = '_'
 
   " enable omni-completion for Ruby
   "call neocomplete#util#set_default_dictionary(
@@ -422,35 +447,35 @@ command! LightlineReload call LightlineReload()
         "
   " from neocomplete.txt:
   " Plugin key-mappings.
-  inoremap <expr> <C-g> neocomplete#undo_completion()
-  inoremap <expr> <C-l> neocomplete#complete_common_string()
+  "inoremap <expr> <C-g> neocomplete#undo_completion()
+  "inoremap <expr> <C-l> neocomplete#complete_common_string()
 
   " Recommended key-mappings.
   " <CR>: close popup and save indent.
-  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  "inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 
-  function! s:my_cr_function()
-    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-    " For no inserting <CR> key.
-    "return pumvisible() ? "\<C-y>" : "\<CR>"
-  endfunction
+  "function! s:my_cr_function()
+    "return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    "" For no inserting <CR> key.
+    ""return pumvisible() ? "\<C-y>" : "\<CR>"
+  "endfunction
 
-  " <TAB>: completion.
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ neocomplete#start_manual_complete()
+  "" <TAB>: completion.
+  "inoremap <silent><expr> <TAB>
+        "\ pumvisible() ? "\<C-n>" :
+        "\ <SID>check_back_space() ? "\<TAB>" :
+        "\ neocomplete#start_manual_complete()
 
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction
+  "function! s:check_back_space() abort
+    "let col = col('.') - 1
+    "return !col || getline('.')[col - 1]  =~ '\s'
+  "endfunction
 
-  " <C-h>, <BS>: close popup and delete backword char.
-  inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-  " Close popup by <Space>.
-  inoremap <expr><Space> (pumvisible() ? "\<C-y>" : "") . "\<Space>"
+  "" <C-h>, <BS>: close popup and delete backword char.
+  "inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+  "inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+  "" Close popup by <Space>.
+  "inoremap <expr><Space> (pumvisible() ? "\<C-y>" : "") . "\<Space>"
   " }}}
 " }}}
 
@@ -462,7 +487,7 @@ let NERDTreeMapOpenSplit='s'
 
 let NERDTreeShowBookmarks=1
 
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git$', '\.hg', '\.svn', '\.bzr']
 
 let NERDTreeMouseMode=2
 let NERDTreeShowHidden=1

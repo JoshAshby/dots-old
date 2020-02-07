@@ -1,0 +1,7 @@
+#!/bin/sh
+
+filters="fps=30,scale=480:-1:flags=lanczos"
+palettegen="stats_mode=diff"
+paletteuse="new=1:dither=none"
+
+exec /usr/local/bin/ffmpeg -v warning -i "$1" -vf "$filters,split [s0][s1];[s0] palettegen=$palettegen [p];[s1][p] paletteuse=$paletteuse" -loop 0 -y -f gif "$2"

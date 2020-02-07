@@ -2,6 +2,15 @@
 
 require_relative "./lib/finder_utils"
 
+require "pry"
+
+args = ARGV.map { |i| i.split ":" }
+FROM_TAG = [args[0][0], args[0][1].to_sym].freeze if args.any?
+TO_TAG = [args[1][0], args[1][1].to_sym].freeze if args.any?
+
+FROM_TAG ||= ["Green", :green].freeze
+TO_TAG ||= ["Good", :green].freeze
+
 class Runner
   using FinderUtils
 
@@ -10,11 +19,11 @@ class Runner
   ].freeze
 
   JPG_EXT = ".JPG".freeze
-  JPG_GOOD_TAG = FinderUtils::Tag.new(name: "Green", color: :green).freeze
+  JPG_GOOD_TAG = FinderUtils::Tag.new(name: FROM_TAG[0], color: FROM_TAG[1]).freeze
 
   RAW_EXT = ".CR2".freeze
   RAW_GOOD_TAGS = [
-    FinderUtils::Tag.new(name: "Good", color: :green)
+    FinderUtils::Tag.new(name: TO_TAG[0], color: TO_TAG[1])
   ].freeze
 
   def root
@@ -33,7 +42,7 @@ class Runner
         existing_tags = raw_file.tags
 
         raw_file.reset_tags!
-        raw_file.merge_tags RAW_GOOD_TAGS.dup
+        raw_file.merge_tags RAW_GOOD_TAGS.dup.concat existing_tags.dup
 
         new_tags = raw_file.tags
 

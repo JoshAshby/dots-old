@@ -20,3 +20,9 @@ polymer/strip.pl
 polymer/db/dumps/
 
 .gems/
+
+.env
+.env.development
+.env.production
+.env.staging
+.env.testing

@@ -1,5 +1,6 @@
-require "table_print"
 require "window_resize"
+require "photo_uploader"
+require "caffeine"
 
 -- hashtag automatic reload
 function reloadConfig(files)
@@ -14,29 +15,10 @@ function reloadConfig(files)
     hs.reload()
   end
 end
+
 hs.pathwatcher.new(os.getenv('HOME') .. '/.hammerspoon/', reloadConfig):start()
 
--- okay, seriously now.
-onlyScreenChangeOnce = false
-function clearOnlyScreenChangeOnce()
-  onlyScreenChangeOnce = false
-end
-
-function onScreenChange()
-  if onlyScreenChangeOnce then
-    return
-  end
-
-  hs.alert.show("Screen resize </3")
-  onlyScreenChangeOnce = true
-
-  hs.timer.new(hs.timer.seconds(5), clearOnlyScreenChangeOnce)
-end
-hs.screen.watcher.new(onScreenChange):start()
-
 hs.window.animationDuration = 0
---hs.window.setFrameCorrectness = true
-
 
 -- Debugging mouse positions
 --icon = hs.menubar.new()
@@ -47,7 +29,6 @@ hs.window.animationDuration = 0
 
 --  icon:setTitle("MP: " .. mouse.x .. " " .. mouse.y .. "")
 --end)
-
 
 -- {
 --   [ modifier_key ] = {
@@ -205,6 +186,3 @@ for modal_key, modal_settings in pairs(modal_setup) do
     end)
   end
 end
-
--- And finally let me know that you are all loaded
-hs.alert.show("Config loaded <3")

@@ -18,7 +18,7 @@ module Robocarp
      IO.popen('pbpaste', 'r') { |f| f.gets }
   end
 
-  def methods thing
+  def what_does? thing
     m = case thing
     when Module
       thing.methods.sort - Module.methods
