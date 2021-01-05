@@ -1,0 +1,10 @@
+#!/bin/sh
+set -euo pipefail
+
+size="2000x2000"
+frames=$(find . -name "rimworld-${1}*.jpg" | wc -l)
+output="rimworld-${1}-${size}.mp4"
+
+echo "Making a 2000x2000, 5 fps video of ${frames} frames to ${output}"
+
+exec ffmpeg -v warning -r 5 -pattern_type glob -i "rimworld-${1}*.jpg" -s ${size} -vcodec libx264 ${output}

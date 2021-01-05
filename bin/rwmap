@@ -1,0 +1,10 @@
+#!/bin/sh
+set -euo pipefail
+
+echo "Possible maps for rwpeg ..."
+names=$(find . -name "*.jpg" | cut -d '-' -f2,3 | sort | uniq)
+
+for name in ${names}
+do
+  echo "rwpeg ${name}"
+done
