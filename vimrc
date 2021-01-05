@@ -31,7 +31,9 @@ endif
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 
-Plugin 'terryma/vim-multiple-cursors'
+Plugin 'mtth/scratch.vim'
+
+Plugin 'mg979/vim-visual-multi'
 
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
@@ -71,6 +73,7 @@ Plugin 'isRuslan/vim-es6'
 Plugin 'dag/vim-fish'
 Plugin 'ap/vim-css-color'
 Plugin 'ziglang/zig.vim'
+Plugin 'elixir-editors/vim-elixir'
 
 " Quick fuzzy searching for files
 Plugin 'ctrlpvim/ctrlp.vim'

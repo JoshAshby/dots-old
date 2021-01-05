@@ -6,6 +6,8 @@
 .vimrc
 *.iml
 
+.plan.out
+
 log/
 .idea/
 

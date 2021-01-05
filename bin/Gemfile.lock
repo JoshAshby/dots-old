@@ -4,7 +4,6 @@ GEM
     CFPropertyList (3.0.1)
     byebug (11.0.1)
     coderay (1.1.2)
-    exif (2.2.0)
     exiftool (1.2.1)
       json
     exiftool_vendored (11.65.0)
@@ -28,7 +27,6 @@ PLATFORMS
 DEPENDENCIES
   CFPropertyList
   byebug
-  exif
   exiftool_vendored
   ffi-xattr
   pry
