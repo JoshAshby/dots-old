@@ -84,6 +84,14 @@ function _env_prompt
   if set -q APP_ENV
     echo -s -n (_left_prompt_segment white blue) ' ' $APP_ENV ' ' (set_color normal)
   end
+
+  if set -q MIX_ENV
+    echo -s -n (_left_prompt_segment white blue) ' ' $MIX_ENV ' ' (set_color normal)
+  end
+
+  if set -q AWS_VAULT
+    echo -s -n (_left_prompt_segment yellow black) ' {|' $AWS_VAULT '|} ' (set_color normal)
+  end
 end
 
 function _git_hash_prompt
@@ -106,6 +114,7 @@ end
 
 function fish_prompt
   set _lstatus $status
+  echo
   echo -s -n '┌─' (_status_prompt) (_env_prompt) (_date_prompt) (_left_prompt_end)
   echo
   echo -s -n '| ' (_ssh_prompt) (_git_prompt) (_git_hash_prompt) (_delta_prompt) (_left_prompt_end)

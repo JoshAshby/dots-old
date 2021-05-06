@@ -14,13 +14,6 @@ log/
 .bundle/
 .ignore
 
-custom_patch
-polymer/config/initializers/awesome_print.rb
-polymer/config/initializers/scubaru.rb
-polymer/lib/tasks/josh.rake
-polymer/strip.pl
-polymer/db/dumps/
-
 .gems/
 
 .env
@@ -28,3 +21,6 @@ polymer/db/dumps/
 .env.production
 .env.staging
 .env.testing
+.envrc
+
+.terraform/

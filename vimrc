@@ -49,7 +49,6 @@ Plugin 'Yggdroot/indentLine'
 " Plugin 'AndrewRadev/linediff.vim'
 " Plugin 'xolox/vim-misc'
 " Plugin 'xolox/vim-session'
-"Plugin 'mileszs/ack.vim'
 "Plugin 'sk1418/QFGrep'
 "Plugin 'Shougo/neocomplete.vim'
 Plugin 'Shougo/deoplete.nvim'
@@ -77,6 +76,7 @@ Plugin 'elixir-editors/vim-elixir'
 
 " Quick fuzzy searching for files
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'mileszs/ack.vim'
 
 " Allow me to have .vimrc in directories
 Plugin 'mantiz/vim-plugin-dirsettings'
@@ -530,7 +530,6 @@ let g:ctrlp_working_path_mode = 'r'
 
 set wildignore+=*/node_modules/*,*/doc/*,*/coverage/*,*/public/*,*/dist/*,*/tmp/*,*/.git/*
 " }}}
-
 
 " Tagbar {{{
 let g:tagbar_type_ruby = {

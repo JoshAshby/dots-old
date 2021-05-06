@@ -1,15 +1,23 @@
 [push]
   default = simple
+
 [user]
 	name = JoshAshby
 	email = joshuaashby@joshashby.com
-	signingkey = 4AC1A9710637C7D0
+  signingkey = 4AC1A9710637C7D0
+
 [core]
   excludesfile = ~/.gitignore_global
   editor = /usr/local/bin/vim
-[filter "hawser"]
-  clean = git hawser clean %f
-  smudge = git hawser smudge %f
-  required = true
+
 [commit]
-	gpgsign = true
+  gpgsign = true
+
+[core]
+    pager = delta --diff-so-fancy
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = side-by-side line-numbers decorations

@@ -1,0 +1,7 @@
+#!/bin/sh
+set -euo pipefail
+
+output="${1}-${2}px.png"
+rsvg-convert -a -w "$2" -h "$2" "$1" -o "${output}"
+
+echo "resized ${1} as a ${2}x${2}px png and saved to ${output}"
