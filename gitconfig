@@ -21,3 +21,5 @@
 
 [delta]
     features = side-by-side line-numbers decorations
+[pull]
+	rebase = false
