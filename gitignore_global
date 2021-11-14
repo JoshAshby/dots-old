@@ -23,3 +23,5 @@ log/
 .terraform/
 .ssh/
 .vim/bundle/
+
+.config/fish/fish_variables
