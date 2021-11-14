@@ -16,3 +16,4 @@ alias c '/bin/cat'
 . ~/.config/fish/aliases/redis.fish
 . ~/.config/fish/aliases/ruby.fish
 . ~/.config/fish/aliases/ssh.fish
+. ~/.config/fish/aliases/elixir.fish

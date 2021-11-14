@@ -14,13 +14,13 @@ Plugin 'L9'
 " Git related bundles
 Plugin 'fugitive.vim'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'vim-scripts/vcscommand.vim'
+"Plugin 'vim-scripts/vcscommand.vim'
 
 " Utils
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'majutsushi/tagbar'
-Plugin 'jeetsukumaran/vim-buffergator'
+"Plugin 'majutsushi/tagbar'
+"Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'sjl/gundo.vim'
 
 if has('gui_running')
@@ -31,13 +31,13 @@ endif
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/syntastic'
 
-Plugin 'mtth/scratch.vim'
+"Plugin 'mtth/scratch.vim'
 
 Plugin 'mg979/vim-visual-multi'
 
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-rails'
+"Plugin 'tpope/vim-rails'
 
 " Plugin 'Raimondi/delimitMate'
 " Plugin 'docunext/closetag.vim.git'
@@ -73,6 +73,7 @@ Plugin 'dag/vim-fish'
 Plugin 'ap/vim-css-color'
 Plugin 'ziglang/zig.vim'
 Plugin 'elixir-editors/vim-elixir'
+Plugin 'let-def/ocp-indent-vim'
 
 " Quick fuzzy searching for files
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -104,7 +105,7 @@ set undofile
 
 function! TermSetup()
   " Make sure to escape the spaces in the name properly
-  set guifont=Fira\ Code
+  set guifont=FiraCode\ Nerd\ Font
   set guioptions=e
 endfunction
 
@@ -272,21 +273,21 @@ endfunction
 
 " set working directory to git project root
 " or directory of current file if not git project
-function! SetProjectRoot()
-  " default to the current file's directory
-  lcd %:p:h
-  let git_dir = system("git rev-parse --show-toplevel")
-  " See if the command output starts with 'fatal' (if it does, not in a git repo)
-  let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
-  " if git project, change local directory to git project root
-  if empty(is_not_git_dir)
-    lcd `=git_dir`
-  endif
-endfunction
+"function! SetProjectRoot()
+  "" default to the current file's directory
+  "lcd %:p:h
+  "let git_dir = system("git rev-parse --show-toplevel")
+  "" See if the command output starts with 'fatal' (if it does, not in a git repo)
+  "let is_not_git_dir = matchstr(git_dir, '^fatal:.*')
+  "" if git project, change local directory to git project root
+  "if empty(is_not_git_dir)
+    "lcd `=git_dir`
+  "endif
+"endfunction
 
 autocmd BufRead *
-  \ call FollowSymlink() |
-  \ call SetProjectRoot()
+  \ call FollowSymlink()
+  "\ call SetProjectRoot()
 " }}}
 
 " Lightline {{{
@@ -558,6 +559,14 @@ if has('python3')
 endif
 " }}}
 
+" Ocaml Stuff {{{
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+execute "set rtp+=" . g:opamshare . "/typerex/ocp-indent/ocp-indent.vim"
+
+let g:syntastic_ocaml_checkers=['merlin']
+" }}}
 
 " Keymappings {{{
 "my little pinky isa bit slow coming off that shift key sometimes.

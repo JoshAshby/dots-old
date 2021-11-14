@@ -17,10 +17,9 @@ log/
 .gems/
 
 .env
-.env.development
-.env.production
-.env.staging
-.env.testing
+.env.*
 .envrc
 
 .terraform/
+.ssh/
+.vim/bundle/

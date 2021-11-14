@@ -32,6 +32,7 @@ node_modules
 
 .ssh/*id_*
 .ssh/known_hosts
+.ssh/tailscale
 
 .config/fish/fishd.*
 .config/fish/utils/custom.fish

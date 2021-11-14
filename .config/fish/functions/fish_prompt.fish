@@ -44,8 +44,20 @@ function _git_hash
   echo -n (git log -1 ^/dev/null | sed -n -e 's/^commit \([a-z0-9]\{8\}\)[a-z0-9]\{32\}/\1/p')
 end
 
+function _fossil_hash
+  echo -n (fossil status ^/dev/null | sed -n -e 's/^checkout:[[:space:]]*\([a-z0-9]\{8\}\)[a-z0-9]\{32\}[[:space:]].*$/\1/p')
+end
+
 function _git_prompt
-  set index (/usr/local/bin/fish -lc "eval (asdf where ruby 2.6.3)/bin/ruby $DOTS/bin/gitstatus")
+  set index (fish -lc "eval (asdf where ruby 2.7.3)/bin/ruby $DOTS/bin/gitstatus")
+
+  if test -n "$index[1]"
+    echo -s -n (_left_prompt_segment red black) $index
+  end
+end
+
+function _fossil_prompt
+  set index (fish -lc "eval (asdf where ruby 2.7.3)/bin/ruby $DOTS/bin/fossilstatus")
 
   if test -n "$index[1]"
     echo -s -n (_left_prompt_segment red black) $index
@@ -94,22 +106,12 @@ function _env_prompt
   end
 end
 
-function _git_hash_prompt
-  echo -s -n (_left_prompt_segment black black) ' ' (_git_hash) ' ' (set_color normal)
+function _repo_hash_prompt
+  echo -s -n (_left_prompt_segment black black) ' ' (_git_hash) ' ' (_fossil_hash) ' ' (set_color normal)
 end
 
 function _date_prompt
   echo -s -n (_left_prompt_segment black white) ' ' (date "+%b-%d %H:%M:%S") ' ' (set_color normal)
-end
-
-function _delta_prompt
-  if test ! (set -q _exec_delta)
-    set _exec_delta 0
-  end
-
-  if test "$_exec_delta" -gt 0
-    echo -s -n (_left_prompt_segment black black) ' ∆t=' (decode_time $_exec_delta) ' ' (set_color normal)
-  end
 end
 
 function fish_prompt
@@ -117,7 +119,7 @@ function fish_prompt
   echo
   echo -s -n '┌─' (_status_prompt) (_env_prompt) (_date_prompt) (_left_prompt_end)
   echo
-  echo -s -n '| ' (_ssh_prompt) (_git_prompt) (_git_hash_prompt) (_delta_prompt) (_left_prompt_end)
+  echo -s -n '| ' (_ssh_prompt) (_git_prompt) (_fossil_prompt) (_repo_hash_prompt) (_left_prompt_end)
   echo
   echo -s -n '└─' (_pwd_prompt) (_left_prompt_end)
 end

@@ -1,0 +1,65 @@
+#!/usr/bin/env ruby
+
+class FossilStatus
+  ICONS = [
+    [:branch, "  "],
+    [:ahead, "↑ "],
+    [:behind, ""],
+    [:staged, "● "],
+    [:unstaged, "○ "],
+    [:untracked, "ᚐ "],
+    [:unmerged, "✕ "]
+  ].freeze
+
+  def run
+    return unless repository
+
+    output = ICONS.flat_map do |name, icon|
+      extra = send name
+
+      next unless extra
+      next icon unless extra.kind_of? String
+
+      [ icon, extra, " " ]
+    end
+
+    output.compact!
+
+    print output.join("")
+  end
+
+  private
+
+  def repository
+
+  end
+
+  def status
+  end
+
+  def branch
+  end
+
+  def ahead_behind
+  end
+
+  def ahead
+  end
+
+  def behind
+  end
+
+  def staged
+  end
+
+  def unstaged
+  end
+
+  def untracked
+  end
+
+  def unmerged
+  end
+end
+
+FossilStatus.new.run if __FILE__ == $0

@@ -8,7 +8,7 @@ GEM
       json
     exiftool_vendored (11.65.0)
       exiftool (>= 0.7.0)
-    ffi (1.11.1)
+    ffi (1.15.3)
     ffi-xattr (0.1.2)
       ffi
     json (2.2.0)
@@ -28,13 +28,14 @@ DEPENDENCIES
   CFPropertyList
   byebug
   exiftool_vendored
+  ffi (~> 1.15.3)
   ffi-xattr
   pry
   pry-byebug
   rugged
 
 RUBY VERSION
-   ruby 2.6.3p62
+   ruby 2.7.3p183
 
 BUNDLED WITH
-   1.17.2
+   2.2.21
